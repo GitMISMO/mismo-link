@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en" data-rs-gate>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISMO Link</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<!-- The shared sign-in every resources.mismo.org tool loads. It finds #rs-account
+     in the masthead and fills it with the account chip. -->
+<script src="/assets/session.js"></script>
+<style>
+
+  :root{
+    --navy:#0d314c; --navy-deep:#06202f; --navy-mid:#14486e;
+    --sky:#74bfeb; --sky-soft:#94c8e9; --sky-wash:#dcedf8;
+    --ground:#f1f6fa; --surface:#ffffff; --surface-2:#f6fafd; --surface-3:#e9f1f8;
+    --border:#d5e2ed; --border-strong:#adc4d6; --rule:#e5eef5;
+    --ink:#0f314c; --ink-2:#456179; --ink-3:#7794aa;
+    --good:#0f7b5c; --bad:#b3372c; --warn:#a2701a;
+    --c1:#2477b8; --c2:#eb6834; --c3:#1baf7a; --c4:#eda100; --c5:#e87ba4; --c6:#008300;
+    --tab-active:#ffffff; --chip:#eef4f9; --track:#e9f1f8;
+    --sunk:#e9f1f8; --line:#e5eef5; --accent-soft:#dcedf8;
+    --display:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --ui:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    /* the three measurements every MISMO page shares (Summit HQ's live values) */
+    --hq-h:55px; --rail-w:240px; --rail-mini:62px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#061722; --surface:#0d2837; --surface-2:#123143; --surface-3:#173c52;
+      --border:#1f4a63; --border-strong:#2f6688; --rule:#173547;
+      --ink:#e9f4fb; --navy-mid:#7fc0ea; --ink-2:#a6c5d9; --ink-3:#7a9db4;
+      --good:#4fc79b; --bad:#f08579; --warn:#e0a83c;
+      --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500; --c5:#d55181; --c6:#2f9e2f;
+      --sky-wash:#123143; --tab-active:#0d2837; --chip:#173c52; --track:#173c52;
+      --sunk:#173c52; --line:#173547; --accent-soft:#173a57;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#061722; --surface:#0d2837; --surface-2:#123143; --surface-3:#173c52;
+    --border:#1f4a63; --border-strong:#2f6688; --rule:#173547;
+    --ink:#e9f4fb; --navy-mid:#7fc0ea; --ink-2:#a6c5d9; --ink-3:#7a9db4;
+    --good:#4fc79b; --bad:#f08579; --warn:#e0a83c;
+    --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500; --c5:#d55181; --c6:#2f9e2f;
+    --sky-wash:#123143; --tab-active:#0d2837; --chip:#173c52; --track:#173c52;
+    --sunk:#173c52; --line:#173547; --accent-soft:#173a57;
+  }
+  :root[data-theme="dark"]{ color-scheme:dark; }
+  :root[data-theme="light"]{ color-scheme:light; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ color-scheme:dark; } }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0; padding:0;}
+  body{background:var(--ground); color:var(--ink);
+    font-family:var(--ui); font-size:14.5px; line-height:1.55;
+    -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{margin:0; font-weight:600; letter-spacing:-.012em;}
+  a{color:var(--navy-mid);}
+
+  /* sign-in, access and connection notices (resources.mismo.org) */
+  /* account button: squared corners, same as Team HQ */
+  /* The shared sign-in now ships .rs-who and .rs-signin at 4px, so this only
+     holds the line if that ever changes back. The initials circle is squared
+     off here too: everything else on this page uses rectangles. */
+  #rs-account{flex:0 0 auto;display:inline-flex;align-items:center}
+  #rs-account .rs-who,#rs-account .rs-signin,#rs-account .rs-wrap{border-radius:4px}
+  #rs-account .rs-av{border-radius:4px}
+
+  /* the December hat - internal pages only, never the signing page */
+  .logoplate .santa{position:absolute; display:none; pointer-events:none;
+    left:-9px; top:-12px; width:31px; height:31px;}
+  html[data-season="december"] .logoplate .santa{display:block;}
+  html[data-season="december"] .hqtop{padding-top:20px; height:calc(var(--hq-h) + 20px);}
+
+/* the masthead, across the top, as every MISMO page wears it */
+.hqtop{position:sticky;top:env(safe-area-inset-top,0px);z-index:97;height:var(--hq-h);
+  background:var(--navy);color:#fff;display:flex;align-items:center;gap:0;
+  padding:0 22px;box-shadow:0 1px 0 rgba(80,164,219,.28);
+  margin-left:calc(0px - var(--rail-w));width:calc(100% + var(--rail-w));
+  transition:margin-left .2s cubic-bezier(.4,0,.2,1), width .2s cubic-bezier(.4,0,.2,1)}
+body.railmini .hqtop{margin-left:calc(0px - var(--rail-mini));width:calc(100% + var(--rail-mini))}
+@media (prefers-reduced-motion:reduce){ .hqtop{transition:none} }
+.hqtop .mastrule{display:block;width:2px;height:34px;flex:0 0 auto;
+  margin-inline:20px;border-radius:1px;background:var(--sky)}
+.hqtop .hqname{font-family:var(--display);font-size:15.5px;font-weight:700;
+  letter-spacing:-.005em;color:var(--sky);white-space:nowrap}
+.hqtop-r{margin-left:auto;display:flex;align-items:center;gap:13px}
+.hqtop .eyebrow-m{font-family:var(--display);font-size:10.5px;letter-spacing:.11em;
+  text-transform:uppercase;color:rgba(255,255,255,.62);font-weight:600;white-space:nowrap}
+@media(max-width:700px){.hqtop .eyebrow-m{display:none}}
+.logoplate{background:#fff;border-radius:7px;padding:8px 14px;display:flex;
+  align-items:center;line-height:0;flex:0 0 auto;position:relative}
+.logoplate .wordmark{height:24px;width:auto;display:block}
+
+/* the sections, down the left, beneath it */
+.hq.rail{position:fixed;left:0;top:calc(var(--hq-h) + env(safe-area-inset-top,0px));bottom:0;width:var(--rail-w);z-index:95;
+  background:var(--navy);color:#fff;display:flex;flex-direction:column;
+  gap:0;padding:0;overflow:hidden auto;overscroll-behavior:contain;
+  box-shadow:1px 0 0 rgba(80,164,219,.22), 4px 0 18px rgba(6,32,47,.14);
+  transition:width .2s cubic-bezier(.4,0,.2,1)}
+body{padding-left:var(--rail-w);transition:padding-left .2s cubic-bezier(.4,0,.2,1)}
+@media (prefers-reduced-motion:reduce){ .hq.rail,body{transition:none} }
+
+/* ── Narrowed: the icons and nothing else ── */
+body.railmini{padding-left:var(--rail-mini)}
+body.railmini .hq.rail{width:var(--rail-mini)}
+body.railmini .rail-top{justify-content:center;padding:10px 0 9px}
+body.railmini .rail-lbl{display:none}
+body.railmini .railhide{margin:0}
+body.railmini .railhide svg{transform:scaleX(-1)}
+body.railmini .railfind{padding:9px 0 2px;display:flex;justify-content:center}
+body.railmini .railfind .fi,
+body.railmini .railfind input,
+body.railmini .railq-x,
+body.railmini .railhits{display:none}
+body.railmini .railfind-b{display:flex}
+body.railmini .hq nav{padding:6px 0 4px;align-items:center;gap:4px}
+body.railmini .hq nav button{width:42px;padding:10px 0;justify-content:center;
+  border-radius:9px;box-shadow:none}
+body.railmini .hq nav button span{display:none}
+body.railmini .hq nav button svg{width:19px;height:19px}
+body.railmini .hq nav button[aria-current]{background:var(--sky);color:var(--navy-deep,#06202f)}
+body.railmini .hq nav button[aria-current] svg{stroke:var(--navy-deep,#06202f);opacity:1}
+body.railmini .hq .mast-right{gap:3px;padding:8px 0 11px;align-items:center}
+body.railmini .hq .mast-right .theme-btn{width:42px;padding:9px 0;font-size:0;
+  justify-content:center;border-radius:9px}
+body.railmini .hq .mast-right .theme-btn .ti{width:19px;height:19px}
+body.railmini .hq .mast-right .theme-btn span{display:none}
+body.railmini .hq .mast-right #theme-btn{margin-top:4px;padding-top:10px;border-radius:9px}
+
+/* the magnifier that stands in for the search box when it is narrow */
+.railfind-b{display:none;width:34px;height:30px;border:1px solid rgba(255,255,255,.18);
+  border-radius:7px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);
+  align-items:center;justify-content:center;padding:0}
+.railfind-b svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.railfind-b:hover{background:rgba(255,255,255,.18);color:#fff}
+
+.rail-top{display:flex;align-items:center;gap:8px;padding:11px 10px 9px;
+  border-bottom:1px solid rgba(80,164,219,.2);flex:0 0 auto}
+.rail-lbl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:700;color:rgba(255,255,255,.55);padding-left:3px}
+.railhide{margin-left:auto;background:transparent;border:1px solid rgba(255,255,255,.18);
+  border-radius:5px;color:rgba(255,255,255,.75);width:24px;height:24px;flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;padding:0}
+.railhide svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round}
+.railhide:hover{background:rgba(255,255,255,.14);color:#fff}
+
+/* search */
+.railfind{position:relative;padding:11px 12px 3px;flex:0 0 auto}
+.railfind .fi{position:absolute;left:21px;top:20px;width:14px;height:14px;
+  fill:none;stroke:rgba(255,255,255,.5);stroke-width:2;stroke-linecap:round;pointer-events:none}
+.railfind input{width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  border-radius:6px;color:#fff;font:inherit;font-size:12.5px;padding:6px 26px 6px 30px}
+.railfind input::placeholder{color:rgba(255,255,255,.5)}
+.railfind input:focus{outline:2px solid var(--sky);outline-offset:-1px;background:rgba(255,255,255,.16)}
+.railfind input::-webkit-search-cancel-button{display:none}
+.railq-x{position:absolute;right:17px;top:16px;width:20px;height:20px;border:0;border-radius:4px;
+  background:transparent;color:rgba(255,255,255,.6);font-size:15px;line-height:1;padding:0}
+.railq-x:hover{background:rgba(255,255,255,.16);color:#fff}
+.railhits{margin-top:7px;background:var(--surface);border:1px solid var(--border-strong,#adc4d6);
+  border-radius:6px;box-shadow:0 10px 26px rgba(6,32,47,.3);overflow:hidden auto;
+  max-height:min(52vh,420px)}
+.railhits .rh-g{font-family:var(--mono);font-size:9px;letter-spacing:.09em;text-transform:uppercase;
+  font-weight:700;color:var(--ink-3);background:var(--sunk);padding:4px 10px;
+  border-bottom:1px solid var(--line);position:sticky;top:0}
+.railhits .rh{display:block;width:100%;text-align:left;background:none;border:0;
+  border-bottom:1px solid var(--line);padding:6px 10px;color:var(--ink);font-family:var(--ui)}
+.railhits .rh:last-child{border-bottom:0}
+.railhits .rh:hover,.railhits .rh.on{background:var(--accent-soft)}
+.railhits .rh b{display:block;font-size:12.5px;font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+.railhits .rh i{display:block;font-style:normal;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.03em;color:var(--ink-3);margin-top:1px;overflow-wrap:anywhere}
+.railhits .rh-none{padding:10px;font-size:12px;color:var(--ink-3)}
+
+.hq nav{display:flex;flex-direction:column;gap:1px;padding:8px 8px 4px;flex:0 0 auto}
+.hq nav button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  background:none;border:0;border-radius:6px;color:rgba(255,255,255,.76);
+  padding:8px 10px;font:inherit;font-family:var(--display);font-size:13px;font-weight:500;
+  cursor:pointer;white-space:nowrap}
+.hq nav button svg{width:17px;height:17px;flex:0 0 auto;fill:none;stroke:currentColor;
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+.hq nav button:hover{color:#fff;background:rgba(255,255,255,.09)}
+.hq nav button[aria-current]{color:#fff;font-weight:600;background:var(--navy-mid,#14486e);
+  box-shadow:inset 3px 0 0 var(--sky)}
+.hq nav button[aria-current] svg{opacity:1;stroke:var(--sky)}
+.hq nav button:focus-visible{outline:2px solid var(--sky);outline-offset:-2px}
+
+/* the foot: theme toggle (and anything else, like Undo/Backup, above it) */
+.hq .mast-right{margin-top:auto;display:flex;flex-direction:column;align-items:stretch;gap:1px;
+  padding:8px 8px 10px;border-top:1px solid rgba(80,164,219,.2);flex:0 0 auto}
+.theme-btn{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  background:none;border:0;border-radius:6px;color:rgba(255,255,255,.76);
+  padding:8px 10px;font:inherit;font-family:var(--display);font-size:13px;font-weight:500;
+  cursor:pointer;white-space:nowrap}
+.theme-btn .ti{width:17px;height:17px;flex:0 0 auto;fill:none;stroke:currentColor;
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
+.theme-btn .ti-sun{display:none}
+:root[data-theme="dark"] .theme-btn .ti-moon{display:none}
+:root[data-theme="dark"] .theme-btn .ti-sun{display:block}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .theme-btn .ti-moon{display:none}
+  :root:not([data-theme="light"]) .theme-btn .ti-sun{display:block} }
+.theme-btn:hover:not(:disabled){color:#fff;background:rgba(255,255,255,.09)}
+.theme-btn:disabled{opacity:.4;cursor:not-allowed}
+.theme-btn:focus-visible{outline:2px solid var(--sky);outline-offset:-2px}
+.hq .mast-right #theme-btn{margin-top:5px;padding-top:11px;
+  border-top:1px solid rgba(80,164,219,.18);border-radius:0 0 6px 6px}
+
+/* on a narrow screen the rail covers the page rather than squeezing it */
+.railscrim{position:fixed;inset:0;z-index:94;background:rgba(6,32,47,.42);border:0;padding:0;display:none}
+@media(max-width:900px){
+  body:not(.railmini){padding-left:var(--rail-mini)}
+  body:not(.railmini) .hqtop{margin-left:calc(0px - var(--rail-mini));width:calc(100% + var(--rail-mini))}
+  body:not(.railmini) .hq.rail{box-shadow:4px 0 26px rgba(6,32,47,.4)}
+  body:not(.railmini) .railscrim{display:block}
+}
+
+
+  /* ---------- the page itself ---------- */
+  .wrap{max-width:900px; margin:0 auto; padding:30px 26px 110px;}
+  @media (max-width:420px){ .wrap{padding-left:16px; padding-right:16px;} }
+  .pane{display:none;} .pane.on{display:block;}
+  h1.pt{font-size:21px; margin-bottom:8px;}
+  .lede{font-size:14px; color:var(--ink-2); line-height:1.65; margin:0 0 26px;}
+  .card{border:1px solid var(--border); border-radius:8px; background:var(--surface);
+    padding:18px 20px; margin-bottom:14px;}
+  .card h2{font-size:15px; margin:0 0 6px;}
+  .card p{font-size:13px; color:var(--ink-2); line-height:1.6; margin:0 0 14px;}
+  .card p:last-child{margin-bottom:0;}
+  .card.soon{background:var(--surface-2); border-style:dashed;}
+  .card.soon h2{color:var(--ink-3);}
+  .tag{display:inline-block; font-size:10.5px; font-weight:600; letter-spacing:.05em;
+    text-transform:uppercase; border-radius:4px; padding:3px 8px; background:var(--chip);
+    color:var(--ink-2); margin-left:9px; vertical-align:2px;}
+  .tag.live{background:rgba(15,123,92,.15); color:var(--good);}
+  .btn{background:var(--navy); color:#fff; border:none; border-radius:6px; padding:9px 17px;
+    font-family:inherit; font-size:12.5px; font-weight:600; cursor:pointer; text-decoration:none;
+    white-space:nowrap; min-width:max-content; display:inline-flex; align-items:center;}
+  .btn:hover{background:var(--navy-deep);}
+  .btn:focus-visible{outline:2px solid var(--sky); outline-offset:2px;}
+  :root[data-theme="dark"] .btn{background:var(--sky); color:#06202f;}
+  :root[data-theme="dark"] .btn:hover{background:#9ad2f1;}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .btn{background:var(--sky); color:#06202f;}
+    :root:not([data-theme="light"]) .btn:hover{background:#9ad2f1;}
+  }
+  .empty{border:1px dashed var(--border-strong); border-radius:8px; background:var(--surface-2);
+    padding:26px 24px; text-align:center;}
+  .empty h3{font-size:14px; margin-bottom:7px;}
+  .empty p{font-size:13px; color:var(--ink-2); line-height:1.6; margin:0 auto; max-width:66ch;}
+  .meta{font-family:var(--mono); font-size:11px; color:var(--ink-3);
+    letter-spacing:.03em; margin-top:18px;}
+</style>
+<style>
+/* ---------- Who Has Signed: the list the manager reads ---------- */
+.sig-tools[hidden]{display:none;}   /* [hidden] loses to display:flex without this */
+.sig-tools{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:0 0 14px;}
+.sig-tools input{flex:1 1 240px; min-width:180px; border:1px solid var(--border);
+  border-radius:6px; padding:9px 11px; font-family:inherit; font-size:13.5px;
+  background:var(--surface-2); color:var(--ink);}
+.sig-tools input:focus{outline:2px solid var(--sky); outline-offset:-1px; border-color:var(--sky);}
+.sig-count{font-size:12.5px; color:var(--ink-3); white-space:nowrap;}
+.sig-count b{color:var(--ink); font-variant-numeric:tabular-nums;}
+
+.sig-list{list-style:none; margin:0; padding:0;}
+.sig{border:1px solid var(--border); border-radius:8px; background:var(--surface);
+  margin-bottom:9px; overflow:hidden;}
+.sig-row{width:100%; display:flex; align-items:center; gap:14px; text-align:left;
+  background:var(--surface); border:none; padding:13px 16px; cursor:pointer;
+  font-family:inherit; color:var(--ink);}
+.sig-row:hover{background:var(--surface-2);}
+.sig-row[aria-expanded="true"]{background:var(--surface-3);}
+.sig-row[aria-expanded="true"] .caret{transform:rotate(90deg);}
+.sig-row .caret{flex:0 0 auto; color:var(--ink-3); font-size:10px; transition:transform .16s;}
+.sig-who{flex:1 1 auto; min-width:0;}
+.sig-who b{display:block; font-size:14px; font-weight:600; line-height:1.35;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.sig-who span{display:block; font-size:12.5px; color:var(--ink-2);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.sig-when{flex:0 0 auto; font-size:12.5px; color:var(--ink-2); white-space:nowrap;
+  font-variant-numeric:tabular-nums;}
+@media (max-width:620px){ .sig-when{display:none;} }
+.sig-body{display:none; padding:4px 16px 16px; border-top:1px solid var(--rule);}
+.sig-body.on{display:block;}
+.sig-kv{display:grid; grid-template-columns:168px minmax(0,1fr); gap:8px 16px;
+  margin:14px 0 0; font-size:13px;}
+@media (max-width:560px){ .sig-kv{grid-template-columns:1fr; gap:3px 0;}
+  .sig-kv dt{margin-top:9px;} }
+.sig-kv dt{color:var(--ink-3); font-weight:600;}
+.sig-kv dd{margin:0; color:var(--ink); min-width:0; overflow-wrap:anywhere;}
+.sig-kv dd.mono{font-family:var(--mono); font-size:12px; color:var(--ink-2);}
+.sig-stmt{margin:14px 0 0; padding:12px 15px; border-left:3px solid var(--sky);
+  background:var(--surface-2); border-radius:0 7px 7px 0; font-size:13px;
+  line-height:1.6; color:var(--ink-2);}
+.sig-acts{display:flex; gap:9px; flex-wrap:wrap; margin-top:15px;}
+.sig-acts .btn{white-space:nowrap; min-width:max-content;}
+.flag{display:inline-block; border-radius:4px; padding:2px 8px; font-size:11px;
+  font-weight:600; letter-spacing:.03em; background:var(--chip); color:var(--ink-2);}
+.flag.ok{background:rgba(15,123,92,.15); color:var(--good);}
+.flag.no{background:rgba(179,55,44,.13); color:var(--bad);}
+.empty .steps{display:inline-block; text-align:left; margin:10px 0; padding-left:20px;
+  font-size:13px; line-height:1.8; color:var(--ink-2);}
+.sig-skel{border:1px solid var(--border); border-radius:8px; background:var(--surface-2);
+  height:52px; margin-bottom:9px;}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="mismo-logo" viewBox="0 0 708 108"><g transform="translate(0.000000,108.000000) scale(0.100000,-0.100000)" fill="var(--logo-body, #0f314c)"><path d="M5917 1065 c-169 -46 -279 -153 -335 -323 -21 -65 -25 -96 -25 -197
+0 -101 4 -132 25 -197 57 -172 168 -280 335 -323 84 -22 723 -22 808 0 222 58
+355 253 355 520 0 270 -132 459 -361 520 -74 20 -730 20 -802 0z m692 -320
+c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
+-297 0 -307 2 -346 83 -30 61 -31 198 -2 262 41 93 68 100 368 97 219 -2 243
+-4 274 -22z M0 545 l0 -515 225 0 225 0 2 296 3 296 116 -294 116 -293 197 0 198
+0 119 295 118 295 1 -297 0 -298 225 0 225 0 0 515 0 515 -337 -2 -338 -3
+-104 -264 c-80 -204 -107 -260 -113 -245 -5 10 -52 129 -106 264 l-98 245
+-337 3 -337 2 0 -515z M1892 1044 l-22 -15 0 -483 c0 -455 1 -484 18 -499 16 -15 48 -17
+246 -17 128 0 235 4 246 10 32 17 34 57 4 95 -33 44 -64 143 -64 206 l0 49
+203 0 c191 0 205 -1 222 -20 10 -11 34 -24 54 -30 49 -13 586 -13 612 0 22 12
+26 62 7 78 -8 6 -174 15 -413 21 -502 15 -549 23 -628 110 -43 48 -57 93 -57
+187 0 82 19 156 55 208 30 44 32 77 7 99 -27 25 -456 25 -490 1z M3716 1044 c-23 -22 -20 -31 19 -77 43 -49 78 -155 73 -218 l-3 -44
+-204 -3 c-194 -2 -205 -1 -218 17 -24 35 -78 41 -355 41 -255 0 -269 -1 -288
+-20 -27 -27 -26 -58 3 -70 12 -5 202 -14 422 -19 421 -12 476 -18 555 -62 92
+-51 132 -159 111 -299 -12 -77 -34 -129 -77 -179 -23 -28 -25 -36 -16 -57 l12
+-24 215 0 215 0 2 306 3 306 120 -303 120 -304 197 -3 196 -2 118 296 119 297
+3 -296 2 -297 225 0 225 0 0 515 0 515 -338 0 -337 0 -104 -265 c-58 -146
+-106 -263 -108 -261 -2 2 -50 120 -107 262 l-104 259 -340 3 c-300 2 -342 0
+-356 -14z"/></g><g transform="translate(0.000000,108.000000) scale(0.100000,-0.100000)" fill="var(--logo-s, #50a4db)"><path d="M2485 1046 c-44 -20 -111 -94 -136 -151 -27 -60 -37 -198 -20 -263
+13 -48 68 -115 114 -138 64 -34 162 -43 562 -55 239 -6 405 -15 413 -21 19
+-16 15 -66 -7 -78 -26 -13 -563 -13 -612 0 -20 6 -44 19 -54 30 -17 19 -31 20
+-222 20 l-203 0 0 -49 c0 -81 34 -172 86 -230 78 -87 31 -81 672 -81 l568 0
+46 29 c79 50 122 121 139 231 21 140 -19 248 -111 299 -79 44 -134 50 -555 62
+-220 5 -410 14 -422 19 -29 12 -30 43 -3 70 19 19 33 20 288 20 277 0 331 -6
+355 -41 13 -18 24 -19 218 -17 l204 3 3 44 c4 60 -31 168 -70 215 -17 21 -52
+52 -77 67 l-45 29 -550 0 c-440 -1 -557 -3 -581 -14z"/></g></symbol>
+<symbol id="mismo-hat" viewBox="0 0 100 100">
+  <path d="M17,73 C9,44 20,17 42,9 C59,3 72,10 80,22 C85,30 86,38 81,41
+           C76,44 70,40 65,32 C60,46 57,60 57,73 Z" fill="#c0392f"/>
+  <path d="M17,73 C9,44 20,17 42,9 C48,7 53,6 58,7 C41,19 30,45 30,73 Z"
+        fill="#0f314c" opacity=".17"/>
+  <rect x="10" y="65" width="56" height="20" rx="10" fill="#ffffff"/>
+  <rect x="10" y="75" width="56" height="10" rx="5" fill="#0f314c" opacity=".07"/>
+  <circle cx="86" cy="45" r="11.5" fill="#ffffff"/>
+</symbol></defs></svg>
+<header class="hqtop">
+  <span class="logoplate"><svg class="wordmark" role="img" aria-label="MISMO" viewBox="0 0 708 108"><use href="#mismo-logo"/></svg><svg class="santa" viewBox="0 0 100 100" aria-hidden="true"><use href="#mismo-hat"/></svg></span>
+  <span class="mastrule"></span>
+  <span class="hqname">MISMO Link</span>
+  <span class="hqtop-r"><span class="eyebrow-m">Programs &amp; Operations</span>
+    <!-- The shared account bubble every tool shows in this spot (session.js fills it). -->
+    <div id="rs-account"></div></span>
+</header>
+
+<aside class="hq rail" id="rail">
+  <div class="rail-top">
+    <span class="rail-lbl">Sections</span>
+    <button class="railhide" id="rail-hide" type="button" aria-label="Narrow the menu" title="Narrow the menu (backslash)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+  </div>
+
+  <div class="railfind">
+    <button class="railfind-b" id="rail-qb" type="button" aria-label="Search" title="Search" tabindex="-1">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+    </button>
+    <svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+    <input type="search" id="rail-q" autocomplete="off" spellcheck="false"
+           placeholder="Search" aria-label="Search sections and signatures">
+    <button class="railq-x" id="rail-qx" type="button" aria-label="Clear the search" hidden>×</button>
+    <div class="railhits" id="rail-hits" hidden></div>
+  </div>
+  <nav aria-label="MISMO Link">
+    <button type="button" data-hq="overview" aria-current="page" title="Overview">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></svg>
+      <span>Overview</span></button>
+    <button type="button" data-hq="agreement" title="Beta Agreement">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4M9 13h6M9 17h4"/></svg>
+      <span>Beta Agreement</span></button>
+    <button type="button" data-hq="signed" title="Who Has Signed">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+      <span>Who Has Signed</span></button>
+    <button type="button" data-hq="access" title="Testers and Access">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M17 11h4M19 9v4"/></svg>
+      <span>Testers and Access</span></button>
+  </nav>
+
+  <div class="mast-right">
+    <button class="theme-btn" id="theme-btn" type="button">
+      <svg class="ti ti-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6.4 6.4 0 009 9 9 9 0 11-9-9z"/></svg>
+      <svg class="ti ti-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.1"/><path d="M12 2.4v2.3M12 19.3v2.3M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.4 12h2.3M19.3 12h2.3M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg>
+      <span id="theme-lab">Dark Mode</span>
+    </button>
+  </div>
+</aside>
+<div class="railscrim" id="rail-scrim"></div>
+
+
+<div class="wrap">
+
+  <section class="pane on" id="app-overview">
+    <h1 class="pt">MISMO Link</h1>
+    <p class="lede">The home for everything MISMO Link. The beta user agreement is the first
+      piece; the rest of the hub is built out from here.</p>
+
+    <div class="card">
+      <h2>Beta User Agreement<span class="tag live">Live</span></h2>
+      <p>The page beta testers use to read and sign the MISMO Link AI User SaaS Agreement.
+        Open to anyone with the link &mdash; no MISMO sign-in needed, because testers are
+        outside MISMO.</p>
+      <a class="btn" href="sign/">Open the Signing Page</a>
+    </div>
+
+    <div class="card soon">
+      <h2>Who Has Signed<span class="tag">Next</span></h2>
+      <p>Every signature, who it was from and when, read from the private records repository.</p>
+    </div>
+
+    <div class="card soon">
+      <h2>Testers and Access<span class="tag">Later</span></h2>
+      <p>Who has been invited, who has signed, and whose access is switched on.</p>
+    </div>
+  </section>
+
+  <section class="pane" id="app-agreement">
+    <h1 class="pt">Beta Agreement</h1>
+    <p class="lede">MISMO Link AI User SaaS Agreement, Version 1.0 (updated 07/01/2026).
+      Each beta tester signs it for themselves before their access is switched on.</p>
+
+    <div class="card">
+      <h2>The Signing Page</h2>
+      <p>Send this link to a beta tester. They read the agreement, type their name and sign.
+        A copy comes back to them by email, and the signature is recorded automatically.</p>
+      <a class="btn" href="sign/">Open the Signing Page</a>
+    </div>
+
+    <div class="card">
+      <h2>What Gets Recorded</h2>
+      <p>Name, job title, company and work email; the date and time; the version of the
+        agreement; the exact sentence they agreed to; and a fingerprint of the agreement text
+        as it stood on screen when they signed.</p>
+    </div>
+  </section>
+
+  <section class="pane" id="app-signed">
+    <h1 class="pt">Who Has Signed</h1>
+    <p class="lede">Every signed agreement, newest first. Click a row to see the full record.</p>
+
+    <div class="sig-tools" id="sig-tools" hidden>
+      <input type="search" id="sig-q" placeholder="Filter by name, company or email" aria-label="Filter signatures">
+      <span class="sig-count" id="sig-count"></span>
+    </div>
+
+    <div id="sig-state"></div>
+    <ul class="sig-list" id="sig-list"></ul>
+
+    <p class="meta">SOURCE &middot; mismo-link-data / data/signatures/</p>
+  </section>
+
+  <section class="pane" id="app-access">
+    <h1 class="pt">Testers and Access</h1>
+    <p class="lede">Who has been invited, who has signed, and whose MISMO Link AI access is on.</p>
+    <div class="empty">
+      <h3>Not Built Yet</h3>
+      <p>This follows the signatures list. Once signing is running and you can see who has come
+        back, this is where invitations and access get tracked.</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const KEY='hq.rail.off';
+  const rail=()=>document.getElementById('rail');
+
+  function set(off, remember){
+    document.body.classList.toggle('railmini', !!off);
+    const h=document.getElementById('rail-hide');
+    if(h){ h.setAttribute('aria-expanded', off?'false':'true');
+      h.setAttribute('aria-label', off?'Open the menu':'Narrow the menu');
+      h.title = (off?'Open the menu':'Narrow the menu')+' (backslash)'; }
+    if(off) close();
+    if(remember!==false){ try{ localStorage.setItem(KEY, off?'1':'0'); }catch(e){} }
+    setTimeout(()=>{ window.dispatchEvent(new Event('resize')); }, 230);
+  }
+  function toggle(){ set(!document.body.classList.contains('railmini')); }
+
+  function start(){
+    let off=null;
+    try{ const v=localStorage.getItem(KEY); if(v!==null) off=(v==='1'); }catch(e){}
+    if(off===null) off = window.matchMedia('(max-width:900px)').matches;
+    set(off, false);
+    const h=document.getElementById('rail-hide'); if(h) h.addEventListener('click',toggle);
+    const sc=document.getElementById('rail-scrim'); if(sc) sc.addEventListener('click',()=>set(true));
+    const qb=document.getElementById('rail-qb');
+    if(qb) qb.addEventListener('click',()=>{ set(false);
+      setTimeout(()=>{ const q=document.getElementById('rail-q'); if(q) q.focus(); },230); });
+    document.querySelectorAll('.hq nav button[data-hq]').forEach(b=>{
+      b.addEventListener('click',()=>{
+        show(b.getAttribute('data-hq'));
+        if(window.matchMedia('(max-width:900px)').matches) set(true);
+      });
+    });
+    wireFind();
+  }
+
+  /* which pane is on screen */
+  function show(tab){
+    document.querySelectorAll('.pane').forEach(p=>{
+      p.classList.toggle('on', p.id === 'app-' + tab);
+    });
+    document.querySelectorAll('.hq nav button[data-hq]').forEach(b=>{
+      if(b.getAttribute('data-hq') === tab) b.setAttribute('aria-current','page');
+      else b.removeAttribute('aria-current');
+    });
+    window.scrollTo(0,0);
+  }
+  window.__show = show;
+
+  document.addEventListener('keydown',e=>{
+    const t=e.target;
+    const typing = t && (t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable);
+    if(e.key==='\\' && !typing && !e.metaKey && !e.ctrlKey && !e.altKey){ e.preventDefault(); toggle(); }
+    if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){
+      e.preventDefault(); set(false);
+      setTimeout(()=>{ const q=document.getElementById('rail-q');
+        if(q){ q.focus(); q.select(); } }, 230);
+    }
+  });
+
+  const HITS=()=>document.getElementById('rail-hits');
+  let picked=-1, rows=[];
+  function norm(x){ return String(x||'').replace(/\s+/g,' ').trim().toLowerCase(); }
+
+  function gather(q){
+    const t=norm(q); if(t.length<2) return [];
+    const out=[];
+    const score=(name)=>{ const n=norm(name);
+      return n===t ? 3 : n.indexOf(t)===0 ? 2 : n.indexOf(t)>=0 ? 1 : 0; };
+    const push=(group,name,where,go)=>{
+      if(out.length<60) out.push({group,name,where,go,s:score(name)});
+    };
+
+    /* the page's own sections */
+    try{
+      document.querySelectorAll('.hq nav button[data-hq]').forEach(b=>{
+        const name = b.querySelector('span').textContent;
+        if(norm(name).indexOf(t)<0) return;
+        push('Sections', name, 'Section', ()=>go(b.getAttribute('data-hq')));
+      });
+    }catch(e){}
+
+    /* every card on the page, wherever it lives */
+    try{
+      document.querySelectorAll('.pane').forEach(p=>{
+        const tab = p.id.replace(/^app-/,'');
+        const secBtn = document.querySelector('.hq nav button[data-hq="'+tab+'"]');
+        const secName = secBtn ? secBtn.querySelector('span').textContent : '';
+        p.querySelectorAll('.card h2, .empty h3').forEach(h=>{
+          const name = h.childNodes[0].textContent.trim();
+          if(norm(name).indexOf(t)<0) return;
+          push('On This Page', name, secName, ()=>go(tab));
+        });
+      });
+    }catch(e){}
+
+    /* When the hub is wired to the relay, one more block here over the
+       signatures in mismo-link-data, pushing the group 'Signatures'. */
+
+    const best={};
+    out.forEach(h=>{ best[h.group]=Math.max(best[h.group]||0, h.s); });
+    const ORDER=['Sections','On This Page','Signatures'];
+    out.sort((a,b)=>
+      (best[b.group]-best[a.group])
+      || (ORDER.indexOf(a.group)-ORDER.indexOf(b.group))
+      || (b.s-a.s)
+      || String(a.name).localeCompare(String(b.name)));
+    return out;
+  }
+  function go(tab){
+    const b=document.querySelector('.hq nav button[data-hq="'+tab+'"]');
+    if(b && !b.hasAttribute('aria-current')) b.click();
+  }
+
+  function draw(list){
+    const box=HITS(); if(!box) return;
+    box.textContent=''; rows=[]; picked=-1;
+    if(!list.length){
+      const n=document.createElement('div'); n.className='rh-none';
+      n.textContent='Nothing matches.'; box.appendChild(n); box.hidden=false; return;
+    }
+    let g=null;
+    list.slice(0,24).forEach(h=>{
+      if(h.group!==g){ g=h.group;
+        const hd=document.createElement('div'); hd.className='rh-g'; hd.textContent=g; box.appendChild(hd); }
+      const b=document.createElement('button'); b.type='button'; b.className='rh';
+      const nm=document.createElement('b'); nm.textContent=h.name; b.appendChild(nm);
+      if(h.where){ const w=document.createElement('i'); w.textContent=h.where; b.appendChild(w); }
+      b.addEventListener('click',()=>{ close(); h.go(); });
+      rows.push(b); box.appendChild(b);
+    });
+    box.hidden=false;
+  }
+  function close(){ const b=HITS(); if(b){ b.hidden=true; b.textContent=''; } rows=[]; picked=-1; }
+  function mark(){ rows.forEach((r,i)=>r.classList.toggle('on', i===picked));
+    if(rows[picked]) try{ rows[picked].scrollIntoView({block:'nearest'}); }catch(e){} }
+
+  function wireFind(){
+    const q=document.getElementById('rail-q'), x=document.getElementById('rail-qx');
+    if(!q) return;
+    let tmr=null;
+    const run=()=>{ const v=q.value;
+      if(x) x.hidden = !v;
+      if(norm(v).length<2){ close(); return; }
+      draw(gather(v)); };
+    q.addEventListener('input',()=>{ clearTimeout(tmr); tmr=setTimeout(run,150); });
+    q.addEventListener('focus',()=>{ if(norm(q.value).length>=2) run(); });
+    q.addEventListener('keydown',e=>{
+      if(e.key==='Escape'){ close(); q.blur(); return; }
+      if(!rows.length) return;
+      if(e.key==='ArrowDown'){ e.preventDefault(); picked=(picked+1)%rows.length; mark(); }
+      else if(e.key==='ArrowUp'){ e.preventDefault(); picked=(picked-1+rows.length)%rows.length; mark(); }
+      else if(e.key==='Enter'){ e.preventDefault(); (rows[picked]||rows[0]).click(); }
+    });
+    if(x) x.addEventListener('click',()=>{ q.value=''; x.hidden=true; close(); q.focus(); });
+    document.addEventListener('click',e=>{
+      if(!e.target.closest('.railfind')) close();
+    });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start);
+  else start();
+  window.__rail={ show:()=>set(false), hide:()=>set(true), toggle,
+    mini:()=>document.body.classList.contains('railmini') };
+})();
+
+(function theme(){
+  var btn = document.getElementById("theme-btn");
+  if(!btn) return;
+  function cur(){
+    var t = document.documentElement.getAttribute("data-theme");
+    if(t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function paint(){
+    const dark = cur() === "dark";
+    const lab = document.getElementById("theme-lab");
+    if(lab) lab.textContent = dark ? "Light Mode" : "Dark Mode";
+    else btn.textContent = dark ? "Light Mode" : "Dark Mode";
+    btn.title = "Switch to " + (dark ? "light" : "dark") + " mode";
+  }
+  btn.addEventListener("click", function(){
+    document.documentElement.setAttribute("data-theme", cur() === "dark" ? "light" : "dark");
+    paint();
+    try{ localStorage.setItem("mismo.portal.theme", cur()); }catch(e){}
+    window.dispatchEvent(new Event("resize"));
+  });
+  try{
+    var saved = localStorage.getItem("mismo.portal.theme");
+    if(saved) document.documentElement.setAttribute("data-theme", saved);
+  }catch(e){}
+  paint();
+})();
+
+
+/* the December hat */
+(function season(){
+  if(new Date().getMonth() === 11) document.documentElement.setAttribute("data-season","december");
+})();
+</script>
+
+<script>
+/* ===================================================================
+   Who Has Signed - reads the signed agreements out of the private
+   mismo-link-data repository through MISMO's save relay.
+
+   The relay answers UNKNOWN_PROJECT until the project key is
+   registered, so until Perry does that this pane says so plainly
+   rather than looking broken. Nothing here changes when he does -
+   the list fills on the next reload.
+
+   Collection ids must be lowercase: the relay answers BAD_ID to any
+   capital letter whatever the project config allows. That silently
+   cost the CMS every save it tried for months, so the ids below are
+   lowercase and stay that way.
+   =================================================================== */
+(function(){
+  "use strict";
+  var RELAY   = "https://rgvdi67cg27o5kcmiytcqbqnrm0hmztx.lambda-url.us-east-1.on.aws";
+  var PROJECT = "mismo-link";
+  var FILE    = "signatures";          /* one file: a beta is tens of records, not thousands */
+
+  var $ = function(id){ return document.getElementById(id); };
+  var rows = [], filtered = [], opened = {};
+
+  function esc(v){ return String(v == null ? "" : v).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+  function state(html){ $("sig-state").innerHTML = html; }
+
+  function skeleton(){
+    $("sig-state").innerHTML = '<div class="sig-skel"></div><div class="sig-skel"></div><div class="sig-skel"></div>';
+  }
+
+  /* The relay has no "list a folder" route, so the signatures share one
+     file. Three shapes are accepted, because which one the flow writes is
+     Perry's call and this pane should not care:
+       {docs:{"signatures/<id>":{...}}}   a shared file, the relay's own shape
+       {doc:{items:{"<id>":{...}}}}       a file of its own
+       [ {...}, {...} ]                   a plain list
+  */
+  function harvest(j){
+    var out = [];
+    if(!j) return out;
+    if(Array.isArray(j)) return j.slice();
+    if(j.docs && typeof j.docs === "object"){
+      Object.keys(j.docs).forEach(function(k){ out.push(j.docs[k]); });
+      return out;
+    }
+    var d = j.doc || j;
+    if(d && d.items && typeof d.items === "object"){
+      Object.keys(d.items).forEach(function(k){ out.push(d.items[k]); });
+      return out;
+    }
+    if(Array.isArray(d.signatures)) return d.signatures.slice();
+    return out;
+  }
+
+  function when(r){
+    var iso = r.submittedAt || r.signedAt || "";
+    var d = iso ? new Date(iso) : null;
+    if(d && !isNaN(d)) return d;
+    return null;
+  }
+  function whenText(r){
+    if(r.signedOnLocal) return r.signedOnLocal;
+    var d = when(r);
+    return d ? d.toLocaleString("en-US", {year:"numeric", month:"long", day:"numeric",
+      hour:"numeric", minute:"2-digit"}) : "—";
+  }
+
+  function rowHTML(r, i){
+    var name = r.signerName || r.typedSignature || "Unnamed signer";
+    var org  = r.organization || "";
+    var sub  = org ? org + (r.signerEmail ? " · " + r.signerEmail : "") : (r.signerEmail || "");
+    var read = r.readToEnd === true;
+    var on   = !!opened[i];
+    return '<li class="sig">' +
+      '<button class="sig-row" type="button" data-sig="' + i + '" aria-expanded="' + (on ? "true" : "false") + '">' +
+        '<span class="caret" aria-hidden="true">&#9654;</span>' +
+        '<span class="sig-who"><b>' + esc(name) + '</b><span>' + esc(sub) + '</span></span>' +
+        '<span class="sig-when">' + esc(whenText(r)) + '</span>' +
+      '</button>' +
+      '<div class="sig-body' + (on ? " on" : "") + '" id="sigbody-' + i + '">' +
+        '<dl class="sig-kv">' +
+          kv("Signed By", r.signerName) +
+          kv("Job Title", r.signerTitle) +
+          kv("Company", r.organization) +
+          kv("Work Email", r.signerEmail) +
+          kv("Phone", r.signerPhone) +
+          kv("Typed Signature", r.typedSignature) +
+          kv("Agreement", (r.agreementTitle || "") + (r.agreementVersion ? ", Version " + r.agreementVersion : "")) +
+          kv("Signed On", whenText(r)) +
+          '<dt>Read to the End</dt><dd><span class="flag ' + (read ? "ok" : "no") + '">' +
+            (read ? "Yes" : "Not recorded") + '</span></dd>' +
+          (r.documentHash ? '<dt>Agreement Fingerprint</dt><dd class="mono">' + esc(r.documentHash) + '</dd>' : "") +
+        '</dl>' +
+        (r.acceptanceStatement ? '<p class="sig-stmt">' + esc(r.acceptanceStatement) + '</p>' : "") +
+        '<div class="sig-acts"><button class="btn" type="button" data-dl="' + i + '">Download the Signed Record</button></div>' +
+      '</div></li>';
+  }
+  function kv(k, v){
+    if(v === undefined || v === null || v === "") return "";
+    return '<dt>' + esc(k) + '</dt><dd>' + esc(v) + '</dd>';
+  }
+
+  function paint(){
+    var q = ($("sig-q") && $("sig-q").value || "").toLowerCase().trim();
+    filtered = !q ? rows.slice() : rows.filter(function(r){
+      return [r.signerName, r.organization, r.signerEmail, r.signerTitle]
+        .join(" ").toLowerCase().indexOf(q) >= 0;
+    });
+    $("sig-list").innerHTML = filtered.map(function(r){ return rowHTML(r, rows.indexOf(r)); }).join("");
+    $("sig-count").innerHTML = "<b>" + filtered.length + "</b> of <b>" + rows.length + "</b> shown";
+    if(!filtered.length && rows.length){
+      state('<div class="empty"><h3>Nothing Matches That</h3><p>No signature matches what you typed. Clear the box to see them all.</p></div>');
+    } else { state(""); }
+  }
+
+  function download(r){
+    var name = (r.signerName || "signature").replace(/[^A-Za-z0-9]+/g, "-").toLowerCase();
+    var blob = new Blob([JSON.stringify(r, null, 2)], {type:"application/json"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "mismo-link-agreement-" + name + ".json";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 400);
+  }
+
+  $("sig-list").addEventListener("click", function(e){
+    var dl = e.target.closest("[data-dl]");
+    if(dl){ download(rows[+dl.getAttribute("data-dl")]); return; }
+    var row = e.target.closest("[data-sig]");
+    if(!row) return;
+    var i = +row.getAttribute("data-sig");
+    opened[i] = !opened[i];
+    row.setAttribute("aria-expanded", opened[i] ? "true" : "false");
+    var body = $("sigbody-" + i);
+    if(body) body.classList.toggle("on", !!opened[i]);
+  });
+
+  function load(){
+    skeleton();
+    fetch(RELAY + "/" + PROJECT + "/data/" + FILE, {credentials:"include", cache:"no-store"})
+      .then(function(res){
+        return res.text().then(function(t){
+          var j = null; try{ j = JSON.parse(t); }catch(e){}
+          return {status:res.status, ok:res.ok, body:j, raw:t};
+        });
+      })
+      .then(function(x){
+        var code = x.body && (x.body.error || x.body.code) || "";
+
+        if(x.status === 401 || x.status === 403 || code === "AUTH" || code === "TOKEN"){
+          $("sig-tools").hidden = true;
+          return state('<div class="empty"><h3>Sign In to See the Signatures</h3>' +
+            '<p>Signed agreements are member information, so they are only shown to signed-in MISMO staff. ' +
+            'Use the account button at the top of this page, then reload.</p></div>');
+        }
+
+        if(code === "UNKNOWN_PROJECT" || x.status === 404){
+          $("sig-tools").hidden = true;
+          return state('<div class="empty"><h3>Not Switched On Yet</h3>' +
+            '<p>The relay does not yet know about this tool, so there is nothing to read. ' +
+            'Three things switch it on, and none of them change this page:</p>' +
+            '<ol class="steps"><li>The private <b>GitMISMO/mismo-link-data</b> repository &mdash; already created.</li>' +
+            '<li>The project key <b>mismo-link</b> registered on the relay, pointing at it.</li>' +
+            '<li>The write role given to whoever administers the beta.</li></ol>' +
+            '<p>Signatures are recorded from the moment the signing flow is switched on, whether or not ' +
+            'this pane can read them yet &mdash; nothing is lost in the meantime. The list fills on the next reload.</p></div>');
+        }
+
+        if(!x.ok){
+          $("sig-tools").hidden = true;
+          return state('<div class="empty"><h3>That Did Not Load</h3>' +
+            '<p>The relay answered ' + esc(x.status) + (code ? " (" + esc(code) + ")" : "") +
+            '. Nothing has been lost &mdash; try again in a minute, and if it keeps happening Perry can see why from the relay side.</p></div>');
+        }
+
+        rows = harvest(x.body);
+        rows.sort(function(a, b){
+          var da = when(a), db = when(b);
+          return (db ? db.getTime() : 0) - (da ? da.getTime() : 0);   /* newest first */
+        });
+
+        if(!rows.length){
+          $("sig-tools").hidden = true;
+          return state('<div class="empty"><h3>No Signatures Yet</h3>' +
+            '<p>Signing is connected and nobody has signed yet. The first one appears here as soon as it comes in.</p></div>');
+        }
+
+        $("sig-tools").hidden = false;
+        paint();
+      })
+      .catch(function(){
+        $("sig-tools").hidden = true;
+        state('<div class="empty"><h3>MISMO Could Not Be Reached</h3>' +
+          '<p>Check your connection and reload. Nothing has been lost.</p></div>');
+      });
+  }
+
+  var q = $("sig-q");
+  if(q) q.addEventListener("input", paint);
+
+  /* Loaded once, the first time the pane is opened, and on a direct arrival. */
+  var loaded = false;
+  function maybe(){
+    var pane = $("app-signed");
+    if(loaded || !pane || !pane.classList.contains("on")) return;
+    loaded = true;
+    skeleton();
+    /* Read only once the access check has passed, so a refused or signed-out
+       visitor never fires a call that would just come back 401. */
+    var gate = window.__mismoLinkGate || Promise.resolve();
+    gate.then(load, function(err){
+      state('<div class="empty"><h3>MISMO Could Not Be Reached</h3>' +
+        '<p>Your sign-in could not be checked just now. Reload in a minute ' +
+        '&mdash; nothing has been lost.</p></div>');
+    });
+  }
+  document.querySelectorAll('.hq nav button[data-hq]').forEach(function(b){
+    b.addEventListener("click", function(){ setTimeout(maybe, 0); });
+  });
+  maybe();
+})();
+</script>
+
+<script>
+/* ===================================================================
+   The same sign-in every internal MISMO tool uses: /assets/session.js,
+   gated on requireAccess("mismo-link"), exactly as Summit HQ, the CMS
+   and Meeting Trackers are gated on their own keys.
+
+   Who gets in is set in People & Access against the key "mismo-link",
+   not here - so staff and anyone else assigned the tool are let
+   through without this page changing.
+
+   <html data-rs-gate> keeps the page hidden until the check finishes.
+   If the shared sign-in is not on the page at all (opened straight from
+   a file, say), nothing would ever unhide it, so that is undone here.
+   =================================================================== */
+window.__mismoLinkGate = (function(){
+  var rs = window.ResourcesSession;
+  if(!rs || typeof rs.requireAccess !== "function"){
+    document.documentElement.removeAttribute("data-rs-gate");
+    return Promise.resolve({ungated:true});
+  }
+  return rs.requireAccess("mismo-link", {toolName:"MISMO Link HQ"});
+})();
+</script>
+</body>
+</html>
