@@ -307,6 +307,55 @@ body.railmini .hq .mast-right #theme-btn{margin-top:4px;padding-top:10px;border-
 .sig-skel{border:1px solid var(--border); border-radius:8px; background:var(--surface-2);
   height:52px; margin-bottom:9px;}
 </style>
+<style>
+/* ---------- Testers and Access: the early beta partner list ---------- */
+.pt-tools{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:0 0 14px;}
+.pt-tools[hidden]{display:none;}
+.pt-tools input[type=search]{flex:1 1 240px; min-width:180px; border:1px solid var(--border);
+  border-radius:6px; padding:9px 11px; font-family:inherit; font-size:13.5px;
+  background:var(--surface-2); color:var(--ink);}
+.pt-tools input[type=search]:focus{outline:2px solid var(--sky); outline-offset:-1px; border-color:var(--sky);}
+.pt-seg{display:flex; gap:2px; padding:3px; background:var(--surface-3); border-radius:6px;}
+.pt-seg button{appearance:none; border:none; background:none; cursor:pointer; font-family:inherit;
+  font-size:12.5px; font-weight:500; color:var(--ink-2); padding:6px 12px; border-radius:4px; white-space:nowrap;}
+.pt-seg button:hover{color:var(--ink);}
+.pt-seg button[aria-pressed="true"]{background:var(--surface); color:var(--ink); font-weight:600;
+  box-shadow:0 1px 2px rgba(6,32,47,.1);}
+.pt-count{font-size:12.5px; color:var(--ink-3); white-space:nowrap; margin-left:auto;}
+.pt-count b{color:var(--ink); font-variant-numeric:tabular-nums;}
+
+.pt-list{list-style:none; margin:0; padding:0;}
+.ptcard{border:1px solid var(--border); border-radius:8px; background:var(--surface);
+  margin-bottom:9px; overflow:hidden;}
+.pt-row{width:100%; display:flex; align-items:center; gap:13px; text-align:left;
+  background:var(--surface); border:none; padding:13px 16px; cursor:pointer;
+  font-family:inherit; color:var(--ink);}
+.pt-row:hover{background:var(--surface-2);}
+.pt-row[aria-expanded="true"]{background:var(--surface-3);}
+.pt-row[aria-expanded="true"] .caret{transform:rotate(90deg);}
+.pt-row .caret{flex:0 0 auto; color:var(--ink-3); font-size:10px; transition:transform .16s;}
+.pt-who{flex:1 1 auto; min-width:0;}
+.pt-who b{display:block; font-size:14px; font-weight:600; line-height:1.35;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.pt-who span{display:block; font-size:12.5px; color:var(--ink-2);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.pt-flags{flex:0 0 auto; display:flex; gap:6px; align-items:center;}
+@media (max-width:620px){ .pt-flags .hide-sm{display:none;} }
+.pt-body{display:none; padding:4px 16px 18px; border-top:1px solid var(--rule);}
+.pt-body.on{display:block;}
+.pt-group{margin-top:16px;}
+.pt-group h4{font-size:11px; text-transform:uppercase; letter-spacing:.07em;
+  color:var(--ink-3); font-weight:600; margin:0 0 9px;}
+.pt-kv{display:grid; grid-template-columns:230px minmax(0,1fr); gap:8px 16px; margin:0; font-size:13px;}
+@media (max-width:620px){ .pt-kv{grid-template-columns:1fr; gap:3px 0;} .pt-kv dt{margin-top:9px;} }
+.pt-kv dt{color:var(--ink-3); font-weight:600;}
+.pt-kv dd{margin:0; color:var(--ink); min-width:0; overflow-wrap:anywhere; white-space:pre-wrap;}
+.pt-acts{display:flex; gap:9px; flex-wrap:wrap; margin-top:18px; align-items:center;}
+.pt-acts .btn{white-space:nowrap; min-width:max-content;}
+.pt-sentnote{font-size:12.5px; color:var(--ink-3);}
+.pt-skel{border:1px solid var(--border); border-radius:8px; background:var(--surface-2);
+  height:52px; margin-bottom:9px;}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="mismo-logo" viewBox="0 0 708 108"><g transform="translate(0.000000,108.000000) scale(0.100000,-0.100000)" fill="var(--logo-body, #0f314c)"><path d="M5917 1065 c-169 -46 -279 -153 -335 -323 -21 -65 -25 -96 -25 -197
@@ -461,12 +510,24 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
 
   <section class="pane" id="app-access">
     <h1 class="pt">Testers and Access</h1>
-    <p class="lede">Who has been invited, who has signed, and whose MISMO Link AI access is on.</p>
-    <div class="empty">
-      <h3>Not Built Yet</h3>
-      <p>This follows the signatures list. Once signing is running and you can see who has come
-        back, this is where invitations and access get tracked.</p>
+    <p class="lede">The early beta partners, read from the private records. Click a row for everything
+      they told MISMO, and to send them the signing link.</p>
+
+    <div class="pt-tools" id="pt-tools" hidden>
+      <input type="search" id="pt-q" placeholder="Filter by company, name, email or project" aria-label="Filter partners">
+      <div class="pt-seg" role="group" aria-label="Show">
+        <button type="button" data-ptf="all" aria-pressed="true">All</button>
+        <button type="button" data-ptf="tosend" aria-pressed="false">To Send</button>
+        <button type="button" data-ptf="sent" aria-pressed="false">Link Sent</button>
+        <button type="button" data-ptf="signed" aria-pressed="false">Signed</button>
+      </div>
+      <span class="pt-count" id="pt-count"></span>
     </div>
+
+    <div id="pt-state"></div>
+    <ul class="pt-list" id="pt-list"></ul>
+
+    <p class="meta">SOURCE &middot; mismo-link-data / data/partners/</p>
   </section>
 
 </div>
@@ -943,6 +1004,295 @@ window.__mismoLinkGate = (function(){
     return Promise.resolve({ungated:true});
   }
   return rs.requireAccess("mismo-link", {toolName:"MISMO Link HQ"});
+})();
+</script>
+
+<script>
+/* ===================================================================
+   Testers and Access - the early beta partners, from the private
+   mismo-link-data repository through MISMO's save relay.
+
+   This is the Early Beta Partner Tracking Sheet, all 23 columns of it,
+   so the portal can take over from the Smartsheet rather than copying
+   half of it. Member information: it is read from the private
+   repository and never lives in this public one.
+
+   Collection id is lowercase - the relay answers BAD_ID to a capital
+   letter whatever the project config allows.
+   =================================================================== */
+(function(){
+  "use strict";
+  var RELAY   = "https://rgvdi67cg27o5kcmiytcqbqnrm0hmztx.lambda-url.us-east-1.on.aws";
+  var PROJECT = "mismo-link";
+  var FILE    = "partners";
+  var SIGN_URL = "https://resources.mismo.org/mismo-link/sign/";
+  var SENTKEY = "mismo.link.sent";   /* who has been emailed, on this computer */
+
+  var $ = function(id){ return document.getElementById(id); };
+  var rows = [], opened = {}, sent = {}, filter = "all", signedEmails = {};
+
+  try{ sent = JSON.parse(localStorage.getItem(SENTKEY) || "{}"); }catch(e){ sent = {}; }
+  function remember(){ try{ localStorage.setItem(SENTKEY, JSON.stringify(sent)); }catch(e){} }
+
+  function esc(v){ return String(v == null ? "" : v).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function state(html){ $("pt-state").innerHTML = html; }
+
+  /* Each column is read under a tidy key or under the sheet's own heading,
+     so it does not matter which of the two whoever loads the records uses. */
+  var COLS = [
+    ["review",       "Review"],
+    ["company",      "Company"],
+    ["name",         "Name"],
+    ["title",        "Title"],
+    ["email",        "Email"],
+    ["levelOfInterest", "Level of Interest"],
+    ["firstSubmitDate", "First Submit Date"],
+    ["datasetOrLinkAI", "Dataset Management or Link AI"],
+    ["additionalApplication", "Additional Information (Application)"],
+    ["secondSubmitDate", "Second Submit Date"],
+    ["betaInterest", "Beta Interest"],
+    ["projectName",  "Project / Use Case Name"],
+    ["projectChallenge", "Project or Business Challenge"],
+    ["standardsDatasetVersion", "Standards, Dataset, Version or Business Process"],
+    ["executiveSponsorship", "Executive Sponsorship"],
+    ["executiveSponsorName", "Executive Sponsor Name"],
+    ["executiveSponsorTitle", "Executive Sponsor Title"],
+    ["teamMembers",  "Identify Team Members"],
+    ["regularFeedback", "Regular Feedback"],
+    ["practicalMetrics", "Practical Metrics"],
+    ["practicalMetricsOther", "Practical Metrics (Other)"],
+    ["willingToEducate", "Willing to Educate"],
+    ["additionalQuestionnaire", "Additional Information (Questionnaire)"]
+  ];
+  var LABEL = {}; COLS.forEach(function(c){ LABEL[c[0]] = c[1]; });
+
+  function get(r, key){
+    if(r == null) return "";
+    var v = r[key];
+    if(v === undefined) v = r[LABEL[key]];
+    if(v === undefined) return "";
+    if(Array.isArray(v)) return v.join(", ");
+    return String(v).trim();
+  }
+
+  /* The three groups the sheet itself is in: who they are, what they said
+     when they applied, and what they said in the questionnaire. */
+  var GROUPS = [
+    ["Partner", ["review","company","name","title","email","levelOfInterest"]],
+    ["Application", ["firstSubmitDate","datasetOrLinkAI","additionalApplication"]],
+    ["Questionnaire", ["secondSubmitDate","betaInterest","projectName","projectChallenge",
+      "standardsDatasetVersion","executiveSponsorship","executiveSponsorName","executiveSponsorTitle",
+      "teamMembers","regularFeedback","practicalMetrics","practicalMetricsOther",
+      "willingToEducate","additionalQuestionnaire"]]
+  ];
+
+  function harvest(j){
+    var out = [];
+    if(!j) return out;
+    if(Array.isArray(j)) return j.slice();
+    if(j.docs && typeof j.docs === "object"){
+      Object.keys(j.docs).forEach(function(k){ out.push(j.docs[k]); }); return out;
+    }
+    var d = j.doc || j;
+    if(d && d.items && typeof d.items === "object"){
+      Object.keys(d.items).forEach(function(k){ out.push(d.items[k]); }); return out;
+    }
+    if(Array.isArray(d.partners)) return d.partners.slice();
+    return out;
+  }
+
+  function key(r){ return get(r,"email").toLowerCase() || (get(r,"company") + "|" + get(r,"name")).toLowerCase(); }
+  function hasSigned(r){ var e = get(r,"email").toLowerCase(); return !!(e && signedEmails[e]); }
+  function wasSent(r){ return !!sent[key(r)]; }
+
+  function flag(text, kind){ return '<span class="flag' + (kind ? " " + kind : "") + '">' + esc(text) + '</span>'; }
+
+  function rowHTML(r, i){
+    var company = get(r,"company") || "Unnamed partner";
+    var who = [get(r,"name"), get(r,"title")].filter(Boolean).join(", ");
+    var sub = who || get(r,"email");
+    var on = !!opened[i], lvl = get(r,"review"), interest = get(r,"levelOfInterest");
+    var flags = "";
+    if(hasSigned(r)) flags += flag("Signed","ok");
+    else if(wasSent(r)) flags += flag("Link Sent");
+    if(lvl) flags += '<span class="hide-sm">' + flag(lvl) + '</span>';
+    else if(interest) flags += '<span class="hide-sm">' + flag(interest) + '</span>';
+
+    var groups = GROUPS.map(function(g){
+      var pairs = g[1].map(function(k){
+        var v = get(r,k); if(!v) return "";
+        return '<dt>' + esc(LABEL[k]) + '</dt><dd>' + esc(v) + '</dd>';
+      }).join("");
+      if(!pairs) return "";
+      return '<div class="pt-group"><h4>' + esc(g[0]) + '</h4><dl class="pt-kv">' + pairs + '</dl></div>';
+    }).join("");
+
+    var email = get(r,"email");
+    var acts = '<div class="pt-acts">' +
+      (email
+        ? '<button class="btn" type="button" data-mail="' + i + '">Email the Signing Link</button>' +
+          (wasSent(r)
+            ? '<button class="btn ghost" type="button" data-unsend="' + i + '">Not Sent After All</button>' +
+              '<span class="pt-sentnote">Marked sent ' + esc(sent[key(r)]) + ' on this computer.</span>'
+            : '<button class="btn ghost" type="button" data-sent="' + i + '">Mark the Link Sent</button>')
+        : '<span class="pt-sentnote">No email address on this record, so the link cannot be sent from here.</span>') +
+      '</div>';
+
+    return '<li class="ptcard">' +
+      '<button class="pt-row" type="button" data-pt="' + i + '" aria-expanded="' + (on ? "true" : "false") + '">' +
+        '<span class="caret" aria-hidden="true">&#9654;</span>' +
+        '<span class="pt-who"><b>' + esc(company) + '</b><span>' + esc(sub) + '</span></span>' +
+        '<span class="pt-flags">' + flags + '</span>' +
+      '</button>' +
+      '<div class="pt-body' + (on ? " on" : "") + '" id="ptbody-' + i + '">' + groups + acts + '</div></li>';
+  }
+
+  function matches(r){
+    if(filter === "signed") return hasSigned(r);
+    if(filter === "sent")   return wasSent(r) && !hasSigned(r);
+    if(filter === "tosend") return !wasSent(r) && !hasSigned(r);
+    return true;
+  }
+
+  function paint(){
+    var q = ($("pt-q") && $("pt-q").value || "").toLowerCase().trim();
+    var shown = rows.filter(function(r){
+      if(!matches(r)) return false;
+      if(!q) return true;
+      return [get(r,"company"), get(r,"name"), get(r,"email"), get(r,"title"), get(r,"projectName")]
+        .join(" ").toLowerCase().indexOf(q) >= 0;
+    });
+    $("pt-list").innerHTML = shown.map(function(r){ return rowHTML(r, rows.indexOf(r)); }).join("");
+    $("pt-count").innerHTML = "<b>" + shown.length + "</b> of <b>" + rows.length + "</b> shown";
+    if(!shown.length && rows.length){
+      state('<div class="empty"><h3>Nothing Matches That</h3><p>No partner matches the filter. ' +
+        'Clear the box, or choose All, to see them again.</p></div>');
+    } else { state(""); }
+  }
+
+  function draft(r){
+    var to = get(r,"email");
+    var first = (get(r,"name").split(" ")[0] || "there");
+    var subject = "Your MISMO Link AI beta access — agreement to sign";
+    var body = "Hi " + first + ",\n\n" +
+      "Thank you for taking part in the MISMO Link AI early beta.\n\n" +
+      "Before we can switch on your access, we need you to read and sign the MISMO Link AI " +
+      "User Agreement. It takes about three minutes:\n\n" + SIGN_URL + "\n\n" +
+      "You do not need an account to sign it, and a copy comes back to you by email once you have.\n\n" +
+      "Any questions, just reply to this message.\n\n" +
+      "Best regards,\n";
+    window.location.href = "mailto:" + encodeURIComponent(to) +
+      "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  }
+
+  function stamp(){
+    return new Date().toLocaleDateString("en-US", {year:"numeric", month:"long", day:"numeric"});
+  }
+
+  $("pt-list").addEventListener("click", function(e){
+    var m = e.target.closest("[data-mail]");
+    if(m){ var r = rows[+m.getAttribute("data-mail")]; sent[key(r)] = stamp(); remember(); draft(r); paint(); return; }
+    var mk = e.target.closest("[data-sent]");
+    if(mk){ var r2 = rows[+mk.getAttribute("data-sent")]; sent[key(r2)] = stamp(); remember(); paint(); return; }
+    var un = e.target.closest("[data-unsend]");
+    if(un){ var r3 = rows[+un.getAttribute("data-unsend")]; delete sent[key(r3)]; remember(); paint(); return; }
+    var row = e.target.closest("[data-pt]");
+    if(!row) return;
+    var i = +row.getAttribute("data-pt");
+    opened[i] = !opened[i];
+    row.setAttribute("aria-expanded", opened[i] ? "true" : "false");
+    var body = $("ptbody-" + i);
+    if(body) body.classList.toggle("on", !!opened[i]);
+  });
+
+  var seg = document.querySelector("#pt-tools .pt-seg");
+  if(seg) seg.addEventListener("click", function(e){
+    var b = e.target.closest("[data-ptf]"); if(!b) return;
+    filter = b.getAttribute("data-ptf");
+    seg.querySelectorAll("[data-ptf]").forEach(function(x){
+      x.setAttribute("aria-pressed", x === b ? "true" : "false");
+    });
+    paint();
+  });
+  var q = $("pt-q"); if(q) q.addEventListener("input", paint);
+
+  /* Who has already signed, so the list can say so without being told. */
+  function loadSigned(){
+    return fetch(RELAY + "/" + PROJECT + "/data/signatures", {credentials:"include", cache:"no-store"})
+      .then(function(res){ return res.json(); })
+      .then(function(j){
+        harvest(j).forEach(function(sig){
+          var e = (sig.signerEmail || "").toLowerCase();
+          if(e) signedEmails[e] = true;
+        });
+      })
+      .catch(function(){ /* the list still works without it */ });
+  }
+
+  function load(){
+    $("pt-state").innerHTML = '<div class="pt-skel"></div><div class="pt-skel"></div><div class="pt-skel"></div>';
+    fetch(RELAY + "/" + PROJECT + "/data/" + FILE, {credentials:"include", cache:"no-store"})
+      .then(function(res){
+        return res.text().then(function(t){
+          var j = null; try{ j = JSON.parse(t); }catch(e){}
+          return {status:res.status, ok:res.ok, body:j};
+        });
+      })
+      .then(function(x){
+        var code = x.body && (x.body.error || x.body.code) || "";
+        if(x.status === 401 || x.status === 403 || code === "AUTH" || code === "TOKEN"){
+          $("pt-tools").hidden = true;
+          return state('<div class="empty"><h3>Sign In to See the Partners</h3>' +
+            '<p>The beta partner list is member information, so it is only shown to signed-in MISMO staff. ' +
+            'Use the account button at the top of this page, then reload.</p></div>');
+        }
+        if(!x.ok || code){ return cannotRead(); }
+
+        rows = harvest(x.body);
+        rows.sort(function(a,b){ return get(a,"company").localeCompare(get(b,"company")); });
+
+        if(!rows.length){
+          $("pt-tools").hidden = true;
+          return state('<div class="empty"><h3>No Partners Yet</h3>' +
+            '<p>The records are connected and empty. Partners appear here as soon as the tracking ' +
+            'sheet is loaded into <b>mismo-link-data</b>.</p></div>');
+        }
+        $("pt-tools").hidden = false;
+        loadSigned().then(paint);
+      })
+      .catch(cannotRead);
+  }
+
+  /* Same honest message as Who Has Signed: a 503 carries no CORS headers, so
+     the status never reaches this code, and no probe from the browser can
+     tell an unregistered key from a relay that is resting. */
+  function cannotRead(){
+    $("pt-tools").hidden = true;
+    state('<div class="empty"><h3>The Partners Could Not Be Read</h3>' +
+      '<p><b>Most likely the relay does not know about this tool yet.</b> ' +
+      'Three things switch it on, and none of them change this page:</p>' +
+      '<ol class="steps"><li>The private <b>GitMISMO/mismo-link-data</b> repository &mdash; already created.</li>' +
+      '<li>The project key <b>mismo-link</b> registered on the relay, pointing at it.</li>' +
+      '<li>The Early Beta Partner Tracking Sheet loaded into it as <b>data/partners</b>.</li></ol>' +
+      '<p>If this pane was working earlier, the relay is most likely just waking up &mdash; ' +
+      'it rests when idle and refuses the first call or two. Reload in a minute.</p>' +
+      '<p>Nothing from the sheet is ever kept in this public repository, so there is nothing ' +
+      'to show until the private records are reachable.</p></div>');
+  }
+
+  var loaded = false;
+  function maybe(){
+    var pane = $("app-access");
+    if(loaded || !pane || !pane.classList.contains("on")) return;
+    loaded = true;
+    var gate = window.__mismoLinkGate || Promise.resolve();
+    gate.then(load, cannotRead);
+  }
+  document.querySelectorAll('.hq nav button[data-hq]').forEach(function(b){
+    b.addEventListener("click", function(){ setTimeout(maybe, 0); });
+  });
+  maybe();
 })();
 </script>
 </body>
