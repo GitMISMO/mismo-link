@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISMO Link AI User Agreement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --navy:#0d314c; --navy-deep:#06202f; --navy-mid:#14486e;
+    --sky:#74bfeb; --sky-soft:#94c8e9; --sky-wash:#dcedf8;
+    --ground:#f1f6fa; --surface:#ffffff; --surface-2:#f6fafd; --surface-3:#e9f1f8;
+    --border:#d5e2ed; --border-strong:#adc4d6; --rule:#e5eef5;
+    --ink:#0f314c; --ink-2:#456179; --ink-3:#7794aa;
+    --good:#0f7b5c; --bad:#b3372c; --warn:#a2701a;
+    --c1:#2477b8; --c2:#eb6834; --c3:#1baf7a; --c4:#eda100; --c5:#e87ba4; --c6:#008300;
+    --tab-active:#ffffff; --chip:#eef4f9; --track:#e9f1f8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#061722; --surface:#0d2837; --surface-2:#123143; --surface-3:#173c52;
+      --border:#1f4a63; --border-strong:#2f6688; --rule:#173547;
+      --ink:#e9f4fb; --navy-mid:#7fc0ea; --ink-2:#a6c5d9; --ink-3:#7a9db4;
+      --good:#4fc79b; --bad:#f08579; --warn:#e0a83c;
+      --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500; --c5:#d55181; --c6:#2f9e2f;
+      --sky-wash:#123143; --tab-active:#0d2837; --chip:#173c52; --track:#173c52;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#061722; --surface:#0d2837; --surface-2:#123143; --surface-3:#173c52;
+    --border:#1f4a63; --border-strong:#2f6688; --rule:#173547;
+    --ink:#e9f4fb; --navy-mid:#7fc0ea; --ink-2:#a6c5d9; --ink-3:#7a9db4;
+    --good:#4fc79b; --bad:#f08579; --warn:#e0a83c;
+    --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500; --c5:#d55181; --c6:#2f9e2f;
+    --sky-wash:#123143; --tab-active:#0d2837; --chip:#173c52; --track:#173c52;
+  }
+  :root[data-theme="dark"]{ color-scheme:dark; }
+  :root[data-theme="light"]{ color-scheme:light; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ color-scheme:dark; } }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0; padding:0;}
+  body{background:var(--ground); color:var(--ink);
+    font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:14.5px; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{margin:0; font-weight:600; letter-spacing:-.012em;}
+  a{color:var(--navy-mid);}
+
+  /* ---------- masthead: the same lockup as every other MISMO page ---------- */
+  .mast{background:var(--navy); color:#fff; padding:14px 22px; display:flex; align-items:center;
+    gap:16px; flex-wrap:wrap; position:sticky; top:0; z-index:40;
+    border-bottom:1px solid rgba(255,255,255,.09);}
+  .mast-rule{width:1px; align-self:stretch; background:rgba(80,164,219,.4);}
+  .mast-right{margin-left:auto; display:flex; align-items:center; gap:14px;}
+  .plate{background:#fff; border-radius:5px; padding:9px 13px; display:flex; align-items:center; line-height:0;}
+  .plate svg{height:24px; width:auto; display:block;}
+  .mast-name{font-size:15px; font-weight:500; color:var(--sky-soft);}
+  .theme-btn{background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.18); color:#fff;
+    border-radius:5px; padding:6px 12px; font-family:inherit; font-size:12.5px; cursor:pointer;
+    display:flex; align-items:center; gap:7px; white-space:nowrap; min-width:max-content;}
+  .theme-btn:hover{background:rgba(255,255,255,.18);}
+  @media (max-width:560px){
+    .mast{padding:11px 16px; gap:11px; flex-wrap:nowrap;}
+    .plate{flex:0 0 auto; padding:7px 10px;} .plate svg{height:19px;}
+    .mast-name{flex:0 1 auto; min-width:0; font-size:13px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .mast-right{flex:0 0 auto;}
+  }
+
+  .wrap{max-width:860px; margin:0 auto; padding:26px 22px 120px;}
+  @media (max-width:420px){ .wrap{padding-left:16px; padding-right:16px;} }
+
+  h1.doc{font-size:21px; line-height:1.3; margin-bottom:10px;}
+  .docsub{font-size:12.5px; color:var(--ink-3); margin-bottom:22px;}
+  .intro-card{background:var(--surface-2); border:1px solid var(--border);
+    border-left:3px solid var(--sky); border-radius:8px; padding:15px 18px; margin-bottom:22px;}
+  .intro-card p{margin:0 0 9px; font-size:13.5px; line-height:1.6; color:var(--ink-2);}
+  .intro-card p:last-child{margin-bottom:0;}
+  .intro-card b{color:var(--ink);}
+
+  /* ---------- a step panel ---------- */
+  .step{border:1px solid var(--border); border-radius:8px; background:var(--surface);
+    margin-bottom:16px; overflow:hidden;}
+  .step-head{display:flex; align-items:center; gap:13px; padding:14px 17px;
+    border-bottom:1px solid var(--rule); background:var(--surface-3);}
+  .step-n{flex:0 0 auto; width:22px; height:22px; border-radius:5px; background:var(--navy);
+    color:#fff; font-size:11.5px; font-weight:600; display:flex; align-items:center;
+    justify-content:center; font-variant-numeric:tabular-nums;}
+  :root[data-theme="dark"] .step-n{background:var(--sky); color:#06202f;}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .step-n{background:var(--sky); color:#06202f;}
+  }
+  .step-t{flex:1 1 auto; min-width:0; font-size:14px; font-weight:600;}
+  .step-tick{flex:0 0 auto; font-size:11px; font-weight:600; border-radius:4px; padding:3px 9px;
+    background:var(--chip); color:var(--ink-2);}
+  .step-tick.done{background:rgba(15,123,92,.15); color:var(--good);}
+  .step-body{padding:17px;}
+  .step-note{font-size:12.5px; color:var(--ink-3); line-height:1.6; margin:0 0 14px;}
+
+  /* ---------- fields ---------- */
+  .flds{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 16px; align-items:start;}
+  @media (max-width:560px){ .flds{grid-template-columns:1fr;} }
+  .fld label{display:block; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--ink-3); font-weight:600; margin-bottom:4px;}
+  .fld .req{color:var(--bad); margin-left:3px;}
+  .in{width:100%; border:1px solid var(--border); border-radius:6px; padding:9px 11px;
+    font-family:inherit; font-size:13.5px; background:var(--surface-2); color:var(--ink);}
+  .in:focus{outline:2px solid var(--sky); outline-offset:-1px; border-color:var(--sky);}
+  .in[readonly]{background:var(--surface-3); color:var(--ink-2); cursor:default;}
+  .in.bad{border-color:var(--bad);}
+  .fld-msg{font-size:11.5px; color:var(--bad); margin-top:4px; display:none;}
+  .fld-msg.on{display:block;}
+
+  /* ---------- the agreement reader ---------- */
+  .readbar{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px;}
+  .readbar .rb-txt{flex:1 1 220px; min-width:0; font-size:12.5px; color:var(--ink-3);}
+  .readbar .rb-acts{display:flex; gap:8px; flex-wrap:wrap;}
+  .doc-scroll{border:1px solid var(--border); border-radius:8px; background:var(--surface-2);
+    height:440px; overflow-y:auto; padding:20px 24px; font-size:13px; line-height:1.62;
+    color:var(--ink-2); scroll-behavior:smooth;}
+  @media (max-width:560px){ .doc-scroll{height:340px; padding:16px 16px;} }
+  .doc-scroll h2{font-size:15px; color:var(--ink); margin:26px 0 10px; letter-spacing:-.012em;}
+  .doc-scroll h2:first-of-type{margin-top:4px;}
+  .doc-scroll h3{font-size:13px; color:var(--ink); font-weight:600; margin:16px 0 6px;}
+  .doc-scroll p{margin:0 0 11px;}
+  .doc-scroll ul,.doc-scroll ol{margin:0 0 11px; padding-left:24px;}
+  .doc-scroll li{margin-bottom:7px;}
+  .doc-scroll b,.doc-scroll strong{color:var(--ink); font-weight:600;}
+  .doc-title{text-align:center; margin-bottom:18px;}
+  .doc-title .dt1{font-size:15px; font-weight:700; color:var(--ink); letter-spacing:-.012em;}
+  .doc-title .dt2{font-size:12px; font-style:italic; color:var(--ink-3); margin-top:3px;}
+  .doc-notice{background:var(--surface-3); border:1px solid var(--border); border-radius:6px;
+    padding:12px 15px; font-weight:600; color:var(--ink); text-align:center; font-size:12.5px;
+    line-height:1.55; margin:0 0 18px;}
+  .doc-end{margin-top:22px; padding-top:14px; border-top:1px solid var(--border);
+    font-weight:600; color:var(--ink); text-align:center;}
+  .readmark{margin-top:10px; font-size:12.5px; color:var(--ink-3); display:flex;
+    align-items:center; gap:8px;}
+  .readmark.done{color:var(--good); font-weight:600;}
+
+  /* ---------- the acceptance block ---------- */
+  .accept-tick{display:flex; align-items:flex-start; gap:11px; padding:14px 16px;
+    border:1px solid var(--border); border-left:3px solid var(--sky); border-radius:8px;
+    background:var(--surface-2); cursor:pointer; font-size:13.5px; line-height:1.6;
+    color:var(--ink); margin-bottom:16px;}
+  .accept-tick input{margin-top:2px; width:18px; height:18px; flex:0 0 auto;
+    accent-color:var(--sky); cursor:pointer;}
+  .accept-tick.off{opacity:.5; cursor:not-allowed;}
+  .accept-tick.off input{cursor:not-allowed;}
+  .sigline{font-family:'IBM Plex Sans',sans-serif; font-size:17px; font-style:italic;
+    letter-spacing:.01em;}
+  .legal{font-size:11.5px; color:var(--ink-3); line-height:1.65; margin:14px 0 0;}
+
+  /* ---------- buttons ---------- */
+  .btn{background:var(--navy); color:#fff; border:none; border-radius:6px; padding:9px 17px;
+    font-family:inherit; font-size:12.5px; font-weight:600; cursor:pointer;
+    white-space:nowrap; min-width:max-content; display:inline-flex; align-items:center;}
+  .btn:hover{background:var(--navy-deep);}
+  .btn[disabled]{opacity:.45; cursor:not-allowed;}
+  .btn.ghost{background:transparent; color:var(--ink-2); border:1px solid var(--border-strong);}
+  .btn.ghost:hover{background:var(--surface-3); color:var(--ink);}
+  .btn:focus-visible{outline:2px solid var(--sky); outline-offset:2px;}
+  :root[data-theme="dark"] .btn{background:var(--sky); color:#06202f;}
+  :root[data-theme="dark"] .btn:hover{background:#9ad2f1;}
+  :root[data-theme="dark"] .btn.ghost{background:transparent; color:var(--ink-2);}
+  :root[data-theme="dark"] .btn.ghost:hover{background:var(--surface-3); color:var(--ink);}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .btn{background:var(--sky); color:#06202f;}
+    :root:not([data-theme="light"]) .btn:hover{background:#9ad2f1;}
+    :root:not([data-theme="light"]) .btn.ghost{background:transparent; color:var(--ink-2);}
+    :root:not([data-theme="light"]) .btn.ghost:hover{background:var(--surface-3); color:var(--ink);}
+  }
+  .acts{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+
+  /* ---------- outcome ----------
+     Named "result", not "done": the step badges already carry a .done class and
+     a shared name gave each badge this panel's padding and green left rule. */
+  .result{border:1px solid var(--border); border-left:3px solid var(--good); border-radius:8px;
+    background:var(--surface); padding:20px 22px;}
+  .result.miss{border-left-color:var(--warn);}
+  .result h3{font-size:15px; margin-bottom:8px;}
+  .result p{font-size:13px; color:var(--ink-2); line-height:1.6; margin:0 0 12px;}
+  .result p:last-child{margin-bottom:0;}
+  .miss-list{font-size:12.5px; color:var(--ink-2); line-height:1.7; margin:10px 0 0; padding-left:20px;}
+  .recap{list-style:none; margin:0 0 16px; padding:0; font-size:13px;}
+  .recap li{display:flex; gap:12px; padding:7px 0; border-bottom:1px solid var(--rule);}
+  .recap li:last-child{border-bottom:none;}
+  .recap .rk{flex:0 0 150px; color:var(--ink-3); font-size:11px; text-transform:uppercase;
+    letter-spacing:.06em; font-weight:600; padding-top:2px;}
+  .recap .rv{flex:1 1 auto; min-width:0; color:var(--ink); word-break:break-word;}
+  @media (max-width:560px){ .recap li{flex-direction:column; gap:2px;} .recap .rk{flex:none;} }
+
+  .toast{position:fixed; top:16px; left:50%; z-index:70; width:min(440px, calc(100vw - 32px));
+    background:var(--surface); color:var(--ink); border:1px solid var(--border);
+    border-left:3px solid var(--good); border-radius:7px; padding:11px 14px; font-size:13px;
+    box-shadow:0 10px 28px rgba(6,32,47,.22); opacity:0; transform:translate(-50%,-8px);
+    transition:opacity .16s ease, transform .16s ease; pointer-events:none;}
+  .toast.on{opacity:1; transform:translate(-50%,0);}
+  .foot{margin-top:30px; font-size:11.5px; color:var(--ink-3); line-height:1.6;}
+
+  @media print{
+    .mm-header,.mm-footer,.readbar,.accept-tick,.acts,.toast,.foot,.step-head{display:none !important;}
+    .doc-scroll{height:auto; overflow:visible; border:none; padding:0; background:#fff; color:#000;}
+    .step{border:none;} .wrap{max-width:none; padding:0;}
+  }
+</style>
+<style>
+/* ===================================================================
+MISMO website skin, applied over the signing page.
+Copied from forms/cmsp-reference/index.html so this page wears the same
+header, font and footer as the certification application forms.
+Appended last so it wins on source order; the dark-mode selectors are
+repeated here at their own specificity so a stored "dark" preference
+cannot reach the page.
+=================================================================== */
+:root,
+:root:not([data-theme="light"]),
+:root[data-theme="dark"]{
+--mm-font:"IBM Plex Sans","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+--mm-hero:#071d2e; --mm-pill:#0f314c; --mm-blue:#1a8fe3; --mm-blue-top:#2e9dee;
+--mm-sky:#74bfeb; --mm-sky-2:#56b4f2; --mm-sub:#a9d8f3;
+--mm-text:#44607a; --mm-line:#cfdeeb; --mm-tag-bg:#e3f1fc; --mm-tag-ink:#1a74b8;
+
+--navy:#071d2e; --navy-deep:#0d314c; --navy-mid:#1a8fe3;
+--sky:#1a8fe3; --sky-soft:#74bfeb; --sky-wash:#e3f1fc;
+--ground:#ffffff; --surface:#ffffff; --surface-2:#ffffff; --surface-3:#f4f8fc;
+--border:#cfdeeb; --border-strong:#cfdeeb; --rule:#e5eef5;
+--ink:#0d314c; --ink-2:#44607a; --ink-3:#44607a;
+--good:#0f7b5c; --bad:#b3372c; --warn:#a2701a;
+--chip:#e3f1fc; --track:#e3f1fc; --tab-active:#ffffff;
+--sunk:#f4f8fc; --line:#cfdeeb; --accent-soft:#e3f1fc;
+color-scheme:light;
+}
+body{font-family:var(--mm-font); font-size:16px; line-height:1.6;
+background:#ffffff; color:var(--mm-ink,#0d314c);}
+a{color:var(--mm-blue);}
+
+/* ---------- Header bar (70px, dark navy, logo left, nav, Log in pill right) ---------- */
+.mm-header{position:relative;z-index:5;height:70px;background:var(--mm-hero);box-shadow:0 2px 4px 0 rgba(0,0,0,.1),0 0 2px 0 rgba(153,153,153,.25);display:flex;align-items:center;padding:0 50px;gap:56px}
+.mm-logo img{display:block;width:194px;height:36px;max-width:100%;object-fit:contain;object-position:left center}
+.mm-logo{flex:0 1 194px;min-width:0}
+.mm-nav{display:flex;align-items:stretch;height:70px;margin:0;padding:0;list-style:none;flex:1 1 auto}
+.mm-nav>li{position:relative;display:flex;align-items:center;list-style:none}
+.mm-nav-link{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;font-family:var(--mm-font);font-size:15px;font-weight:500;line-height:21px;color:#ffffff;text-decoration:none;white-space:nowrap}
+.mm-nav>li:hover>.mm-nav-link,.mm-nav-link:focus-visible{color:var(--mm-sky)}
+.mm-chev{width:11px;height:8px}
+.mm-dd{display:none;position:absolute;left:0;top:100%;z-index:20;min-width:250px;margin:0;padding:8px 0;list-style:none;background:#0b2740;border-top:2px solid var(--mm-blue);border-radius:0 0 8px 8px;box-shadow:0 18px 40px -14px rgba(0,0,0,.6)}
+.mm-nav>li:hover>.mm-dd,.mm-nav>li:focus-within>.mm-dd{display:block}
+.mm-dd a{display:block;padding:10px 18px 10px 16px;border-left:2px solid transparent;font-family:var(--mm-font);font-size:15px;font-weight:500;line-height:19.5px;color:#e6eef5;text-decoration:none;white-space:nowrap;transition:background .15s,color .15s,border-color .15s}
+.mm-dd a:hover,.mm-dd a:focus-visible{outline:none;background:rgba(116,191,235,.1);border-left-color:var(--mm-sky);color:var(--mm-sky)}
+.mm-burger{display:none;width:40px;height:40px;margin-left:auto;padding:9px 8px;border:0;border-radius:6px;background:transparent;cursor:pointer}
+.mm-burger span{display:block;height:2px;margin:4px 0;border-radius:2px;background:#ffffff;transition:transform .2s,opacity .2s}
+@media (max-width:1100px){
+.mm-header{padding:0 20px;gap:12px}
+.mm-burger{display:block}
+.mm-nav{display:none}
+.mm-header.is-open .mm-nav{display:block;position:absolute;top:70px;left:0;right:0;height:auto;max-height:calc(100vh - 70px);overflow-y:auto;padding:8px 0 16px;background:#0b2740;border-top:2px solid var(--mm-blue);box-shadow:0 18px 40px -14px rgba(0,0,0,.6)}
+.mm-header.is-open .mm-nav>li{display:block}
+.mm-header.is-open .mm-nav-link{display:flex;padding:12px 20px 6px;font-weight:600}
+.mm-header.is-open .mm-chev{display:none}
+.mm-header.is-open .mm-dd{display:block;position:static;min-width:0;padding:0 0 6px;background:transparent;border:0;border-radius:0;box-shadow:none}
+.mm-header.is-open .mm-dd a{padding:9px 20px 9px 34px;white-space:normal}
+.mm-header.is-open .mm-burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.mm-header.is-open .mm-burger span:nth-child(2){opacity:0}
+.mm-header.is-open .mm-burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+}
+
+/* ---------- footer: the live site's, measured 21 Oct 2026 at 1440px ---------- */
+.mm-footer{background:#f4f7f9;}
+.mm-footer-bar{background:#f4f7f9; display:flex; flex-wrap:wrap; align-items:center;
+justify-content:space-between; gap:10px 28px; padding:18px 50px; font-family:var(--mm-font);}
+.mm-f-logo{flex:0 0 auto; line-height:0; --logo-body:#0d314c; --logo-s:#50a4db;}
+.mm-f-mark{display:block; width:197px; height:30px;}
+.mm-f-addr{flex:1 1 300px; text-align:center; font-size:12.5px; line-height:20px; color:#5b7183;}
+.mm-f-addr a{color:#0d314c; text-decoration:none;}
+.mm-f-addr a:hover{text-decoration:underline;}
+.mm-f-env{width:15px; height:12px; margin:0 7px 0 14px; color:#5b7183; vertical-align:-1px;}
+.mm-f-links{flex:0 0 auto; display:flex; gap:16px;}
+.mm-f-links a{font-size:13px; font-weight:600; color:#0d314c; text-decoration:none; white-space:nowrap;}
+.mm-f-links a:hover{text-decoration:underline;}
+.mm-f-social{flex:0 0 auto; display:flex; gap:13px;}
+.mm-f-soc{width:32px; height:32px; border-radius:50px; background:#50a4db;
+color:#0d314c; display:flex; align-items:center; justify-content:center;}
+.mm-f-soc svg{width:17px; height:17px; display:block;}
+.mm-f-soc:hover{background:#74bfeb;}
+
+/* ---------- the page column, at the site's measure ---------- */
+.wrap{max-width:960px; margin:0 auto; padding:46px clamp(20px,5vw,48px) 110px;}
+h1.doc{font-size:38px; font-weight:700; line-height:1.2; color:var(--mm-ink,#0d314c);
+margin-bottom:12px; letter-spacing:-.02em;}
+.docsub{font-size:16px; color:var(--mm-text);}
+.lede{font-size:16px; color:var(--mm-text);}
+
+/* ---------- buttons: the site's, and never wrapping ---------- */
+.btn{border-radius:8px; font-family:var(--mm-font); font-size:15px; font-weight:600;
+line-height:1.2; white-space:nowrap; min-width:max-content; padding:14px 22px;
+border:1.5px solid var(--mm-blue); color:#ffffff;
+background:linear-gradient(180deg,var(--mm-blue-top) 0%, var(--mm-blue) 100%);
+box-shadow:0 5px 16px -4px rgba(26,143,227,.55);}
+.btn:hover{background:linear-gradient(180deg,var(--mm-blue) 0%, #1580cc 100%);}
+.btn.ghost{background:#ffffff; color:var(--mm-blue); border:1.5px solid var(--mm-blue);
+box-shadow:none;}
+.btn.ghost:hover{background:#f2f9fe; color:var(--mm-blue);}
+.btn:focus-visible{outline:3px solid rgba(26,143,227,.35); outline-offset:2px;}
+
+/* ---------- cards, notes and fields take the site's measurements ---------- */
+.intro-card{border-radius:8px; border-left:3px solid var(--mm-blue); font-size:15px;
+color:var(--mm-text);}
+.intro-card p{font-size:15px; color:var(--mm-text);}
+.in{border:1px solid var(--mm-line); border-radius:8px; background:#ffffff;
+color:var(--mm-ink,#0d314c); font-family:var(--mm-font); font-size:15px;}
+input.in{height:44px; padding:0 14px;}
+.in:focus{outline:none; border-color:var(--mm-blue); box-shadow:0 0 0 3px rgba(26,143,227,.18);}
+.fld label{font-size:14px; font-weight:600; color:var(--mm-ink,#0d314c);
+text-transform:none; letter-spacing:0; margin-bottom:6px;}
+
+@media (max-width:600px){
+.mm-footer-bar{padding:18px 20px; justify-content:center; gap:14px 20px}
+.mm-f-addr{flex:1 1 100%}
+.mm-f-mark{width:170px; height:26px}
+.wrap{padding-top:34px}
+h1.doc{font-size:30px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="mismo-logo" viewBox="0 0 708 108"><g transform="translate(0.000000,108.000000) scale(0.100000,-0.100000)" fill="var(--logo-body, #0f314c)"><path d="M5917 1065 c-169 -46 -279 -153 -335 -323 -21 -65 -25 -96 -25 -197
+0 -101 4 -132 25 -197 57 -172 168 -280 335 -323 84 -22 723 -22 808 0 222 58
+355 253 355 520 0 270 -132 459 -361 520 -74 20 -730 20 -802 0z m692 -320
+c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
+-297 0 -307 2 -346 83 -30 61 -31 198 -2 262 41 93 68 100 368 97 219 -2 243
+-4 274 -22z M0 545 l0 -515 225 0 225 0 2 296 3 296 116 -294 116 -293 197 0 198
+0 119 295 118 295 1 -297 0 -298 225 0 225 0 0 515 0 515 -337 -2 -338 -3
+-104 -264 c-80 -204 -107 -260 -113 -245 -5 10 -52 129 -106 264 l-98 245
+-337 3 -337 2 0 -515z M1892 1044 l-22 -15 0 -483 c0 -455 1 -484 18 -499 16 -15 48 -17
+246 -17 128 0 235 4 246 10 32 17 34 57 4 95 -33 44 -64 143 -64 206 l0 49
+203 0 c191 0 205 -1 222 -20 10 -11 34 -24 54 -30 49 -13 586 -13 612 0 22 12
+26 62 7 78 -8 6 -174 15 -413 21 -502 15 -549 23 -628 110 -43 48 -57 93 -57
+187 0 82 19 156 55 208 30 44 32 77 7 99 -27 25 -456 25 -490 1z M3716 1044 c-23 -22 -20 -31 19 -77 43 -49 78 -155 73 -218 l-3 -44
+-204 -3 c-194 -2 -205 -1 -218 17 -24 35 -78 41 -355 41 -255 0 -269 -1 -288
+-20 -27 -27 -26 -58 3 -70 12 -5 202 -14 422 -19 421 -12 476 -18 555 -62 92
+-51 132 -159 111 -299 -12 -77 -34 -129 -77 -179 -23 -28 -25 -36 -16 -57 l12
+-24 215 0 215 0 2 306 3 306 120 -303 120 -304 197 -3 196 -2 118 296 119 297
+3 -296 2 -297 225 0 225 0 0 515 0 515 -338 0 -337 0 -104 -265 c-58 -146
+-106 -263 -108 -261 -2 2 -50 120 -107 262 l-104 259 -340 3 c-300 2 -342 0
+-356 -14z"/></g><g transform="translate(0.000000,108.000000) scale(0.100000,-0.100000)" fill="var(--logo-s, #50a4db)"><path d="M2485 1046 c-44 -20 -111 -94 -136 -151 -27 -60 -37 -198 -20 -263
+13 -48 68 -115 114 -138 64 -34 162 -43 562 -55 239 -6 405 -15 413 -21 19
+-16 15 -66 -7 -78 -26 -13 -563 -13 -612 0 -20 6 -44 19 -54 30 -17 19 -31 20
+-222 20 l-203 0 0 -49 c0 -81 34 -172 86 -230 78 -87 31 -81 672 -81 l568 0
+46 29 c79 50 122 121 139 231 21 140 -19 248 -111 299 -79 44 -134 50 -555 62
+-220 5 -410 14 -422 19 -29 12 -30 43 -3 70 19 19 33 20 288 20 277 0 331 -6
+355 -41 13 -18 24 -19 218 -17 l204 3 3 44 c4 60 -31 168 -70 215 -17 21 -52
+52 -77 67 l-45 29 -550 0 c-440 -1 -557 -3 -581 -14z"/></g></symbol>
+<symbol id="mismo-hat" viewBox="0 0 100 100">
+  <path d="M17,73 C9,44 20,17 42,9 C59,3 72,10 80,22 C85,30 86,38 81,41
+           C76,44 70,40 65,32 C60,46 57,60 57,73 Z" fill="#c0392f"/>
+  <path d="M17,73 C9,44 20,17 42,9 C48,7 53,6 58,7 C41,19 30,45 30,73 Z"
+        fill="#0f314c" opacity=".17"/>
+  <rect x="10" y="65" width="56" height="20" rx="10" fill="#ffffff"/>
+  <rect x="10" y="75" width="56" height="10" rx="5" fill="#0f314c" opacity=".07"/>
+  <circle cx="86" cy="45" r="11.5" fill="#ffffff"/>
+</symbol></defs></svg><header class="mm-header">
+<a class="mm-logo" href="https://collaborate.mismo.org/mismowebsite/home"><img src="https://higherlogicdownload.s3.amazonaws.com/MISMO/LogoImages/6e07790a-6fc9-43dc-b9d6-9178e00c3342_mismo-reverse-nav-logo.png" alt="MISMO logo. This will take you to the homepage"></a>
+<nav aria-label="Main">
+<ul class="mm-nav" id="mm-nav">
+<li><a class="mm-nav-link" href="https://collaborate.mismo.org/mismowebsite/membership" aria-haspopup="true">Membership <svg class="mm-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+<ul class="mm-dd"><li><a href="https://collaborate.mismo.org/mismowebsite/membership/member-directory">MISMO Members</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/membership/lender-champions">Our Lender Champions</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/membership/industry-champions">Our Industry Champions</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/membership/iif">Innovation Investment Fund</a></li></ul>
+</li>
+<li><a class="mm-nav-link" href="https://collaborate.mismo.org/mismowebsite/standards-resources" aria-haspopup="true">Standards &amp; Resources <svg class="mm-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+<ul class="mm-dd"><li><a href="https://collaborate.mismo.org/mismowebsite/standards-resources/business-glossary">Business Glossary</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/standards-resources/certification">Certifications</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/standards-resources/mismo-link">MISMO Link</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/standards-resources/digital-mortgage-resource-center">Digital Mortgage Resource Center</a></li></ul>
+</li>
+<li><a class="mm-nav-link" href="https://collaborate.mismo.org/mismowebsite/get-involved" aria-haspopup="true">Get Involved <svg class="mm-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+<ul class="mm-dd"><li><a href="https://collaborate.mismo.org/mismowebsite/get-involved/workgroups">Communities &amp; Workgroups</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/get-involved/communities">Collaborate (Members Only)</a></li></ul>
+</li>
+<li><a class="mm-nav-link" href="https://collaborate.mismo.org/mismowebsite/events" aria-haspopup="true">Events <svg class="mm-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+<ul class="mm-dd"><li><a href="https://collaborate.mismo.org/mismowebsite/events/summit">MISMO Summit</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/events/education">Education</a></li></ul>
+</li>
+<li><a class="mm-nav-link" href="https://collaborate.mismo.org/mismowebsite/about-mismo" aria-haspopup="true">About MISMO <svg class="mm-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+<ul class="mm-dd"><li><a href="https://collaborate.mismo.org/mismowebsite/about-mismo/news">News</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/about-mismo/contributor-awards">Contributor Awards</a></li></ul>
+</li>
+</ul>
+</nav>
+<button type="button" class="mm-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mm-nav"><span></span><span></span><span></span></button>
+</header>
+
+<div class="wrap">
+  <h1 class="doc">Sign the MISMO Link AI User Agreement</h1>
+  <p class="docsub">Version 1.0 (updated 07/01/2026) &mdash; about three minutes.</p>
+
+  <div class="intro-card">
+    <p>MISMO Link AI is in <b>beta</b>. Before MISMO can switch on your access, each person who
+      will use the service signs this User Agreement for themselves.</p>
+    <p>This is a <b>personal</b> agreement about your own use. It sits underneath the subscriber
+      agreement your organization already holds with MISMO and does not change it.</p>
+    <p>Read the agreement, fill in your details, type your name, and press
+      <b>Sign and Send to MISMO</b>. A copy comes back to you by email.</p>
+  </div>
+
+  <!-- ============ 1. your details ============ -->
+  <section class="step" id="step1">
+    <div class="step-head">
+      <span class="step-n">1</span>
+      <span class="step-t">Your Details</span>
+      <span class="step-tick" id="tick1">0 of 4</span>
+    </div>
+    <div class="step-body">
+      <p class="step-note">MISMO uses these to set up your access and to send you a copy of what you signed.
+        Use your work email &mdash; access is tied to your organization's MISMO membership.</p>
+      <div class="flds">
+        <div class="fld">
+          <label for="f-name">Full Name<span class="req">*</span></label>
+          <input class="in" type="text" id="f-name" autocomplete="name" data-req>
+          <div class="fld-msg" id="m-name"></div>
+        </div>
+        <div class="fld">
+          <label for="f-title">Job Title<span class="req">*</span></label>
+          <input class="in" type="text" id="f-title" autocomplete="organization-title" data-req>
+          <div class="fld-msg" id="m-title"></div>
+        </div>
+        <div class="fld">
+          <label for="f-org">Company<span class="req">*</span></label>
+          <input class="in" type="text" id="f-org" autocomplete="organization" data-req>
+          <div class="fld-msg" id="m-org"></div>
+        </div>
+        <div class="fld">
+          <label for="f-email">Work Email<span class="req">*</span></label>
+          <input class="in" type="email" id="f-email" autocomplete="email" data-req>
+          <div class="fld-msg" id="m-email"></div>
+        </div>
+        <div class="fld">
+          <label for="f-phone">Phone</label>
+          <input class="in" type="tel" id="f-phone" autocomplete="tel">
+        </div>
+        <div class="fld">
+          <label for="f-date">Date</label>
+          <input class="in" type="text" id="f-date" readonly>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. the agreement ============ -->
+  <section class="step" id="step2">
+    <div class="step-head">
+      <span class="step-n">2</span>
+      <span class="step-t">Read the Agreement</span>
+      <span class="step-tick" id="tick2">Not read</span>
+    </div>
+    <div class="step-body">
+      <div class="readbar">
+        <div class="rb-txt">Scroll to the end of the agreement below. The signing box opens once you reach it.</div>
+        <div class="rb-acts">
+          <button class="btn ghost" type="button" id="printdoc">Print or Save as PDF</button>
+          <button class="btn ghost" type="button" id="jumpend">Skip to the End</button>
+        </div>
+      </div>
+
+      <div class="doc-scroll" id="docscroll" tabindex="0" role="article" aria-label="MISMO Link AI User SaaS Agreement">
+<div id="agreement-text">
+<div class="doc-title">
+  <div class="dt1">MISMO LINK AI USER SAAS AGREEMENT</div>
+  <div class="dt2">Version 1.0 (updated 07/01/2026)</div>
+</div>
+
+<p class="doc-notice">IMPORTANT NOTICE: DISPUTES ABOUT THIS USER AGREEMENT AND THE SERVICE PROVIDED BY MISMO ARE SUBJECT TO BINDING ARBITRATION AND A WAIVER OF CLASS ACTION RIGHTS AS DESCRIBED IN SECTION 16 BELOW.</p>
+
+<p>This MISMO Link AI User SaaS Agreement (this "User Agreement") is between Mortgage Industry Standards Maintenance Organization, Inc. ("MISMO"), a subsidiary of the Mortgage Bankers Association, and the individual who accesses or uses the Service as an Authorized User ("User," "you," or "your"). This User Agreement governs your individual access to and use of MISMO Link AI, a MISMO-branded artificial-intelligence-enabled software-as-a-service offering made available by MISMO to eligible MISMO member organizations and their Authorized Users.</p>
+
+<p>By clicking "I Agree," creating or using a user profile, accessing the Service, submitting Customer Input, or otherwise using the Service, you acknowledge that you have read, understand, and agree to be bound by this User Agreement. If you do not agree to this User Agreement, you must not access or use the Service.</p>
+
+<h2>1. Relationship to Customer Subscriber Agreement</h2>
+<p><b>(a) Customer Authorization Required.</b> The Service is made available to you only because a MISMO member organization or other entity authorized by MISMO ("Customer") has authorized your access under a separate subscriber agreement, order form, online order, or other written or electronic ordering document with MISMO (collectively, the "Subscriber Agreement"). You may access and use the Service only while you are an Authorized User of Customer and only on behalf of Customer.</p>
+<p><b>(b) No Expansion of Rights.</b> This User Agreement does not expand Customer's rights under the Subscriber Agreement or any Order Form. If the Subscriber Agreement, an Order Form, or MISMO's configuration of the Service limits the number of users, available features, usage volume, support plan, subscription term, or other access rights, those limits also apply to you.</p>
+<p><b>(c) Conflicts.</b> As between MISMO and Customer, the Subscriber Agreement controls. As between MISMO and you, this User Agreement controls your individual access to and use of the Service, except that this User Agreement will not be interpreted to grant you or Customer any right broader than the rights granted to Customer under the Subscriber Agreement.</p>
+<p><b>(d) Customer Control.</b> Customer is responsible for authorizing, administering, and disabling your access. Subject to applicable Law and the Subscriber Agreement, Customer may manage your user profile, view or manage usage information, control your permissions, and request deletion, export, or suspension of Customer Data associated with your use of the Service.</p>
+
+<h2>2. Definitions</h2>
+<p>Capitalized terms used in this User Agreement have the meanings given below or elsewhere in this User Agreement. Capitalized terms not defined in this User Agreement have the meanings given in the Subscriber Agreement, to the extent applicable.</p>
+<p><b>"Affiliate"</b> means any entity that directly or indirectly controls, is controlled by, or is under common control with a party.</p>
+<p><b>"Access Credentials"</b> means any username, password, license key, security token, PIN, multifactor authentication method, or other credential or authentication method used to verify your identity and authorization to access the Service.</p>
+<p><b>"AI Features"</b> means the artificial-intelligence-enabled functionality within the Service that receives Customer Input, retrieves or uses MISMO Standards Content and other permitted Service content, and generates AI Output for internal informational, research, and workflow-assistance purposes.</p>
+<p><b>"AI Output"</b> means any response, summary, explanation, analysis, recommendation, draft, or other content generated by the AI Features in response to Customer Input.</p>
+<p><b>"Authorized User"</b> means an individual employee, contractor, consultant, representative, or agent of Customer who is authorized by Customer and MISMO to access and use the Service under Customer's subscription.</p>
+<p><b>"Customer Data"</b> means Customer Input and other information, data, or content submitted to the Service by or on behalf of Customer or an Authorized User. Customer Data does not include MISMO Materials, Supplier Materials, Third-Party Materials, MISMO Standards Content, Resultant Data, Service usage metadata, or AI Output, except to the extent AI Output reproduces Customer Input.</p>
+<p><b>"Customer Input"</b> means prompts, questions, queries, instructions, files, text, or other content submitted to the Service by you or another Authorized User on behalf of Customer.</p>
+<p><b>"Documentation"</b> means the then-current user guides, instructions, release notes, technical requirements, support materials, or other materials MISMO makes available for the Service.</p>
+<p><b>"Harmful Code"</b> means any virus, worm, malware, ransomware, malicious code, or other software, code, file, program, or technology designed or intended to disrupt, disable, harm, impair, interfere with, or obtain unauthorized access to any system, network, software, data, or service.</p>
+<p><b>"Intellectual Property Rights"</b> means all patent, copyright, trademark, trade secret, database, moral, privacy, publicity, and other intellectual property or proprietary rights, whether registered or unregistered, anywhere in the world.</p>
+<p><b>"Law"</b> means any applicable statute, regulation, rule, order, court decision, or other legal requirement of any governmental authority.</p>
+<p><b>"MISMO Link"</b> means the MISMO Link platform and related systems, data, content, and functionality that may be accessed programmatically by MISMO Link AI to provide the Service.</p>
+<p><b>"MISMO Materials"</b> means the Service, Documentation, MISMO Standards Content, MISMO Systems, and other information, materials, technology, processes, and content provided or used by MISMO or its licensors, suppliers, subcontractors, or service providers in connection with the Service, excluding Customer Data.</p>
+<p><b>"MISMO Standards Content"</b> means MISMO standards, reference model materials, schemas, data dictionaries, APIs, implementation guides, collateral, and other MISMO content made available in or through the Service.</p>
+<p><b>"MISMO Systems"</b> means information technology infrastructure used by or on behalf of MISMO to provide the Service.</p>
+<p><b>"Order Form"</b> means an ordering document, quote, invoice, online order, statement of work, or other written or electronic ordering document accepted by MISMO and Customer that identifies the Service, subscription term, number of Authorized Users, fees, usage limits, support plan, or other commercial or service-specific terms.</p>
+<p><b>"Personal Information"</b> means information that directly or indirectly identifies an individual or can reasonably be used to identify or authenticate an individual, including user profile information, contact information, identifiers, and Access Credentials.</p>
+<p><b>"Permitted Use"</b> means use of the Service by you solely on behalf of Customer and solely for Customer's internal business, standards, compliance, research, implementation, or educational purposes, in accordance with this User Agreement, the Subscriber Agreement, the Documentation, and usage limits established by MISMO.</p>
+<p><b>"Prohibited Data"</b> means classified information, defense articles or defense services, ITAR-controlled data, government identification numbers, payment-card data, protected health information, consumer reports, borrower nonpublic personal information, loan files, personal financial information, or other highly sensitive personal information, unless MISMO expressly authorizes such data in writing.</p>
+<p><b>"Resultant Data"</b> means aggregated, de-identified, or anonymized data and information related to access to or use of the Service, including usage, statistical, operational, security, and performance information, that does not identify you, Customer, or any individual.</p>
+<p><b>"Service"</b> means MISMO Link AI, the MISMO-branded artificial-intelligence-enabled software-as-a-service offering described in the Documentation and made available under the Subscriber Agreement. The Service includes programmatic access to MISMO Link solely as embedded in or made available through MISMO Link AI. The Service does not include any right to access, log into, or use the web-based MISMO Link platform or any other MISMO product or service unless separately purchased or expressly authorized by MISMO in writing.</p>
+<p><b>"Supplier Materials"</b> means software, code, tools, models, algorithms, APIs, connectors, MCP servers, databases, documentation, technical processes, inventions, know-how, and other technology or materials owned or controlled by MISMO's licensors, suppliers, subcontractors, or service providers, including Viant Eye, LLC, that are used to provide, support, maintain, or improve the Service.</p>
+<p><b>"Third-Party Materials"</b> means materials, software, models, services, data, content, infrastructure, or components provided by third parties and used in connection with the Service.</p>
+<p><b>"Usage Data"</b> means data and information relating to access to and use of the Service, including session data, query metadata, feature-interaction logs, performance metrics, and operational data, that does not include the substantive content of Customer Input or AI Output.</p>
+
+<h2>3. Eligibility, User Profile and Access Credentials</h2>
+<p><b>(a) Eligibility.</b> You may use the Service only if you are at least eighteen (18) years old, are competent to agree to this User Agreement, are authorized by Customer to use the Service, and have not previously been prohibited by MISMO from accessing or using the Service. Access to the Service is available only to eligible MISMO members in good standing and their Authorized Users, unless MISMO expressly agrees otherwise in writing.</p>
+<p><b>(b) User Profile.</b> You must provide accurate and current information when creating or maintaining a user profile and must promptly update that information if it changes. You may not impersonate another person, misrepresent your affiliation with Customer, or create or use a profile for any person other than yourself.</p>
+<p><b>(c) Credentials.</b> You are responsible for maintaining the confidentiality of your Access Credentials and for all activity occurring through your Access Credentials. You must not share, transfer, sell, sublicense, or permit any other person to use your Access Credentials. You must promptly notify Customer and MISMO if you become aware of any unauthorized access to or use of your Access Credentials, user profile, Customer Data, or the Service.</p>
+<p><b>(d) Access Ends When Authorization Ends.</b> You must immediately stop using the Service if you are no longer authorized by Customer, if you cease acting on behalf of Customer, if Customer ceases to be a MISMO member in good standing, if Customer's subscription expires or terminates, or if MISMO or Customer disables your access.</p>
+
+<h2>4. Limited Access Right and Permitted Use</h2>
+<p><b>(a) Access Right.</b> Subject to your continued compliance with this User Agreement, the Subscriber Agreement, the Documentation, and Customer's authorization, MISMO grants you a limited, revocable, non-exclusive, non-transferable, non-sublicensable right to access and use the Service during the applicable subscription term solely for the Permitted Use. This right is not a sale and does not convey any ownership interest in the Service or any MISMO Materials. Except for the limited right expressly granted in this Section, nothing in this User Agreement grants, by implication, waiver, estoppel, or otherwise, any right, title, or interest in or to the Service, MISMO Materials, Supplier Materials, Third-Party Materials, or Documentation. MISMO reserves all rights not expressly granted.</p>
+<p><b>(b) Internal Use Only.</b> You may use the Service and AI Output only for Customer's internal purposes. You may not use the Service for your personal purposes, for the benefit of any third party, for external customer-facing services, or to provide consulting, service bureau, managed services, outsourced services, or other third-party services.</p>
+<p><b>(c) MISMO Link Access.</b> Your access to MISMO Link is limited to programmatic access made available within MISMO Link AI. You receive no right under this User Agreement to access, log into, scrape, query, or otherwise use the web-based MISMO Link platform or any other MISMO product or service unless MISMO separately authorizes that access in writing.</p>
+<p><b>(d) Usage Limits; Modifications.</b> MISMO may implement or modify reasonable usage limits, rate limits, query limits, storage limits, access controls, security controls, and technical restrictions to protect the Service, manage capacity, comply with Law, prevent misuse, satisfy third-party provider requirements, or preserve service quality. MISMO may modify, enhance, suspend, or discontinue any aspect of the Service, including the availability of features or functionality, at any time without liability. MISMO does not guarantee that the Service, its features, or related materials will remain unchanged.</p>
+
+<h2>5. Use Restrictions</h2>
+<p>You must not, and must not permit any other person to, directly or indirectly:</p>
+<ol type="a">
+<li>copy, modify, translate, adapt, or create derivative works or improvements of the Service, MISMO Materials, Supplier Materials, Third-Party Materials, or Documentation, except as expressly permitted by MISMO in writing;</li>
+<li>rent, lease, lend, sell, sublicense, assign, distribute, publish, transfer, expose, or otherwise make available the Service, AI Output, MISMO Materials, Supplier Materials, or MISMO Standards Content to any third party except as expressly permitted by this User Agreement;</li>
+<li>reverse engineer, disassemble, decompile, decode, adapt, or otherwise attempt to derive or gain access to source code, object code, prompts, retrieval logic, models, algorithms, system designs, non-public APIs, connectors, MCP servers, or other non-public components of the Service or Supplier Materials;</li>
+<li>bypass, disable, interfere with, or attempt to circumvent any security, authentication, authorization, access-control, rate-limit, or technical protection used by the Service;</li>
+<li>access or use the Service other than through your own then-valid Access Credentials and within the permission scope assigned to you;</li>
+<li>input, upload, transmit, or otherwise provide unlawful, infringing, harmful, misleading, or injurious materials, Harmful Code, or Prohibited Data to or through the Service, or access the Service through any device, network, or system that is infected with or contains Harmful Code;</li>
+<li>damage, disrupt, disable, impair, overload, interfere with, or otherwise harm the Service, MISMO Systems, MISMO Link, or MISMO's provision of services to any person;</li>
+<li>remove, alter, or obscure any copyright, trademark, proprietary rights, warranty, disclaimer, attribution, or other notices in or relating to the Service, AI Output, Documentation, MISMO Materials, Supplier Materials, or Third-Party Materials;</li>
+<li>access or use the Service or AI Output in any manner that infringes, misappropriates, or violates any Intellectual Property Right, privacy right, confidentiality obligation, contractual restriction, or Law;</li>
+<li>use the Service, AI Features, AI Output, MISMO Materials, Supplier Materials, or MISMO Standards Content to train, fine-tune, benchmark, test, validate, evaluate, or improve any artificial-intelligence, machine-learning, large language model, or similar system, except as expressly authorized by MISMO in writing;</li>
+<li>integrate, embed, expose, or make available the Service or AI Output in or through your, Customer's, or any third party's software, platform, product, service, website, application, API, workflow, or external-facing tool;</li>
+<li>publish, resell, sublicense, distribute, or otherwise make AI Output, MISMO Standards Content, or a substitute or derivative standards product available externally, except as expressly authorized by MISMO in writing;</li>
+<li>use the Service to make automated decisions or determinations regarding consumers, borrowers, credit, underwriting, employment, eligibility, legal rights, or regulated transactions;</li>
+<li>use the Service or MISMO Materials for competitive analysis, benchmarking for publication, development of a competing product or service, or any purpose that is detrimental to MISMO, MISMO's licensors or suppliers, or their respective Intellectual Property Rights;</li>
+<li>attempt to access, alter, delete, use, or disclose data, content, prompts, outputs, systems, or accounts of any other MISMO customer, user, or third party without authorization;</li>
+<li>otherwise access or use the Service beyond the scope of authorization granted by MISMO, Customer, the Subscriber Agreement, this User Agreement, the Documentation, or applicable usage limits;</li>
+<li>scrape, crawl, harvest, mine, bulk download, bulk query, bulk copy, index, cache, collect, extract, export, or compile MISMO Standards Content, MISMO Link AI responses, AI Output, metadata, or other content or data made available through the Service, including through any API, MCP server, connector, agentic AI client, script, bot, crawler, workflow, or other automated or manual means, except for ordinary, good-faith interactive use of the Service for your sponsoring organization's internal permitted purposes or through export or bulk-access functionality expressly enabled or authorized by MISMO in writing and used in accordance with all applicable usage limits; or</li>
+<li>systematically enumerate, map, probe, prompt, query, request, collect, combine, store, or use Service responses, AI Output, or other Service-accessible content to reconstruct, reproduce, replicate, compile, create, or maintain any local or external copy, corpus, database, index, schema repository, knowledge base, embedding store, model context, derivative data model, or substitute standards resource comprising, derived from, or reflecting all or any substantial portion of MISMO Standards Content, MISMO reference model materials, data dictionary, schemas, APIs, implementation guides, collateral, or underlying standards data model. This restriction applies whether you are acting on your own behalf, on behalf of Customer, or at the direction of any third party, and whether the activity is performed manually or through an automated agent, AI system, MCP client, workflow, script, bot, multiple users, multiple accounts, valid credentials, or otherwise, and whether or not the activity bypasses, disables, or interferes with any technical control; or</li>
+<li>if you are blocked, suspended, or restricted from accessing the Service by MISMO, implement any measures to circumvent such blocking, suspension, or restriction, including by masking IP addresses, using proxy IP addresses, creating new accounts, or using virtual private networks to regain access.</li>
+</ol>
+
+<h2>6. AI Features and AI Output</h2>
+<p><b>(a) Assistive Function Only.</b> The AI Features are designed to provide informational, research, drafting, summarization, and standards-related assistance only. MISMO is not acting as a professional advisor to you or Customer in any capacity, and consequently, the AI Features are assistive tools only. Your access to or use of the Service, and any reliance on AI Output, is at your sole risk.</p>
+<p><b>(b) No Professional Advice or Official Determination.</b> AI Output does not constitute legal, regulatory, compliance, mortgage lending, underwriting, credit, appraisal, servicing, financial, tax, technical, or other professional advice and does not constitute an official MISMO interpretation, standard, certification, approval, authoritative publication, or determination unless MISMO expressly identifies it as such in writing. AI Output is generated automatically by the AI Features and does not constitute authorship, contribution, or creative work by you or any Authorized User. Use of the Service and AI Output does not create, confer, or imply any ownership rights, derivative rights, joint authorship rights, or standard-essential claims in or to the Service, the underlying platform technology, MISMO Standards Content, or any related tools or systems. You will not mislead any person as to the origin of any AI Output, including by representing that AI Output was human-generated when it was not.</p>
+<p><b>(c) Human Review Required.</b> AI Output may be inaccurate, incomplete, outdated, duplicative, non-unique, biased, or unsuitable for your or Customer's intended use. AI Output may contain errors, hallucinations, or omissions. You are solely responsible for independently reviewing, validating, and approving AI Output before relying on it or using it in any business, legal, compliance, implementation, standards, technical, operational, or other decision. Reliance on AI Output without independent human review is at your sole risk.</p>
+<p><b>(d) No Autonomous or Regulated Decisions.</b> You must not use AI Output as the sole basis for any consumer, borrower, credit, underwriting, employment, eligibility, legal, regulatory, or other regulated decision. All decisions and actions based on or informed by AI Output are made by you or Customer, and not by MISMO or its licensors, suppliers, subcontractors, or service providers.</p>
+<p><b>(e) Output Similarity.</b> AI-generated output may be identical or similar for multiple users or customers. No uniqueness, exclusivity, or confidentiality of AI Output is guaranteed, except to the extent AI Output reproduces your Customer Input or Customer's Confidential Information.</p>
+<p><b>(f) No Model Training by MISMO.</b> MISMO and its service providers will not use Customer Data, Customer Input, or AI Output to train, fine-tune, or improve generalized AI models except with Customer's prior written consent and MISMO's written approval, or as expressly stated in the applicable Order Form or Subscriber Agreement.</p>
+
+<h2>7. Customer Input, Customer Data, Privacy and Prohibited Data</h2>
+<p><b>(a) Submission on Behalf of Customer.</b> You submit Customer Input to the Service on behalf of Customer and not in your personal capacity. As between MISMO and Customer, Customer retains the rights in Customer Data set forth in the Subscriber Agreement. You represent that you have all rights, permissions, and authority necessary to submit Customer Input to the Service on Customer's behalf.</p>
+<p><b>(b) Limited Processing License.</b> To the extent you have any rights in Customer Input, you grant MISMO and its licensors, suppliers, subcontractors, and service providers a non-exclusive, royalty-free, worldwide, limited license to host, copy, transmit, process, display, and use Customer Input and AI Output solely as necessary to provide, secure, support, troubleshoot, maintain, and improve the Service for Customer, enforce this User Agreement and the Subscriber Agreement, and comply with Law. This license includes the right to transmit Customer Input to MISMO's technology providers solely as necessary for Service delivery. You acknowledge and consent to such transmission and agree that MISMO's technology providers may process Customer Input and AI Output as necessary for Service delivery subject to the restrictions in this User Agreement. Upon expiration or termination, MISMO may delete Customer Data in accordance with its retention practices and is not required to delete or purge Resultant Data, de-identified data, or aggregated data that does not identify you, Customer, or any individual.</p>
+<p><b>(c) Preservation and Disclosure.</b> You acknowledge and agree that MISMO may preserve Customer Data and may also disclose Customer Data if required to do so by Law or in the good faith belief that such preservation or disclosure is reasonably necessary to: (i) comply with legal process, applicable Law, or government requests; (ii) enforce this User Agreement or the Subscriber Agreement; (iii) respond to claims that any content violates the rights of third parties; or (iv) protect the rights, property, or personal safety of MISMO, its licensors, suppliers, subcontractors, service providers, its users, or the public.</p>
+<p><b>(d) Prohibited Data.</b> The Service is designed for MISMO standards-related informational and assistance purposes and is not designed to process or store Prohibited Data. You must not submit, upload, paste, type, transmit, or otherwise provide Prohibited Data to or through the Service unless MISMO expressly authorizes such data in writing.</p>
+<p><b>(e) Personal Information.</b> You must not submit Personal Information to the Service except as necessary for account registration, authentication, Customer-authorized user administration, support, and other Service functionality permitted by MISMO. You must comply with Customer's policies and applicable Law when submitting any information relating to an individual.</p>
+<p><b>(f) Customer and Administrative Access.</b> You acknowledge that Customer may have administrative rights over your access, user profile, and Customer Data associated with your use of the Service, including rights to enable, disable, monitor, access, export, delete, or otherwise manage such information, subject to applicable Law and the Subscriber Agreement.</p>
+<p><b>(g) Resultant Data and Usage Data.</b> MISMO and its licensors, suppliers, subcontractors, and service providers may use Resultant Data and Usage Data to operate, secure, support, maintain, analyze, and improve the Service, provided that Resultant Data and Usage Data do not identify you, Customer, or any individual.</p>
+<p><b>(h) Data Storage.</b> MISMO does not guarantee the availability, accuracy, or recoverability of Customer Data or AI Output stored within or generated by the Service. You are responsible for maintaining your own backup copies of any Customer Data or AI Output you wish to retain. MISMO may establish general practices and limits concerning data retention, storage allocation, and session history within the Service, and may change those practices and limits at any time in its sole discretion. MISMO reserves the right to terminate or purge data from accounts that are inactive for an extended period of time.</p>
+
+<h2>8. Security</h2>
+<p><b>(a) Your Security Obligations.</b> You must use commercially reasonable care when accessing the Service, including by safeguarding Access Credentials, using secure networks and devices, logging out of shared devices, following Customer's security policies, and promptly reporting suspected unauthorized access or security incidents.</p>
+<p><b>(b) No Circumvention.</b> You must not test, scan, probe, circumvent, disable, or interfere with Service security, access controls, rate limits, or authentication measures except through a MISMO-authorized security program or with MISMO's prior written approval.</p>
+<p><b>(c) Security Incidents.</b> If MISMO determines that your account or activity poses a security, legal, operational, or misuse risk, MISMO may suspend or restrict your access without prior notice. MISMO may notify Customer of security or misuse concerns associated with your account.</p>
+
+<h2>9. Intellectual Property Rights</h2>
+<p><b>(a) Service Materials.</b> As between you and MISMO, MISMO and its applicable licensors, suppliers, subcontractors, service providers, and third-party rights holders own and retain all right, title, and interest, including all Intellectual Property Rights, in and to the Service, MISMO Materials, MISMO Standards Content, Supplier Materials, Third-Party Materials, Documentation, Resultant Data, and all software, code, models, algorithms, APIs, connectors, tools, workflows, configurations, designs, processes, improvements, modifications, derivative works, and related technology used to provide the Service.</p>
+<p><b>(b) No Implied Rights.</b> You receive no right, title, or interest in or to the Service, MISMO Materials, MISMO Standards Content, Supplier Materials, Third-Party Materials, or Documentation except for the limited access right expressly granted by this User Agreement.</p>
+<p><b>(c) AI Output Rights.</b> Subject to your compliance with this User Agreement, the Subscriber Agreement, the Documentation, and applicable usage limits, you may use AI Output solely for the Permitted Use. Your rights in AI Output do not include any ownership of or license to the Service, MISMO Materials, MISMO Standards Content, Supplier Materials, Third-Party Materials, or any underlying technology.</p>
+<p><b>(d) Feedback.</b> If you provide suggestions, comments, ideas, enhancement requests, or other feedback regarding the Service ("Feedback"), MISMO and its licensors and suppliers may use Feedback without restriction or obligation, provided that MISMO will not identify you or Customer as the source of Feedback without appropriate consent and will not use Customer's Confidential Information except as permitted by the Subscriber Agreement.</p>
+
+<h2>10. Confidentiality</h2>
+<p><b>(a) MISMO Confidential Information.</b> The non-public Service, Documentation, MISMO Materials, Supplier Materials, security information, technical information, and non-public AI-related methods, prompts, retrieval logic, configurations, workflows, and system designs are confidential information of MISMO or its applicable licensors or suppliers ("MISMO Confidential Information").</p>
+<p><b>(b) Use and Disclosure Restrictions.</b> You must not access, use, disclose, copy, record, or distribute MISMO Confidential Information except as necessary for the Permitted Use and in accordance with this User Agreement, the Subscriber Agreement, the Documentation, Customer's policies, and applicable Law.</p>
+<p><b>(c) Protection.</b> You must protect MISMO Confidential Information using at least reasonable care and must promptly notify Customer and MISMO if you become aware of any unauthorized access, use, disclosure, or loss of MISMO Confidential Information.</p>
+<p><b>(d) Duration.</b> Your obligations under this Section 10 will continue for five (5) years after the date of disclosure of the applicable MISMO Confidential Information, except that your obligations with respect to MISMO Confidential Information that constitutes a trade secret will continue for so long as such information remains protected as a trade secret under applicable Law.</p>
+
+<h2>11. Third-Party Providers, Supplier Materials and Support</h2>
+<p><b>(a) Providers and Supplier Materials.</b> MISMO may use licensors, suppliers, subcontractors, service providers, third-party AI providers, hosting providers, infrastructure providers, and other third parties to provide, host, maintain, support, secure, and improve the Service. MISMO Link AI may be powered in part by technology owned or provided by third-party suppliers, including Viant Eye, LLC.</p>
+<p><b>(b) Third-Party Terms.</b> Third-Party Materials may be subject to third-party terms and conditions. You must comply with any third-party terms, acceptable use policies, or restrictions that MISMO makes available or incorporates into the Service.</p>
+<p><b>(c) Support.</b> You must request support through MISMO's designated support channels, Customer's administrative contacts, or other support process specified by MISMO or Customer. You must not contact MISMO's technology providers, licensors, suppliers, subcontractors, or service providers directly for support unless MISMO expressly authorizes otherwise.</p>
+<p><b>(d) No Separate Supplier Relationship.</b> You will look solely to MISMO, and not to MISMO's licensors, suppliers, subcontractors, or service providers, for customer-facing support and contractual performance under this User Agreement, except to the extent a third-party provider expressly agrees otherwise in writing. To the maximum extent permitted by Law, you release and waive any claim, action, or right you may have directly against MISMO's licensors, suppliers, subcontractors, or service providers arising out of or related to the Service, AI Features, AI Output, or this User Agreement.</p>
+
+<h2>12. Suspension, Termination and Effect of Termination</h2>
+<p><b>(a) Suspension or Termination.</b> MISMO may suspend, restrict, or terminate your access to the Service immediately if MISMO believes in good faith that: (i) you breached this User Agreement, the Subscriber Agreement, the Documentation, or applicable usage limits; (ii) your access presents a security, legal, operational, or misuse risk; (iii) Customer requests that MISMO disable your access; (iv) Customer's subscription expires, terminates, is suspended, or is not paid for; (v) Customer ceases to be a MISMO member in good standing; or (vi) suspension or termination is required by Law, court order, government request, or third-party provider requirement.</p>
+<p><b>(b) Effect of Termination.</b> Upon suspension or termination, you must immediately stop accessing and using the Service, MISMO Materials, Supplier Materials, Third-Party Materials, and Documentation. MISMO may disable your Access Credentials and may immediately deactivate or delete your account and all related information and files and bar any further access to such files or the Service. MISMO may retain, delete, or return Customer Data in accordance with the Subscriber Agreement, the Documentation, MISMO's retention practices, and applicable Law. MISMO will not be liable to you or any third party for any suspension or termination of your access to the Service.</p>
+<p><b>(c) Survival.</b> Sections 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, and 17 of this User Agreement, and any other provisions that by their nature should survive, will survive expiration or termination of your access to the Service.</p>
+
+<h2>13. Representations, Warranties and Disclaimers</h2>
+<p><b>(a) Your Representations.</b> You represent and warrant that: (i) you have authority from Customer to access and use the Service on Customer's behalf; (ii) your Customer Input and use of the Service will comply with this User Agreement, the Subscriber Agreement, the Documentation, Customer's policies, and applicable Law; (iii) you will not submit Prohibited Data; (iv) you have all rights and permissions necessary to submit Customer Input to the Service; (v) your Customer Input will be accurate, complete, and lawful; (vi) you will not use the Service in any manner that would cause MISMO or its licensors, suppliers, subcontractors, or service providers to violate any Law; and (vii) you are not accessing or using the Service for the purpose of developing, improving, training, or supporting a product or service that competes with the Service, MISMO Link AI, MISMO Standards Content, or any MISMO product or service.</p>
+<p><b>(b) DISCLAIMER OF WARRANTIES.</b> TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE SERVICE, AI FEATURES, AI OUTPUT, MISMO MATERIALS, SUPPLIER MATERIALS, THIRD-PARTY MATERIALS, AND DOCUMENTATION ARE PROVIDED "AS IS" AND "AS AVAILABLE." MISMO AND ITS LICENSORS, SUPPLIERS, SUBCONTRACTORS, AND SERVICE PROVIDERS DISCLAIM ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, ACCURACY, COMPLETENESS, SECURITY, AVAILABILITY, AND ANY WARRANTIES ARISING FROM COURSE OF DEALING, USAGE, OR TRADE PRACTICE.</p>
+<p><b>(c) NO GUARANTEED RESULTS.</b> MISMO AND ITS LICENSORS, SUPPLIERS, SUBCONTRACTORS, AND SERVICE PROVIDERS DO NOT WARRANT THAT THE SERVICE, AI FEATURES, AI OUTPUT, OR ANY RESULTS OF USE WILL MEET YOUR OR CUSTOMER'S REQUIREMENTS, OPERATE WITHOUT INTERRUPTION, ACHIEVE ANY INTENDED RESULT, BE COMPATIBLE WITH ANY SOFTWARE, SYSTEM, OR SERVICE, OR BE SECURE, ACCURATE, COMPLETE, CURRENT, UNBIASED, NON-DUPLICATIVE, UNIQUE, FREE OF HARMFUL CODE, OR ERROR FREE. MISMO DISCLAIMS ALL RESPONSIBILITY AND LIABILITY FOR ANY HARM, LOSS, OR DAMAGES ARISING FROM OR RELATED TO THE ACTS OR OMISSIONS OF THIRD-PARTY HOSTING PROVIDERS, INFRASTRUCTURE PROVIDERS, TECHNOLOGY PROVIDERS, OR OTHER THIRD-PARTY SERVICES USED IN CONNECTION WITH THE SERVICE. YOU ACKNOWLEDGE THAT AI OUTPUT MAY CONTAIN ERRORS, HALLUCINATIONS, OR OMISSIONS AND THAT RELIANCE ON AI OUTPUT WITHOUT INDEPENDENT HUMAN REVIEW IS AT YOUR SOLE RISK.</p>
+
+<h2>14. Indemnification</h2>
+<p>To the maximum extent permitted by Law, you will indemnify, defend, and hold harmless MISMO and its Affiliates, licensors, suppliers, subcontractors, service providers, and each of their respective officers, directors, employees, agents, successors, and assigns from and against any third-party claim, loss, damage, liability, cost, or expense, including reasonable attorneys' fees, arising out of or relating to:</p>
+<ol type="a">
+<li>your breach of this User Agreement;</li>
+<li>your Customer Input, including any allegation that Customer Input infringes, misappropriates, or violates any third-party right or Law;</li>
+<li>your submission or processing of Prohibited Data or other data that you were not authorized to submit;</li>
+<li>your reliance on, external publication of, distribution of, or failure to review or validate AI Output;</li>
+<li>your use of the Service outside the Permitted Use, for automated or regulated decisions, or in violation of applicable Law;</li>
+<li>your gross negligence, willful misconduct, fraud, or unauthorized access to or misuse of the Service, MISMO Materials, Supplier Materials, Third-Party Materials, or MISMO Standards Content;</li>
+<li>your violation of any applicable privacy, data protection, or data security Law in connection with your use of the Service; or</li>
+<li>your circumvention or attempted circumvention of any blocking, suspension, or restriction imposed by MISMO under this User Agreement.</li>
+</ol>
+<p>MISMO may control the defense and settlement of any claim subject to this Section. You will reasonably cooperate with MISMO at your expense. You may not settle any claim in a manner that admits fault by, imposes any obligation on, or adversely affects MISMO or any MISMO indemnitee without MISMO's prior written consent, not to be unreasonably withheld.</p>
+
+<h2>15. Limitation of Liability</h2>
+<p><b>(a) EXCLUSION OF DAMAGES.</b> EXCEPT FOR EXCLUDED CLAIMS, IN NO EVENT WILL MISMO OR ITS LICENSORS, SUPPLIERS, SUBCONTRACTORS, OR SERVICE PROVIDERS BE LIABLE ARISING OUT OF OR RELATED TO THIS USER AGREEMENT, THE SERVICE, AI FEATURES, AI OUTPUT, MISMO MATERIALS, SUPPLIER MATERIALS, THIRD-PARTY MATERIALS, OR DOCUMENTATION FOR ANY CONSEQUENTIAL, INCIDENTAL, INDIRECT, SPECIAL, EXEMPLARY, ENHANCED, OR PUNITIVE DAMAGES; LOST PROFITS; LOST REVENUES; LOSS OF GOODWILL; LOSS OF DATA; BUSINESS INTERRUPTION; OR COST OF SUBSTITUTE GOODS OR SERVICES, WHETHER ARISING UNDER CONTRACT, TORT, STRICT LIABILITY, OR ANY OTHER LEGAL OR EQUITABLE THEORY, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES OR IF SUCH DAMAGES WERE OTHERWISE FORESEEABLE.</p>
+<p><b>(b) LIABILITY CAP.</b> EXCEPT FOR EXCLUDED CLAIMS, THE TOTAL AGGREGATE LIABILITY OF MISMO AND ITS LICENSORS, SUPPLIERS, SUBCONTRACTORS, AND SERVICE PROVIDERS ARISING OUT OF OR RELATED TO THIS USER AGREEMENT, THE SERVICE, AI FEATURES, AI OUTPUT, MISMO MATERIALS, SUPPLIER MATERIALS, THIRD-PARTY MATERIALS, OR DOCUMENTATION WILL NOT EXCEED ONE HUNDRED DOLLARS ($100). THE FOREGOING LIMITATION APPLIES EVEN IF ANY REMEDY FAILS OF ITS ESSENTIAL PURPOSE.</p>
+<p><b>(c) Excluded Claims.</b> For purposes of this Section 15, "Excluded Claims" means claims arising from your breach of Section 5, Section 6, Section 7, Section 8, Section 9, or Section 10, your indemnification obligations under Section 14, your gross negligence, willful misconduct, fraud, or your infringement or misappropriation of Intellectual Property Rights.</p>
+<p><b>(d) Subscriber Agreement Remedies.</b> Nothing in this User Agreement limits any rights, remedies, limitations, exclusions, or defenses available to MISMO or Customer under the Subscriber Agreement.</p>
+<p><b>(e) Independent Allocations of Risk.</b> Each provision of this User Agreement that provides for a limitation of liability, disclaimer of warranties, or exclusion of damages is to allocate the risks of this User Agreement between the parties. Each of these provisions is severable and independent of all other provisions of this User Agreement, and each of these provisions will apply even if the limited remedies provided in this User Agreement have failed of their essential purpose.</p>
+<p><b>(f) Sole Remedy.</b> If you are dissatisfied with any portion of the Service or with this User Agreement, your sole and exclusive remedy is to discontinue use of the Service.</p>
+
+<h2>16. Mandatory Binding Arbitration and Class Action Waiver</h2>
+<p><b>(a) Informal Resolution.</b> Before initiating arbitration, you and MISMO will attempt in good faith to resolve any dispute, claim, or controversy arising out of or relating to this User Agreement, the Service, or the parties' relationship by informal discussions for at least thirty (30) days after written notice of the dispute.</p>
+<p><b>(b) Arbitration.</b> If the dispute is not resolved within that period, either you or MISMO may submit the dispute to final and binding arbitration administered by the American Arbitration Association under its Commercial Arbitration Rules, unless the AAA determines that its Consumer Arbitration Rules are required. The arbitration will be conducted before one arbitrator. Unless the parties agree otherwise, the arbitration will be conducted in Washington, D.C.; however, the arbitrator may permit remote or video participation where appropriate. The Federal Arbitration Act governs the interpretation and enforcement of this Section. Judgment on the arbitration award may be entered in any court of competent jurisdiction. All aspects of the arbitration proceeding, and any ruling, decision, or award by the arbitrator, will be strictly confidential for the benefit of all parties.</p>
+<p><b>(c) CLASS ACTION WAIVER.</b> YOU AND MISMO MAY BRING CLAIMS ONLY IN AN INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF, CLASS MEMBER, OR REPRESENTATIVE IN ANY CLASS, COLLECTIVE, CONSOLIDATED, OR REPRESENTATIVE ACTION. THE ARBITRATOR MAY NOT CONSOLIDATE CLAIMS OF MORE THAN ONE PERSON OR PRESIDE OVER ANY CLASS, COLLECTIVE, CONSOLIDATED, OR REPRESENTATIVE PROCEEDING UNLESS YOU AND MISMO BOTH AGREE IN WRITING.</p>
+<p><b>(d) Equitable Relief.</b> Notwithstanding the foregoing, either party may seek temporary, preliminary, or permanent injunctive or equitable relief in a court of competent jurisdiction for claims involving unauthorized access to or use of the Service, infringement or misappropriation of Intellectual Property Rights, breach of confidentiality obligations, misuse of the Service, or protection of MISMO Materials, Supplier Materials, Third-Party Materials, or MISMO Standards Content.</p>
+<p><b>(e) Jury Trial Waiver.</b> To the extent any dispute is not subject to arbitration, you and MISMO each irrevocably waive any right to a trial by jury in any legal action arising out of or relating to this User Agreement, the Service, or the transactions contemplated by this User Agreement.</p>
+<p><b>(f) Arbitration Severability.</b> If a court or the arbitrator decides that any term or provision of this Section 16 is invalid or unenforceable, the parties agree to replace such term or provision with a term or provision that is valid and enforceable and that comes closest to expressing the intention of the invalid or unenforceable term or provision, and this Section 16 will be enforceable as so modified. The remainder of this User Agreement will continue to apply.</p>
+
+<h2>17. Miscellaneous</h2>
+<p><b>(a) Changes to this User Agreement.</b> MISMO may modify this User Agreement from time to time by providing notice, posting an updated version, or presenting updated terms through the Service. Changes will apply prospectively unless MISMO states otherwise for changes required to comply with Law, address security or operational risks, reflect third-party provider requirements, or avoid infringement or misuse. Your continued use of the Service after the effective date of an applicable modification constitutes acceptance of the modified User Agreement.</p>
+<p><b>(b) Governing Law.</b> This User Agreement is governed by the laws of the District of Columbia, without regard to conflict-of-law principles. The federal and state courts located in Washington, D.C. will have exclusive jurisdiction over any action to compel arbitration, enforce an arbitration award, or seek temporary, preliminary, or permanent injunctive or equitable relief as permitted under this User Agreement, and you irrevocably submit to the jurisdiction of such courts for those purposes. You expressly waive any claim of improper venue and any claim that such courts are an inconvenient forum.</p>
+<p><b>(c) Export and Sanctions Compliance.</b> You must comply with all applicable export control, sanctions, and anti-corruption Laws. You must not access or use the Service in any jurisdiction or for any person where such access or use is prohibited by Law.</p>
+<p><b>(d) Assignment.</b> You may not assign, delegate, or transfer this User Agreement or any rights or obligations under it without MISMO's prior written consent. MISMO may assign this User Agreement in connection with a merger, reorganization, corporate transaction, transfer of assets, or transfer or delegation to an Affiliate, successor, contractor, or service provider involved in providing the Service.</p>
+<p><b>(e) Third-Party Beneficiaries.</b> MISMO's licensors, suppliers, subcontractors, and service providers, including Viant Eye, LLC, are intended third-party beneficiaries of Sections 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, and 17 of this User Agreement. Except as stated in the preceding sentence, this User Agreement does not confer any rights or remedies on any third party.</p>
+<p><b>(f) Notices.</b> MISMO may provide notices to you through the Service, by email associated with your user profile, through Customer, or by posting within or in connection with the Service. You may provide notices to MISMO through MISMO's designated support or notice channels. Notices are effective when sent or posted, unless the notice states a later effective date.</p>
+<p><b>(g) Severability.</b> If any provision of this User Agreement is invalid, illegal, or unenforceable, that provision will be enforced to the maximum extent permitted by Law and the remaining provisions will remain in full force and effect.</p>
+<p><b>(h) No Waiver; Cumulative Remedies.</b> MISMO's failure or delay in exercising any right or remedy under this User Agreement will not operate as a waiver of that right or remedy. Each right and remedy under this User Agreement is cumulative with every other right and remedy available under this User Agreement, the Subscriber Agreement, or applicable Law.</p>
+<p><b>(i) Entire Agreement.</b> This User Agreement, together with the Subscriber Agreement to the extent applicable to your use, the Documentation, and any Service-specific terms presented by MISMO, constitutes the agreement between MISMO and you regarding your individual access to and use of the Service. This User Agreement supersedes all prior or contemporaneous user-level understandings regarding your individual access to and use of the Service.</p>
+<p><b>(j) Force Majeure.</b> MISMO will not be liable for delay or failure to perform caused by circumstances beyond its reasonable control, including acts of God, natural disasters, epidemics, war, terrorism, government action, third-party service failures, power or network outages, or labor disputes. This Section does not excuse your compliance with the use restrictions in Section 5.</p>
+<p><b>(k) Limitations Period.</b> To the maximum extent permitted by applicable Law, any claim or cause of action arising out of or related to this User Agreement or the Service must be filed within one (1) year after such claim or cause of action arose, or such claim or cause of action is permanently barred.</p>
+<p><b>(l) Equitable Relief.</b> You acknowledge that a breach or threatened breach of Section 5, Section 7, Section 8, Section 9, or Section 10 may cause irreparable harm to MISMO and its licensors, suppliers, subcontractors, and service providers for which monetary damages would not be an adequate remedy. MISMO may seek temporary, preliminary, or permanent injunctive or equitable relief on behalf of itself and its licensors, suppliers, subcontractors, and service providers without the obligation to post bond or prove actual damages, to the extent permitted by Law.</p>
+<p><b>(m) Prevailing Party.</b> The prevailing party in any action to enforce this User Agreement may recover its reasonable attorneys' fees and costs from the other party.</p>
+
+<p class="doc-end" id="doc-end">By clicking "I Agree" or accessing or using the Service, you acknowledge and agree to this User Agreement.</p>
+</div>
+      </div>
+      <div class="readmark" id="readmark"><span id="readmark-txt">You have not reached the end of the agreement yet.</span></div>
+    </div>
+  </section>
+
+  <!-- ============ 3. sign ============ -->
+  <section class="step" id="step3">
+    <div class="step-head">
+      <span class="step-n">3</span>
+      <span class="step-t">Agree and Sign</span>
+      <span class="step-tick" id="tick3">Not signed</span>
+    </div>
+    <div class="step-body">
+      <label class="accept-tick off" id="accept-wrap">
+        <input type="checkbox" id="f-accept" disabled>
+        <span id="accept-text">I have read the <b>MISMO Link AI User SaaS Agreement, Version 1.0 (updated 07/01/2026)</b>,
+          I understand it, and I agree to be bound by it. I confirm I am an Authorized User of the
+          organization named above and that I am at least eighteen years old.</span>
+      </label>
+
+      <div class="flds">
+        <div class="fld">
+          <label for="f-sig">Type Your Full Name to Sign<span class="req">*</span></label>
+          <input class="in sigline" type="text" id="f-sig" autocomplete="off" spellcheck="false" disabled>
+          <div class="fld-msg" id="m-sig"></div>
+        </div>
+        <div class="fld">
+          <label for="f-signed">Signed On</label>
+          <input class="in" type="text" id="f-signed" readonly>
+        </div>
+      </div>
+
+      <p class="legal">Typing your name and pressing <b>Sign and Send to MISMO</b> is an electronic
+        signature. It has the same effect as signing on paper under the U.S. E-SIGN Act. MISMO records
+        the date and time, the version of the agreement you saw, and a fingerprint of its text.</p>
+
+      <div id="outcome" style="margin-top:18px"></div>
+    </div>
+  </section>
+
+  <p class="foot">MISMO holds no personal data beyond business contact details, and takes no card
+    payments through this form.</p>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* Paste the Power Automate flow URL here - the "When an HTTP request is
+     received" trigger. While it is empty the page hands the signer a file
+     to send in instead, so the page works either way. */
+  var FLOW_ENDPOINT = "";
+
+  /* The shared word the flow checks before it does anything with a
+     submission. The flow URL is readable by anyone who views this page, so
+     without this a stranger can post junk straight into the mailbox. Put the
+     same word here that the eight application forms already use, and the same
+     one in the flow's condition. It keeps the mailbox clean; it is not a
+     password and protects nothing else. */
+  var FORM_KEY = "";
+
+  var AGREEMENT  = "MISMO Link AI User SaaS Agreement";
+  var VERSION    = "1.0 (updated 07/01/2026)";
+  var PROGRAM    = "LINKAI";
+  var KEY        = "tools:mismo-link:sign";
+  var THEMEKEY   = "mismo.portal.theme";
+
+  var ACCEPT_TEXT = "I have read the MISMO Link AI User SaaS Agreement, Version 1.0 " +
+    "(updated 07/01/2026), I understand it, and I agree to be bound by it. I confirm I am an " +
+    "Authorized User of the organization named above and that I am at least eighteen years old.";
+
+  var REQUIRED = [
+    {id:"f-name",  label:"Full Name"},
+    {id:"f-title", label:"Job Title"},
+    {id:"f-org",   label:"Company"},
+    {id:"f-email", label:"Work Email"}
+  ];
+
+  var readToEnd = false;
+  var submitted = false;
+  /* Whether it actually reached MISMO, or only landed in the signer's
+     downloads. Never tell someone their signature was sent when it was not. */
+  var delivered = false;
+  var docHash   = "";
+  var toastTimer = null;
+  var saveTimer  = null;
+
+  function $(id){ return document.getElementById(id); }
+  function esc(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+  function val(id){ var e = $(id); return e ? String(e.value || "").trim() : ""; }
+  function norm(s){ return String(s || "").toLowerCase().replace(/[^a-z]/g, ""); }
+
+  /* ---------------- theme: one button, the same code as every MISMO page ---------------- */
+  (function theme(){
+    var btn = $("theme");
+    if(!btn) return;   /* the website header carries no theme button */
+    function cur(){
+      var t = document.documentElement.getAttribute("data-theme");
+      if(t) return t;
+      return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    function paint(){ btn.textContent = cur() === "dark" ? "Light" : "Dark"; }
+    btn.addEventListener("click", function(){
+      document.documentElement.setAttribute("data-theme", cur() === "dark" ? "light" : "dark");
+      paint();
+      try{ localStorage.setItem(THEMEKEY, cur()); }catch(e){}
+    });
+    try{
+      var saved = localStorage.getItem(THEMEKEY);
+      if(saved) document.documentElement.setAttribute("data-theme", saved);
+    }catch(e){}
+    paint();
+  })();
+
+  /* ---------------- toast ---------------- */
+  function toast(msg){
+    var t = $("toast"); if(!t) return;
+    t.textContent = msg; t.classList.add("on");
+    if(toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.classList.remove("on"); }, 3200);
+  }
+
+  /* ---------------- dates ---------------- */
+  function longDate(d){
+    try{
+      return d.toLocaleDateString(undefined, {year:"numeric", month:"long", day:"numeric"});
+    }catch(e){ return d.toDateString(); }
+  }
+  function stamp(d){
+    try{
+      return d.toLocaleString(undefined, {year:"numeric", month:"long", day:"numeric",
+        hour:"numeric", minute:"2-digit", timeZoneName:"short"});
+    }catch(e){ return d.toString(); }
+  }
+
+  /* ---------------- a fingerprint of exactly what was on screen ----------------
+     Proves later which words were agreed to, without storing the whole text
+     against every signature. */
+  function hashAgreement(){
+    var node = $("agreement-text");
+    var text = (node.innerText || node.textContent || "").replace(/\s+/g, " ").trim();
+    if(!(window.crypto && window.crypto.subtle && window.TextEncoder)) return;
+    try{
+      window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)).then(function(buf){
+        docHash = Array.prototype.map.call(new Uint8Array(buf), function(b){
+          return ("0" + b.toString(16)).slice(-2);
+        }).join("");
+      }).catch(function(){});
+    }catch(e){}
+  }
+
+  /* ---------------- keep what has been typed, in this browser ---------------- */
+  function persist(){
+    if(submitted) return;
+    try{
+      localStorage.setItem(KEY, JSON.stringify({
+        v:1,
+        name:val("f-name"), title:val("f-title"), org:val("f-org"),
+        email:val("f-email"), phone:val("f-phone")
+      }));
+    }catch(e){}
+  }
+  function restore(){
+    try{
+      var raw = localStorage.getItem(KEY); if(!raw) return;
+      var o = JSON.parse(raw); if(!o) return;
+      ["name","title","org","email","phone"].forEach(function(k){
+        var e = $("f-" + k); if(e && o[k]) e.value = o[k];
+      });
+    }catch(e){}
+  }
+  function touch(){
+    if(saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(persist, 400);
+  }
+
+  /* ---------------- validation ---------------- */
+  function emailOK(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s); }
+
+  function fieldProblem(f){
+    var v = val(f.id);
+    if(!v) return f.label + " is needed.";
+    if(f.id === "f-email" && !emailOK(v)) return "That does not look like an email address.";
+    return "";
+  }
+  function showProblem(f, show){
+    var box = $("m-" + f.id.slice(2));
+    var inp = $(f.id);
+    if(!box || !inp) return;            /* Phone is optional and has no message line. */
+    var p = fieldProblem(f);
+    if(show && p){ box.textContent = p; box.classList.add("on"); inp.classList.add("bad"); }
+    else{ box.classList.remove("on"); inp.classList.remove("bad"); }
+  }
+
+  function detailsDone(){
+    return REQUIRED.filter(function(f){ return !fieldProblem(f); }).length;
+  }
+
+  function signatureProblem(){
+    var sig = val("f-sig"), name = val("f-name");
+    if(!sig) return "Type your name exactly as you entered it above.";
+    if(!name) return "Fill in your full name in step 1 first.";
+    if(norm(sig) !== norm(name)) return "This must match the name in step 1: " + name;
+    return "";
+  }
+
+  function missing(){
+    var out = [];
+    REQUIRED.forEach(function(f){ var p = fieldProblem(f); if(p) out.push(p); });
+    if(!readToEnd) out.push("Scroll to the end of the agreement in step 2.");
+    if(!$("f-accept").checked) out.push("Tick the box to say you agree.");
+    var s = signatureProblem(); if(s) out.push(s);
+    return out;
+  }
+
+  /* ---------------- painting ---------------- */
+  function paint(){
+    var n = detailsDone();
+    var t1 = $("tick1");
+    t1.textContent = n + " of " + REQUIRED.length;
+    t1.classList.toggle("done", n === REQUIRED.length);
+
+    var t2 = $("tick2");
+    t2.textContent = readToEnd ? "Read" : "Not read";
+    t2.classList.toggle("done", readToEnd);
+
+    var signed = !!$("f-accept").checked && !signatureProblem();
+    var t3 = $("tick3");
+    t3.textContent = submitted ? "Sent" : (signed ? "Ready" : "Not signed");
+    t3.classList.toggle("done", submitted || signed);
+
+    paintOutcome();
+  }
+
+  function openSigning(){
+    var wrap = $("accept-wrap"), cb = $("f-accept"), sig = $("f-sig");
+    if(readToEnd){
+      wrap.classList.remove("off"); cb.disabled = false; sig.disabled = false;
+    }else{
+      wrap.classList.add("off"); cb.disabled = true; sig.disabled = true;
+    }
+  }
+
+  function recapHTML(){
+    return '<ul class="recap">' +
+      [["Signed By", val("f-name")],
+       ["Job Title", val("f-title")],
+       ["Company", val("f-org")],
+       ["Work Email", val("f-email")],
+       ["Agreement", AGREEMENT + ", Version " + VERSION],
+       ["Signed On", $("f-signed").value]].map(function(r){
+        return '<li><span class="rk">' + esc(r[0]) + '</span><span class="rv">' + esc(r[1]) + '</span></li>';
+      }).join("") + '</ul>';
+  }
+
+  function paintOutcome(){
+    var box = $("outcome"); if(!box) return;
+
+    if(submitted){
+      box.className = "result";
+      box.innerHTML = (delivered
+        ? '<h3>Signed and Sent to MISMO</h3>' +
+          '<p>Thank you. A copy is on its way to <b>' + esc(val("f-email")) + '</b>. ' +
+          'MISMO will be in touch when your MISMO Link AI beta access is switched on.</p>'
+        : '<h3>Signed &mdash; One Step Left</h3>' +
+          '<p>Your signed agreement has been saved to your computer as a file. ' +
+          'Please email it to <a href="mailto:info@mismo.org">info@mismo.org</a> so MISMO ' +
+          'can switch on your beta access.</p>') +
+        recapHTML() +
+        '<div class="acts"><button class="btn ghost" type="button" id="printdone">Print or Save as PDF</button></div>';
+      var pd = $("printdone");
+      if(pd) pd.addEventListener("click", function(){ window.print(); });
+      return;
+    }
+
+    var miss = missing();
+    if(miss.length){
+      box.className = "result miss";
+      box.innerHTML = '<h3>Not Ready to Sign Yet</h3>' +
+        '<p>These are needed before the agreement can go to MISMO:</p>' +
+        '<ul class="miss-list">' + miss.map(function(m){
+          return '<li>' + esc(m) + '</li>';
+        }).join("") + '</ul>';
+      return;
+    }
+
+    box.className = "result";
+    box.innerHTML = '<h3>Ready to Sign</h3>' +
+      '<p>Everything is filled in. Pressing the button below signs the agreement and sends it ' +
+      'to MISMO, and emails you a copy.</p>' +
+      '<div class="acts"><button class="btn" type="button" id="dosign">Sign and Send to MISMO</button></div>';
+    var b = $("dosign");
+    if(b) b.addEventListener("click", doSign);
+  }
+
+  /* ---------------- what goes to the flow ---------------- */
+  function payload(){
+    var now = new Date();
+    return {
+      formKey: FORM_KEY,
+      form: AGREEMENT,
+      programCode: PROGRAM,
+      agreementTitle: AGREEMENT,
+      agreementVersion: VERSION,
+      submittedAt: now.toISOString(),
+      signedOnLocal: stamp(now),
+      organization: val("f-org"),
+      signerName: val("f-name"),
+      signerTitle: val("f-title"),
+      signerEmail: val("f-email"),
+      signerPhone: val("f-phone"),
+      typedSignature: val("f-sig"),
+      acceptanceStatement: ACCEPT_TEXT,
+      readToEnd: readToEnd,
+      documentHash: docHash,
+      pageUrl: location.href,
+      timeZone: (function(){
+        try{ return Intl.DateTimeFormat().resolvedOptions().timeZone; }catch(e){ return ""; }
+      })(),
+      userAgent: navigator.userAgent
+    };
+  }
+
+  function download(obj){
+    try{
+      var name = "MISMO-Link-AI-Agreement-" +
+        (val("f-org") || "signed").replace(/[^A-Za-z0-9]+/g, "-") + ".json";
+      var blob = new Blob([JSON.stringify(obj, null, 2)], {type:"application/json"});
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = name;
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+    }catch(e){ toast("This browser would not save the file - please try another."); }
+  }
+
+  function doSign(){
+    if(missing().length){ paint(); return; }
+    var body = payload();
+
+    if(!FLOW_ENDPOINT){
+      /* No flow wired up yet: the signer sends the file in instead, and nothing
+         is lost in the meantime. */
+      download(body);
+      submitted = true; delivered = false; paint();
+      toast("Saved to your computer - please email it to info@mismo.org.");
+      return;
+    }
+
+    var b = $("dosign");
+    if(b){ b.disabled = true; b.textContent = "Sending..."; }
+    fetch(FLOW_ENDPOINT, {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(body)
+    }).then(function(r){
+      if(!r.ok) throw new Error("status " + r.status);
+      submitted = true; delivered = true;
+      try{ localStorage.removeItem(KEY); }catch(e){}
+      paint();
+      toast("Signed and sent to MISMO.");
+    }).catch(function(){
+      if(b){ b.disabled = false; b.textContent = "Sign and Send to MISMO"; }
+      download(body);
+      toast("That did not go through - a copy has been saved to your computer instead.");
+    });
+  }
+
+  /* ---------------- reading the agreement ---------------- */
+  function checkRead(){
+    var el = $("docscroll");
+    /* 24px of slack: a trackpad rarely lands exactly on the last pixel, and a
+       signer who has plainly reached the end should not be told otherwise. */
+    var atEnd = el.scrollTop + el.clientHeight >= el.scrollHeight - 24;
+    /* Short viewports can show the whole thing without scrolling at all. */
+    if(el.scrollHeight <= el.clientHeight + 4) atEnd = true;
+    if(atEnd && !readToEnd){
+      readToEnd = true;
+      $("readmark").classList.add("done");
+      $("readmark-txt").textContent = "You have reached the end of the agreement.";
+      openSigning();
+      paint();
+    }
+  }
+
+  /* ---------------- wiring ---------------- */
+  function wire(){
+    var now = new Date();
+    $("f-date").value = longDate(now);
+    $("f-signed").value = stamp(now);
+
+    restore();
+
+    REQUIRED.concat([{id:"f-phone", label:"Phone"}]).forEach(function(f){
+      var e = $(f.id); if(!e) return;
+      e.addEventListener("input", function(){ showProblem(f, false); touch(); paint(); });
+      e.addEventListener("blur", function(){ showProblem(f, true); });
+    });
+
+    $("f-sig").addEventListener("input", function(){
+      var box = $("m-sig"), p = signatureProblem();
+      if(val("f-sig") && p){ box.textContent = p; box.classList.add("on"); }
+      else{ box.classList.remove("on"); }
+      paint();
+    });
+    $("f-accept").addEventListener("change", paint);
+
+    $("docscroll").addEventListener("scroll", checkRead);
+    window.addEventListener("resize", checkRead);
+
+    $("printdoc").addEventListener("click", function(){ window.print(); });
+    $("jumpend").addEventListener("click", function(){
+      var el = $("docscroll");
+      el.scrollTop = el.scrollHeight;
+      setTimeout(checkRead, 420);
+    });
+
+    hashAgreement();
+    openSigning();
+    checkRead();
+    paint();
+  }
+
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", wire);
+  else wire();
+})();
+</script>
+
+<footer class="mm-footer">
+<div class="mm-footer-bar">
+<a class="mm-f-logo" href="https://collaborate.mismo.org/mismowebsite/home"><svg class="mm-f-mark" role="img" aria-label="MISMO" viewBox="0 0 708 108"><use href="#mismo-logo"/></svg></a>
+<div class="mm-f-addr">1919 M Street NW, 5th Floor, Washington, DC 20036<svg class="mm-f-env" viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="1.5" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M1.8 3l8.2 6 8.2-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><a href="mailto:info@mismo.org">info@mismo.org</a></div>
+<div class="mm-f-links"><a href="https://collaborate.mismo.org/mismowebsite/privacy-policy">Privacy Policy</a><a href="https://collaborate.mismo.org/mismowebsite/terms-of-use">Terms of Use</a></div>
+<div class="mm-f-social"><a class="mm-f-soc" href="https://www.linkedin.com/company/mismo-mortgage-industry-standards-maintenance-organization" aria-label="MISMO on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="9.5" width="3" height="11" rx="1" fill="currentColor"/><circle cx="5" cy="5.6" r="1.9" fill="currentColor"/><path d="M10 20.5v-11h3v1.5a3.7 3.7 0 0 1 3.2-1.7c2.4 0 3.8 1.6 3.8 4.4v6.8h-3v-6.3c0-1.6-.6-2.5-2-2.5s-2 .9-2 2.5v6.3z" fill="currentColor"/></svg></a><a class="mm-f-soc" href="https://www.youtube.com/channel/UCuKIkeqACTIU7j0eL_igPHA" aria-label="MISMO on YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="3.6" fill="currentColor"/><path d="M10.2 9.4l5.4 2.6-5.4 2.6z" fill="#f4f7f9"/></svg></a></div>
+</div>
+</footer>
+<script>
+/* the website's menu button, for phones and tablets */
+(function(){var h=document.querySelector(".mm-header"),b=h&&h.querySelector(".mm-burger");if(!b)return;
+b.addEventListener("click",function(){var on=!h.classList.contains("is-open");h.classList.toggle("is-open",on);b.setAttribute("aria-expanded",String(on));b.setAttribute("aria-label",on?"Close menu":"Open menu");});})();
+</script>
+</body>
+</html>
