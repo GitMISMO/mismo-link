@@ -238,7 +238,7 @@ background:#ffffff; color:var(--mm-ink,#0d314c);}
 a{color:var(--mm-blue);}
 
 /* ---------- Header bar (70px, dark navy, logo left, nav, Log in pill right) ---------- */
-.mm-header{position:relative;z-index:5;height:70px;background:var(--mm-hero);box-shadow:0 2px 4px 0 rgba(0,0,0,.1),0 0 2px 0 rgba(153,153,153,.25);display:flex;align-items:center;padding:0 50px;gap:56px}
+.mm-header{position:relative;z-index:5;height:70px;background:var(--mm-hero);box-shadow:0 2px 4px 0 rgba(0,0,0,.1),0 0 2px 0 rgba(153,153,153,.25);display:flex;align-items:center;padding:0 50px}
 .mm-logo img{display:block;width:194px;height:36px;max-width:100%;object-fit:contain;object-position:left center}
 .mm-logo{flex:0 1 194px;min-width:0}
 .mm-nav{display:flex;align-items:stretch;height:70px;margin:0;padding:0;list-style:none;flex:1 1 auto}
@@ -253,7 +253,7 @@ a{color:var(--mm-blue);}
 .mm-burger{display:none;width:40px;height:40px;margin-left:auto;padding:9px 8px;border:0;border-radius:6px;background:transparent;cursor:pointer}
 .mm-burger span{display:block;height:2px;margin:4px 0;border-radius:2px;background:#ffffff;transition:transform .2s,opacity .2s}
 @media (max-width:1100px){
-.mm-header{padding:0 20px;gap:12px}
+.mm-header{padding:0 20px}
 .mm-burger{display:block}
 .mm-nav{display:none}
 .mm-header.is-open .mm-nav{display:block;position:absolute;top:70px;left:0;right:0;height:auto;max-height:calc(100vh - 70px);overflow-y:auto;padding:8px 0 16px;background:#0b2740;border-top:2px solid var(--mm-blue);box-shadow:0 18px 40px -14px rgba(0,0,0,.6)}
@@ -362,27 +362,7 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
   <rect x="10" y="75" width="56" height="10" rx="5" fill="#0f314c" opacity=".07"/>
   <circle cx="86" cy="45" r="11.5" fill="#ffffff"/>
 </symbol></defs></svg><header class="mm-header">
-<a class="mm-logo" href="https://collaborate.mismo.org/mismowebsite/home"><img src="https://higherlogicdownload.s3.amazonaws.com/MISMO/LogoImages/6e07790a-6fc9-43dc-b9d6-9178e00c3342_mismo-reverse-nav-logo.png" alt="MISMO logo. This will take you to the homepage"></a>
-<nav aria-label="Main">
-<ul class="mm-nav" id="mm-nav">
-<li><a class="mm-nav-link" href="https://collaborate.mismo.org/mismowebsite/membership" aria-haspopup="true">Membership <svg class="mm-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-<ul class="mm-dd"><li><a href="https://collaborate.mismo.org/mismowebsite/membership/member-directory">MISMO Members</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/membership/lender-champions">Our Lender Champions</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/membership/industry-champions">Our Industry Champions</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/membership/iif">Innovation Investment Fund</a></li></ul>
-</li>
-<li><a class="mm-nav-link" href="https://collaborate.mismo.org/mismowebsite/standards-resources" aria-haspopup="true">Standards &amp; Resources <svg class="mm-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-<ul class="mm-dd"><li><a href="https://collaborate.mismo.org/mismowebsite/standards-resources/business-glossary">Business Glossary</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/standards-resources/certification">Certifications</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/standards-resources/mismo-link">MISMO Link</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/standards-resources/digital-mortgage-resource-center">Digital Mortgage Resource Center</a></li></ul>
-</li>
-<li><a class="mm-nav-link" href="https://collaborate.mismo.org/mismowebsite/get-involved" aria-haspopup="true">Get Involved <svg class="mm-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-<ul class="mm-dd"><li><a href="https://collaborate.mismo.org/mismowebsite/get-involved/workgroups">Communities &amp; Workgroups</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/get-involved/communities">Collaborate (Members Only)</a></li></ul>
-</li>
-<li><a class="mm-nav-link" href="https://collaborate.mismo.org/mismowebsite/events" aria-haspopup="true">Events <svg class="mm-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-<ul class="mm-dd"><li><a href="https://collaborate.mismo.org/mismowebsite/events/summit">MISMO Summit</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/events/education">Education</a></li></ul>
-</li>
-<li><a class="mm-nav-link" href="https://collaborate.mismo.org/mismowebsite/about-mismo" aria-haspopup="true">About MISMO <svg class="mm-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-<ul class="mm-dd"><li><a href="https://collaborate.mismo.org/mismowebsite/about-mismo/news">News</a></li><li><a href="https://collaborate.mismo.org/mismowebsite/about-mismo/contributor-awards">Contributor Awards</a></li></ul>
-</li>
-</ul>
-</nav>
-<button type="button" class="mm-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mm-nav"><span></span><span></span><span></span></button>
+<span class="mm-logo"><img src="https://higherlogicdownload.s3.amazonaws.com/MISMO/LogoImages/6e07790a-6fc9-43dc-b9d6-9178e00c3342_mismo-reverse-nav-logo.png" alt="MISMO"></span>
 </header>
 
 <div class="wrap">
@@ -1071,16 +1051,10 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
 
 <footer class="mm-footer">
 <div class="mm-footer-bar">
-<a class="mm-f-logo" href="https://collaborate.mismo.org/mismowebsite/home"><svg class="mm-f-mark" role="img" aria-label="MISMO" viewBox="0 0 708 108"><use href="#mismo-logo"/></svg></a>
+<span class="mm-f-logo"><svg class="mm-f-mark" role="img" aria-label="MISMO" viewBox="0 0 708 108"><use href="#mismo-logo"/></svg></span>
 <div class="mm-f-addr">1919 M Street NW, 5th Floor, Washington, DC 20036<svg class="mm-f-env" viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="1.5" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M1.8 3l8.2 6 8.2-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><a href="mailto:info@mismo.org">info@mismo.org</a></div>
-<div class="mm-f-links"><a href="https://collaborate.mismo.org/mismowebsite/privacy-policy">Privacy Policy</a><a href="https://collaborate.mismo.org/mismowebsite/terms-of-use">Terms of Use</a></div>
-<div class="mm-f-social"><a class="mm-f-soc" href="https://www.linkedin.com/company/mismo-mortgage-industry-standards-maintenance-organization" aria-label="MISMO on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="9.5" width="3" height="11" rx="1" fill="currentColor"/><circle cx="5" cy="5.6" r="1.9" fill="currentColor"/><path d="M10 20.5v-11h3v1.5a3.7 3.7 0 0 1 3.2-1.7c2.4 0 3.8 1.6 3.8 4.4v6.8h-3v-6.3c0-1.6-.6-2.5-2-2.5s-2 .9-2 2.5v6.3z" fill="currentColor"/></svg></a><a class="mm-f-soc" href="https://www.youtube.com/channel/UCuKIkeqACTIU7j0eL_igPHA" aria-label="MISMO on YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="3.6" fill="currentColor"/><path d="M10.2 9.4l5.4 2.6-5.4 2.6z" fill="#f4f7f9"/></svg></a></div>
 </div>
 </footer>
-<script>
-/* the website's menu button, for phones and tablets */
-(function(){var h=document.querySelector(".mm-header"),b=h&&h.querySelector(".mm-burger");if(!b)return;
-b.addEventListener("click",function(){var on=!h.classList.contains("is-open");h.classList.toggle("is-open",on);b.setAttribute("aria-expanded",String(on));b.setAttribute("aria-label",on?"Close menu":"Open menu");});})();
-</script>
+
 </body>
 </html>
