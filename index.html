@@ -875,29 +875,24 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
         paint();
       })
       .catch(function(){
+        /* A 503 carries no CORS headers, so when the relay refuses the call
+           the browser blocks the body and the status never reaches this code.
+           There is no way to tell the two causes apart from here either: the
+           relay answered /hub/auth/me with a 200 at page load and 503 to the
+           same route seconds later, so a health probe reports whatever it
+           happens to catch. Rather than diagnose it wrongly, both causes are
+           named. */
         $("sig-tools").hidden = true;
-        /* Is the relay itself up? If it is, the call failed for this project
-           rather than for the connection, which means the key is not
-           registered yet - say that instead of blaming the network.
-
-           /hub/auth/me is the route used for this, not /version: /version
-           answers 503 to a fetch from the page even while the relay is
-           plainly up and answering /hub/auth/me with a 200 on the very same
-           load. The relay also sleeps when idle and refuses its first call
-           while it wakes, so the probe gets three tries a second and a half
-           apart rather than taking one refusal as an outage. */
-        (function probe(tries){
-          fetch(RELAY + "/hub/auth/me", {credentials:"include", cache:"no-store"})
-            .then(function(v){
-              if(v.ok){ notSwitchedOn(); return; }
-              throw new Error("warming");
-            })
-            .catch(function(){
-              if(tries > 1){ setTimeout(function(){ probe(tries - 1); }, 1500); return; }
-              state('<div class="empty"><h3>MISMO Could Not Be Reached</h3>' +
-                '<p>Check your connection and reload. Nothing has been lost.</p></div>');
-            });
-        })(3);
+        state('<div class="empty"><h3>The Signatures Could Not Be Read</h3>' +
+          '<p><b>Most likely the relay does not know about this tool yet.</b> ' +
+          'Three things switch it on, and none of them change this page:</p>' +
+          '<ol class="steps"><li>The private <b>GitMISMO/mismo-link-data</b> repository &mdash; already created.</li>' +
+          '<li>The project key <b>mismo-link</b> registered on the relay, pointing at it.</li>' +
+          '<li>The write role given to whoever administers the beta.</li></ol>' +
+          '<p>If this pane was working earlier, the relay is most likely just waking up &mdash; ' +
+          'it rests when idle and refuses the first call or two. Reload in a minute.</p>' +
+          '<p>Either way, signatures are recorded from the moment the signing flow is switched on, ' +
+          'whether or not this pane can read them yet &mdash; nothing is lost in the meantime.</p></div>');
       });
   }
 
