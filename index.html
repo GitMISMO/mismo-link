@@ -880,13 +880,14 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
            rather than for the connection, which means the key is not
            registered yet - say that instead of blaming the network.
 
-           The relay sleeps when idle and answers its first call with a 503
-           before it has woken up, so the probe is given three tries a second
-           and a half apart rather than taking the first refusal as an
-           outage. That cold start is the same one that leaves the CMS sitting
-           on "Loading the certification records..." until it is reloaded. */
+           /hub/auth/me is the route used for this, not /version: /version
+           answers 503 to a fetch from the page even while the relay is
+           plainly up and answering /hub/auth/me with a 200 on the very same
+           load. The relay also sleeps when idle and refuses its first call
+           while it wakes, so the probe gets three tries a second and a half
+           apart rather than taking one refusal as an outage. */
         (function probe(tries){
-          fetch(RELAY + "/version", {cache:"no-store"})
+          fetch(RELAY + "/hub/auth/me", {credentials:"include", cache:"no-store"})
             .then(function(v){
               if(v.ok){ notSwitchedOn(); return; }
               throw new Error("warming");
