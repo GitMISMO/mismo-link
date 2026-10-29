@@ -451,14 +451,14 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
 
   <section class="pane on" id="app-overview">
     <h1 class="pt">MISMO Link</h1>
-    <p class="lede">The home for everything MISMO Link. The beta user agreement is the first
+    <p class="lede">The home for everything MISMO Link. The beta subscriber agreement is the first
       piece; the rest of the hub is built out from here.</p>
 
     <div class="card">
-      <h2>Beta User Agreement<span class="tag live">Live</span></h2>
-      <p>The page beta testers use to read and sign the MISMO Link AI User SaaS Agreement.
-        Open to anyone with the link &mdash; no MISMO sign-in needed, because testers are
-        outside MISMO.</p>
+      <h2>Beta Subscriber Agreement<span class="tag live">Live</span></h2>
+      <p>The page each beta company uses to read and sign the MISMO Link AI SaaS Subscriber
+        Agreement. Open to anyone with the link &mdash; no MISMO sign-in needed, because the
+        companies are outside MISMO.</p>
       <a class="btn" href="sign/">Open the Signing Page</a>
     </div>
 
@@ -475,19 +475,21 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
 
   <section class="pane" id="app-agreement">
     <h1 class="pt">Beta Agreement</h1>
-    <p class="lede">MISMO Link AI User SaaS Agreement, Version 1.0 (updated 07/01/2026).
-      Each beta tester signs it for themselves before their access is switched on.</p>
+    <p class="lede">MISMO Link AI SaaS Subscriber Agreement, Version 1.0 (updated 07/01/2026).
+      Each beta company signs it once, through someone authorized to sign for it, before its
+      access is switched on.</p>
 
     <div class="card">
       <h2>The Signing Page</h2>
-      <p>Send this link to a beta tester. They read the agreement, type their name and sign.
-        A copy comes back to them by email, and the signature is recorded automatically.</p>
+      <p>Send this link to the beta company's contact. They, or whoever signs for the company,
+        read the agreement, type their name and sign. A copy comes back to them by email, and the
+        signature is recorded automatically.</p>
       <a class="btn" href="sign/">Open the Signing Page</a>
     </div>
 
     <div class="card">
       <h2>What Gets Recorded</h2>
-      <p>Name, job title, company and work email; the date and time; the version of the
+      <p>The company, and the signer's name, job title and work email; the date and time; the version of the
         agreement; the exact sentence they agreed to; and a fingerprint of the agreement text
         as it stood on screen when they signed.</p>
     </div>
@@ -1103,7 +1105,11 @@ window.__mismoLinkGate = (function(){
   }
 
   function key(r){ return get(r,"email").toLowerCase() || (get(r,"company") + "|" + get(r,"name")).toLowerCase(); }
-  function hasSigned(r){ var e = get(r,"email").toLowerCase(); return !!(e && signedEmails[e]); }
+  function orgKey(s){ return String(s || "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
+  function hasSigned(r){
+    var e = get(r,"email").toLowerCase(), c = orgKey(get(r,"company"));
+    return !!((e && signedEmails[e]) || (c && signedEmails["org:" + c]));
+  }
   function wasSent(r){ return !!sent[key(r)]; }
 
   function flag(text, kind){ return '<span class="flag' + (kind ? " " + kind : "") + '">' + esc(text) + '</span>'; }
@@ -1174,12 +1180,14 @@ window.__mismoLinkGate = (function(){
   function draft(r){
     var to = get(r,"email");
     var first = (get(r,"name").split(" ")[0] || "there");
-    var subject = "Your MISMO Link AI beta access — agreement to sign";
+    var subject = "MISMO Link AI beta — subscriber agreement to sign";
     var body = "Hi " + first + ",\n\n" +
       "Thank you for taking part in the MISMO Link AI early beta.\n\n" +
-      "Before we can switch on your access, we need you to read and sign the MISMO Link AI " +
-      "User Agreement. It takes about three minutes:\n\n" + SIGN_URL + "\n\n" +
-      "You do not need an account to sign it, and a copy comes back to you by email once you have.\n\n" +
+      "Before we can switch on access for " + (get(r,"company") || "your company") + ", we need the " +
+      "company to sign the MISMO Link AI SaaS Subscriber Agreement. It is signed once, on the company's " +
+      "behalf, by someone with authority to sign agreements for it. If that is not you, please forward " +
+      "this link to the person who can:\n\n" + SIGN_URL + "\n\n" +
+      "No account is needed to sign it, and a copy comes back to the signer by email.\n\n" +
       "Any questions, just reply to this message.\n\n" +
       "Best regards,\n";
     window.location.href = "mailto:" + encodeURIComponent(to) +
@@ -1225,6 +1233,8 @@ window.__mismoLinkGate = (function(){
         harvest(j).forEach(function(sig){
           var e = (sig.signerEmail || "").toLowerCase();
           if(e) signedEmails[e] = true;
+          var o = orgKey(sig.organization);
+          if(o) signedEmails["org:" + o] = true;
         });
       })
       .catch(function(){ /* the list still works without it */ });
