@@ -451,8 +451,9 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
 
   <section class="pane on" id="app-overview">
     <h1 class="pt">MISMO Link</h1>
-    <p class="lede">The home for everything MISMO Link. The beta subscriber agreement is the first
-      piece; the rest of the hub is built out from here.</p>
+    <p class="lede">The home for everything MISMO Link. The beta agreements are the first
+      piece: the company signs the Subscriber Agreement, and each person who will use the
+      service signs the User Agreement.</p>
 
     <div class="card">
       <h2>Beta Subscriber Agreement<span class="tag live">Live</span></h2>
@@ -460,6 +461,13 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
         Agreement. Open to anyone with the link &mdash; no MISMO sign-in needed, because the
         companies are outside MISMO.</p>
       <a class="btn" href="sign/">Open the Signing Page</a>
+    </div>
+
+    <div class="card">
+      <h2>Beta User Agreement<span class="tag live">Live</span></h2>
+      <p>The page each beta tester uses to read and sign the MISMO Link AI User SaaS Agreement
+        for themselves. Open to anyone with the link &mdash; no MISMO sign-in needed.</p>
+      <a class="btn" href="user/">Open the Signing Page</a>
     </div>
 
     <div class="card soon">
@@ -475,12 +483,12 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
 
   <section class="pane" id="app-agreement">
     <h1 class="pt">Beta Agreement</h1>
-    <p class="lede">MISMO Link AI SaaS Subscriber Agreement, Version 1.0 (updated 07/01/2026).
-      Each beta company signs it once, through someone authorized to sign for it, before its
-      access is switched on.</p>
+    <p class="lede">Two agreements, both Version 1.0 (updated 07/01/2026). Each beta company signs
+      the SaaS Subscriber Agreement once, through someone authorized to sign for it. Each person
+      who will use MISMO Link AI then signs the User SaaS Agreement for themselves.</p>
 
     <div class="card">
-      <h2>The Signing Page</h2>
+      <h2>Subscriber Agreement &mdash; the Company</h2>
       <p>Send this link to the beta company's contact. They, or whoever signs for the company,
         read the agreement, type their name and sign. A copy comes back to them by email, and the
         signature is recorded automatically.</p>
@@ -488,8 +496,16 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
     </div>
 
     <div class="card">
+      <h2>User Agreement &mdash; Each Tester</h2>
+      <p>Send this link to each person at the company who will use MISMO Link AI. They read the
+        agreement, type their name and sign for themselves. A copy comes back to them by email, and
+        the signature is recorded the same way as the company's.</p>
+      <a class="btn" href="user/">Open the Signing Page</a>
+    </div>
+
+    <div class="card">
       <h2>What Gets Recorded</h2>
-      <p>The company, and the signer's name, job title and work email; the date and time; the version of the
+      <p>Which agreement was signed; the company, and the signer's name, job title and work email; the date and time; the version of the
         agreement; the exact sentence they agreed to; and a fingerprint of the agreement text
         as it stood on screen when they signed.</p>
     </div>
@@ -810,6 +826,8 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
     var name = r.signerName || r.typedSignature || "Unnamed signer";
     var org  = r.organization || "";
     var sub  = org ? org + (r.signerEmail ? " · " + r.signerEmail : "") : (r.signerEmail || "");
+    var kind = /user/i.test(r.agreementTitle || "") ? "User Agreement" : "Subscriber Agreement";
+    sub = sub ? sub + " · " + kind : kind;
     var read = r.readToEnd === true;
     var on   = !!opened[i];
     return '<li class="sig">' +
@@ -1231,6 +1249,9 @@ window.__mismoLinkGate = (function(){
       .then(function(res){ return res.json(); })
       .then(function(j){
         harvest(j).forEach(function(sig){
+          /* Only the company's Subscriber Agreement counts here; a tester's
+             own User Agreement does not sign the company up. */
+          if(/user/i.test(sig.agreementTitle || "")) return;
           var e = (sig.signerEmail || "").toLowerCase();
           if(e) signedEmails[e] = true;
           var o = orgKey(sig.organization);
