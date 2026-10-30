@@ -499,6 +499,13 @@ body.railmini .hq .mast-right #theme-btn{margin-top:4px;padding-top:10px;border-
 .kcard small{color:var(--ink-2);font-size:11.5px;line-height:1.35}
 .kcard .kt{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:3px}
 .kcard .kt:empty{display:none}
+.sechead{font-size:17px;font-weight:700;margin:4px 0 12px}
+.card>.ch .sq{width:10px;height:10px;border-radius:2px;flex:0 0 auto}
+.card>.ch .cnt{font-size:11.5px;font-weight:700;color:var(--ink-3);background:var(--surface-3);border-radius:4px;padding:2px 7px}
+.cogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;padding:14px 16px}
+.cogrid .kcard{height:100%}
+.empty.slim{padding:12px 16px;font-size:13px;color:var(--ink-3)}
+.stepcard+.grid2{margin-top:22px}
 
 .feed{display:flex;flex-direction:column}
 .feed .fe{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:8px 16px;border-bottom:1px solid var(--rule);font-size:12.5px;color:var(--ink);align-items:baseline}
@@ -1225,17 +1232,23 @@ window.__mismoLinkGate = (function(){
       : wait ? 'Waiting on <em>' + plural(wait, "company") + '</em> to sign the Subscriber Agreement.'
       : "Every company has signed and every tester is set up.";
 
-    var cols = [["tosend","To Send","var(--border-strong)"],["waiting","Waiting to Sign","var(--warn)"],
-                ["kickoff","Kick-off to Schedule","var(--bad)"],["kickedoff","Signed and Kicked Off","var(--good)"]];
-    var board = '<div class="kanban" style="--cols:4">' + cols.map(function(col){
-      var list = all.filter(function(c){ return c.stage === col[0]; });
-      return '<div class="kcol"><div class="kh"><i style="background:' + col[2] + '"></i>' + esc(col[1]) + '<span class="n">' + list.length + '</span></div><div class="kb">' +
-        (list.map(function(c){
-          return '<button type="button" class="kcard" data-co="' + esc(c.key) + '"><b>' + esc(c.name) + '</b><small>' + esc(memberLine(c.member)) + '</small>' +
-            '<span class="kt">' + (c.member && !c.member.isMember ? chip("Not a Member","changes") : "") +
+    /* one section per step, each a grid of company boxes, so a long step runs across the page instead of down it */
+    var STEPS = [["tosend","To Send","var(--border-strong)","not yet sent the Subscriber Agreement"],
+                 ["waiting","Waiting to Sign","var(--warn)","sent, not signed yet"],
+                 ["kickoff","Kick-off to Book","var(--bad)","signed; the kick-off call is due within 3 business days"],
+                 ["kickedoff","Signed and Kicked Off","var(--good)","testers are signing the User Agreement"]];
+    var board = STEPS.map(function(st){
+      var list = all.filter(function(c){ return c.stage === st[0]; });
+      return '<div class="card stepcard"><div class="ch"><i class="sq" style="background:' + st[2] + '"></i><h2>' + esc(st[1]) + '</h2><span class="cnt">' + list.length +
+        '</span><span class="note">' + esc(st[3]) + '</span></div>' +
+        (list.length ? '<div class="cogrid">' + list.map(function(c){
+          var m = c.member, ml = !m ? "Membership not checked" : !m.isMember ? "" :
+            [m.level, m.thru ? "through " + new Date(String(m.thru).slice(0,10) + "T12:00:00Z").toLocaleDateString("en-US", {month:"short", year:"numeric", timeZone:"UTC"}) : ""].filter(Boolean).join(" · ");
+          return '<button type="button" class="kcard" data-co="' + esc(c.key) + '"><b>' + esc(c.name) + '</b>' + (ml ? '<small>' + esc(ml) + '</small>' : "") +
+            '<span class="kt">' + (m && !m.isMember ? chip("Not a Member","changes") : "") +
             (c.users.length ? chip(plural(c.users.length, "tester") + " signed","in") : "") + (c.toSetUp ? chip(c.toSetUp + " to set up","review") : "") + '</span></button>';
-        }).join("") || '<div class="kmore">None</div>') + '</div></div>';
-    }).join("") + '</div>';
+        }).join("") + '</div>' : '<div class="empty slim">None right now.</div>') + '</div>';
+    }).join("");
 
     var dueCard = '<div class="card"><div class="ch"><h2>Waiting on the Team</h2><span class="note">each due 3 business days after signing</span></div>' +
       (due.length ? '<div class="duelist">' + due.map(function(x){
@@ -1259,7 +1272,7 @@ window.__mismoLinkGate = (function(){
         tile(kick, "Kick-offs to Book", "after the company signs", {hot:kick > 0}) +
         tile(setup, "Testers to Set Up", "of " + testers + " who have signed", {hot:setup > 0}) +
       '</div></div>' +
-      '<div class="card"><div class="ch"><h2>Where Each Company Stands</h2><span class="note">click a company to open it</span></div><div class="cb">' + board + '</div></div>' +
+      '<h2 class="sechead">Where Each Company Stands</h2>' + board +
       '<div class="grid2">' + dueCard + feed + '</div>' +
       '<p class="foot">Membership as checked in Member 360' + (checked ? " on " + esc(shortDay(checked)) : "") +
       '. A company counts as signed when someone from it signs the Subscriber Agreement; testers are matched to their company by email domain.</p>';
