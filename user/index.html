@@ -427,6 +427,10 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
           <label for="f-phone">Phone</label>
           <input class="in" type="tel" id="f-phone" autocomplete="tel">
         </div>
+        <div class="fld" style="position:absolute;left:-9999px" aria-hidden="true">
+          <label for="f-website">Leave this empty</label>
+          <input type="text" id="f-website" tabindex="-1" autocomplete="off">
+        </div>
         <div class="fld">
           <label for="f-date">Date</label>
           <input class="in" type="text" id="f-date" readonly>
@@ -691,22 +695,15 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
 (function(){
   "use strict";
 
-  /* The individual User Agreement. Same page, same flow and same records as
-     the company's Subscriber Agreement (../sign/); agreementTitle in the record
-     says which of the two was signed.
+  /* Signatures go to MISMO's save relay, which files them in the private
+     mismo-link-data repository, emails the signer a copy and tells the beta
+     team (the list under Who Is Told in MISMO Link HQ). No sign-in: the
+     route only adds, and only from this site.
 
-     Paste the Power Automate flow URL here - the "When an HTTP request is
-     received" trigger. While it is empty the page hands the signer a file
-     to send in instead, so the page works either way. */
-  var FLOW_ENDPOINT = "";
-
-  /* The shared word the flow checks before it does anything with a
-     submission. The flow URL is readable by anyone who views this page, so
-     without this a stranger can post junk straight into the mailbox. Put the
-     same word here that the eight application forms already use, and the same
-     one in the flow's condition. It keeps the mailbox clean; it is not a
-     password and protects nothing else. */
-  var FORM_KEY = "";
+     Until that route is switched on the relay answers 404, and the page
+     hands the signer a file to email in instead, so nothing is lost. */
+  var SUBMIT_URL = "https://rgvdi67cg27o5kcmiytcqbqnrm0hmztx.lambda-url.us-east-1.on.aws/mismo-link/agreements/submit";
+  var OPENED_AT  = Date.now();   /* the relay ignores anything sent within 3 seconds of opening */
 
   var AGREEMENT  = "MISMO Link AI User SaaS Agreement";
   var VERSION    = "1.0 (updated 07/01/2026)";
@@ -730,6 +727,7 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
   /* Whether it actually reached MISMO, or only landed in the signer's
      downloads. Never tell someone their signature was sent when it was not. */
   var delivered = false;
+  var reference = "";
   var docHash   = "";
   var toastTimer = null;
   var saveTimer  = null;
@@ -911,7 +909,7 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
        ["Company", val("f-org")],
        ["Work Email", val("f-email")],
        ["Agreement", AGREEMENT + ", Version " + VERSION],
-       ["Signed On", $("f-signed").value]].map(function(r){
+       ["Signed On", $("f-signed").value]].concat(reference ? [["Reference", reference]] : []).map(function(r){
         return '<li><span class="rk">' + esc(r[0]) + '</span><span class="rv">' + esc(r[1]) + '</span></li>';
       }).join("") + '</ul>';
   }
@@ -924,11 +922,11 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
       box.innerHTML = (delivered
         ? '<h3>Signed and Sent to MISMO</h3>' +
           '<p>Thank you. A copy is on its way to <b>' + esc(val("f-email")) + '</b>. ' +
-          'MISMO will be in touch when your MISMO Link AI beta access is switched on.</p>'
+          'You will hear from a member of the team within 3 business days with instructions and credentials.</p>'
         : '<h3>Signed &mdash; One Step Left</h3>' +
           '<p>Your signed agreement has been saved to your computer as a file. ' +
           'Please email it to <a href="mailto:info@mismo.org">info@mismo.org</a> so MISMO ' +
-          'can switch on your beta access.</p>') +
+          'can switch on your beta access. You will hear from a member of the team within 3 business days with instructions and credentials.</p>') +
         recapHTML() +
         '<div class="acts"><button class="btn ghost" type="button" id="printdone">Print or Save as PDF</button></div>';
       var pd = $("printdone");
@@ -960,7 +958,9 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
   function payload(){
     var now = new Date();
     return {
-      formKey: FORM_KEY,
+      kind: "user",
+      startedAt: OPENED_AT,
+      website: val("f-website"),
       form: AGREEMENT,
       programCode: PROGRAM,
       agreementTitle: AGREEMENT,
@@ -1000,30 +1000,24 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
     if(missing().length){ paint(); return; }
     var body = payload();
 
-    if(!FLOW_ENDPOINT){
-      /* No flow wired up yet: the signer sends the file in instead, and nothing
-         is lost in the meantime. */
-      download(body);
-      submitted = true; delivered = false; paint();
-      toast("Saved to your computer - please email it to info@mismo.org.");
-      return;
-    }
-
     var b = $("dosign");
     if(b){ b.disabled = true; b.textContent = "Sending..."; }
-    fetch(FLOW_ENDPOINT, {
+    fetch(SUBMIT_URL, {
       method: "POST", headers: {"Content-Type": "application/json"},
       body: JSON.stringify(body)
     }).then(function(r){
       if(!r.ok) throw new Error("status " + r.status);
-      submitted = true; delivered = true;
+      return r.json().catch(function(){ return {}; });
+    }).then(function(j){
+      submitted = true; delivered = true; reference = (j && j.reference) || "";
       try{ localStorage.removeItem(KEY); }catch(e){}
       paint();
       toast("Signed and sent to MISMO.");
     }).catch(function(){
-      if(b){ b.disabled = false; b.textContent = "Sign and Send to MISMO"; }
+      /* not switched on yet, or the relay is resting: the signer keeps a file to send in */
       download(body);
-      toast("That did not go through - a copy has been saved to your computer instead.");
+      submitted = true; delivered = false; paint();
+      toast("Saved to your computer - please email it to info@mismo.org.");
     });
   }
 
