@@ -414,6 +414,182 @@ body.railmini .hq .mast-right #theme-btn{margin-top:4px;padding-top:10px;border-
 .nt-list li{display:flex; gap:10px; align-items:center; padding:6px 0; border-bottom:1px solid var(--rule); font-size:13px;}
 .nt-list li span{flex:1 1 auto; min-width:0; overflow-wrap:anywhere;}
 </style>
+<style>
+/* ===================================================================
+   Page furniture copied from Elections HQ (its real values), so MISMO
+   Link HQ reads as a sibling: page head, the navy band of figure boxes,
+   cards with a header row, the kanban, the feed, Help, and the wide
+   right-hand panel.
+   =================================================================== */
+:root{ --mono:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --band:#0d314c; --band-ink:#ffffff; --band-tile:rgba(255,255,255,.07); --band-line:rgba(116,191,235,.28);
+  --good-soft:#e3f3ed; --bad-soft:#f8e6e4; --warn-soft:#f7eedc; --navy:#0d314c; }
+:root[data-theme="dark"]{ --band:#0a2433; --band-tile:rgba(255,255,255,.05); --good-soft:#123d33; --bad-soft:#41211f; --warn-soft:#3b3017; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --band:#0a2433; --band-tile:rgba(255,255,255,.05); --good-soft:#123d33; --bad-soft:#41211f; --warn-soft:#3b3017; } }
+.rail-lbl,.railhits .rh-g,.meta{font-variant-numeric:tabular-nums;}
+
+.wrap{max-width:none;}
+.phead{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.phead .eyebrow{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+.phead h1{font-size:27px;font-weight:700;line-height:1.15;color:var(--ink)}
+.phead .sub{color:var(--ink-2);font-size:13.5px;margin-top:3px}
+.phead .tools{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+
+.band{background:var(--band);color:var(--band-ink);border-radius:8px;padding:16px 18px 18px;margin-bottom:22px;border:1px solid var(--band-line)}
+.band .today{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:var(--sky)}
+.band .say{font-size:16.5px;font-weight:600;line-height:1.45;margin:6px 0 14px}
+.band .say em{font-style:normal;color:var(--sky)}
+.band .say .hot{color:#f3a59b}
+.tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+@media(max-width:1180px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tile{background:var(--band-tile);border:1px solid var(--band-line);border-radius:6px;padding:12px 14px;min-width:0;text-align:left;color:inherit;font:inherit;cursor:default}
+.tile .v{font-size:27px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.tile .v.hot{color:#f3a59b}
+.tile .v.sky{color:var(--sky)}
+.tile .k{font-size:12.5px;font-weight:600;color:var(--sky);margin-top:5px}
+.tile .s{font-size:11.5px;color:rgba(255,255,255,.62);margin-top:1px}
+@media(max-width:600px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.tile .v{font-size:22px}}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;min-width:0;padding:0;margin:0}
+.card+.card{margin-top:22px}
+.card>.ch{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.card>.ch h2{font-size:15.5px;font-weight:700;margin:0}
+.card>.cb{padding:14px 16px}
+.card>.cb p{font-size:13.5px;color:var(--ink-2);line-height:1.6;margin:0 0 12px}
+.card>.cb p:last-child{margin-bottom:0}
+.card .acts{display:flex;gap:8px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:start;margin-top:22px}
+@media(max-width:1100px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.grid2 .card+.card{margin-top:0}
+.note{color:var(--ink-3);font-size:12.5px}
+.muted{color:var(--ink-3);font-size:12.5px}
+.foot{color:var(--ink-3);font-size:11.5px;margin-top:26px;line-height:1.5}
+.empty{padding:22px 16px;color:var(--ink-2);font-size:13.5px;border:0;background:none;border-radius:0;text-align:left}
+.empty b{color:var(--ink)}
+
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.02em;border-radius:4px;padding:2px 7px;white-space:nowrap;border:1px solid transparent;line-height:1.4}
+.chip.wait{background:var(--surface-3);color:var(--ink-2)}
+.chip.in{background:var(--accent-soft);color:var(--navy-mid);border-color:var(--border)}
+.chip.review{background:var(--warn-soft);color:var(--warn)}
+.chip.changes{background:var(--bad-soft);color:var(--bad)}
+.chip.ok{background:var(--good-soft);color:var(--good)}
+
+.subtabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.subtabs button{border:1px solid var(--border-strong);background:var(--surface);color:var(--ink);border-radius:5px;padding:7px 13px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;display:inline-flex;gap:7px;align-items:center}
+.subtabs button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.subtabs .n{font-size:11px;font-weight:700;color:var(--ink-3)}
+.subtabs button[aria-pressed="true"] .n{color:var(--sky)}
+:root[data-theme="dark"] .subtabs button[aria-pressed="true"]{background:var(--sky);border-color:var(--sky);color:#06202f}
+:root[data-theme="dark"] .subtabs button[aria-pressed="true"] .n{color:#0d314c}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .subtabs button[aria-pressed="true"]{background:var(--sky);border-color:var(--sky);color:#06202f}
+  :root:not([data-theme="light"]) .subtabs button[aria-pressed="true"] .n{color:#0d314c} }
+.hq nav button[aria-current]{background:#14486e !important;color:#fff !important}
+.pt-toast{top:calc(var(--hq-h) + 14px) !important;z-index:99 !important}
+
+.kanban{display:grid;grid-template-columns:repeat(var(--cols,4),minmax(200px,1fr));gap:12px;align-items:start;overflow-x:auto;padding-bottom:4px}
+.kcol{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;display:flex;flex-direction:column;min-width:0;max-height:calc(100vh - 290px)}
+.kcol .kh{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);font-weight:700;font-size:13px}
+.kcol .kh i{width:10px;height:10px;border-radius:2px;flex:0 0 auto}
+.kcol .kh .n{margin-left:auto;font-size:11.5px;color:var(--ink-3);font-weight:700}
+.kcol .kb{padding:8px;display:flex;flex-direction:column;gap:7px;overflow-y:auto;min-height:60px}
+.kcol .kmore{font-size:12px;color:var(--ink-3);padding:4px 4px 8px;text-align:center}
+.kcard{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:9px 10px;cursor:pointer;font:inherit;font-size:12.5px;display:flex;flex-direction:column;gap:3px;text-align:left;color:var(--ink)}
+.kcard:hover{border-color:var(--navy-mid)}
+.kcard b{font-size:13px;line-height:1.3}
+.kcard small{color:var(--ink-2);font-size:11.5px;line-height:1.35}
+.kcard .kt{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:3px}
+.kcard .kt:empty{display:none}
+
+.feed{display:flex;flex-direction:column}
+.feed .fe{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:8px 16px;border-bottom:1px solid var(--rule);font-size:12.5px;color:var(--ink);align-items:baseline}
+.feed .fx b{display:block;font-size:13px}
+.feed .fe:last-child{border-bottom:0}
+.feed .fw{color:var(--ink-3);font-size:11.5px}
+.feed .fd{display:block;color:var(--ink-2);overflow-wrap:anywhere}
+@media(max-width:600px){.feed .fe{grid-template-columns:80px minmax(0,1fr)}}
+.duelist{display:flex;flex-direction:column}
+.due{display:grid;grid-template-columns:150px minmax(0,1fr);gap:2px 12px;padding:9px 16px;border:0;border-bottom:1px solid var(--rule);background:none;font:inherit;text-align:left;color:var(--ink);cursor:pointer}
+.due:last-child{border-bottom:0}
+.due:hover{background:var(--accent-soft)}
+.due .dd{grid-row:span 2;font-size:12px;font-weight:700;color:var(--ink-2)}
+.due.late .dd{color:var(--bad)}
+.due b{font-size:13px}
+.due .dw{font-size:12px;color:var(--ink-2)}
+@media(max-width:600px){.due{grid-template-columns:1fr}.due .dd{grid-row:auto}}
+
+.ta-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.ta-tools input[type=search]{flex:1 1 260px;min-width:0;border:1px solid var(--border);border-radius:6px;padding:8px 11px;font-family:inherit;font-size:13px;background:var(--surface);color:var(--ink)}
+.ta-tools input[type=search]:focus{outline:2px solid var(--sky);outline-offset:-1px;border-color:var(--sky)}
+.rows{display:flex;flex-direction:column}
+.row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;width:100%;padding:11px 16px;border:0;border-bottom:1px solid var(--rule);background:none;font:inherit;text-align:left;color:var(--ink);cursor:pointer}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--accent-soft)}
+.row .rw{flex:1 1 260px;min-width:0}
+.row .rw b{display:block;font-size:14px;font-weight:600}
+.row .rw span{display:block;font-size:12.5px;color:var(--ink-2)}
+.row .rf{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.row .rd{font-size:12px;color:var(--ink-2);white-space:nowrap;margin-left:4px}
+
+.rpane{position:fixed;top:calc(var(--hq-h) + env(safe-area-inset-top,0px));right:0;bottom:0;width:min(76vw,1180px);z-index:96;background:var(--surface);
+  border-left:1px solid var(--border-strong);box-shadow:-10px 0 34px rgba(6,32,47,.22);display:flex;flex-direction:column;transform:translateX(102%);transition:transform .22s cubic-bezier(.4,0,.2,1);
+  padding-right:env(safe-area-inset-right,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.rpane.open{transform:none}
+@media(max-width:760px){.rpane{width:100%}}
+@media (prefers-reduced-motion:reduce){.rpane{transition:none}}
+.rpane .ph{display:flex;align-items:flex-start;gap:12px;padding:16px 20px 12px;border-bottom:1px solid var(--rule)}
+.rpane .ph .pe{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+.rpane .ph h2{font-size:20px;font-weight:700;margin-top:2px}
+.rpane .ph .x{margin-left:auto}
+.rpane .pb{flex:1;overflow:auto;padding:16px 20px 24px}
+.rpane .pf{display:flex;gap:8px;align-items:center;padding:12px 20px;border-top:1px solid var(--rule);background:var(--surface-2);flex-wrap:wrap}
+.rpane .pf[hidden]{display:none}
+.rpane .pf .msg{font-size:12.5px;color:var(--bad)}
+.boxes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:6px}
+.box{border:1px solid var(--border);border-radius:7px;padding:12px 14px;background:var(--surface-2)}
+.box h4,.psec h3{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--ink-3);margin:0 0 7px}
+.box p{margin:0;font-size:13.5px;color:var(--ink);line-height:1.55}
+.psec{margin-top:20px}
+.plist{border:1px solid var(--border);border-radius:7px}
+.prow{display:flex;gap:8px 14px;align-items:center;flex-wrap:wrap;padding:9px 12px;border-bottom:1px solid var(--rule)}
+.prow:last-child{border-bottom:0}
+.pwho{flex:1 1 260px;min-width:0;background:none;border:0;padding:0;font:inherit;text-align:left;color:var(--ink);cursor:pointer}
+.pwho.static{cursor:default}
+.pwho b{display:block;font-size:13.5px;font-weight:600}
+.pwho:not(.static):hover b{text-decoration:underline}
+.pwho span{display:block;font-size:12.5px;color:var(--ink-2);overflow-wrap:anywhere}
+.pwho span.muted{color:var(--ink-3);font-size:12px}
+.pacts{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.kv{display:grid;grid-template-columns:200px minmax(0,1fr);gap:8px 16px;margin:0;font-size:13.5px}
+@media(max-width:600px){.kv{grid-template-columns:1fr;gap:2px 0}.kv dt{margin-top:8px}}
+.kv dt{color:var(--ink-3);font-weight:600}
+.kv dd{margin:0;color:var(--ink);min-width:0;overflow-wrap:anywhere;white-space:pre-wrap}
+.stmt{margin:0;padding:12px 15px;border-left:3px solid var(--sky);background:var(--surface-2);border-radius:0 6px 6px 0;font-size:13.5px;line-height:1.6}
+.fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}
+@media(max-width:600px){.fgrid{grid-template-columns:1fr}}
+.fgrid label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-2);margin-bottom:4px}
+.fgrid input{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 11px;font-family:inherit;font-size:13.5px;background:var(--surface);color:var(--ink)}
+.fgrid input:focus{outline:2px solid var(--sky);outline-offset:-1px;border-color:var(--sky)}
+
+.helpwrap{display:grid;grid-template-columns:230px minmax(0,1fr);gap:22px;align-items:start}
+@media(max-width:860px){.helpwrap{grid-template-columns:minmax(0,1fr)}}
+.helpnav{position:sticky;top:calc(var(--hq-h) + 16px);display:flex;flex-direction:column;gap:2px}
+@media(max-width:860px){.helpnav{position:static}}
+.helpnav .hg{font-size:10px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:var(--ink-3);padding:10px 8px 4px}
+.helpnav button{text-align:left;background:none;border:0;border-radius:5px;padding:7px 10px;font-family:inherit;font-size:13px;font-weight:500;color:var(--ink-2);cursor:pointer}
+.helpnav button:hover{background:var(--surface-3);color:var(--ink)}
+.helpnav button[aria-current]{background:var(--accent-soft);color:var(--ink);font-weight:700;box-shadow:inset 3px 0 0 var(--sky)}
+.helpbody .cb{padding:22px 26px 26px}
+.helpbody .eyebrow{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+.helpbody h2{font-size:22px;margin:2px 0 12px}
+.helpbody p,.helpbody li{font-size:14px;line-height:1.6;color:var(--ink)}
+.helpbody .card>.cb p{font-size:14px;color:var(--ink)}
+.helpbody .lead,.helpbody .card>.cb p.lead{font-size:15.5px}
+.helpbody ul,.helpbody ol{padding-left:20px;margin:6px 0}
+.helpbody li{margin:5px 0}
+
+.hq nav .navsep{font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.42);padding:10px 10px 4px}
+body.railmini .hq nav .navsep{display:none}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="mismo-logo" viewBox="0 0 708 108"><g transform="translate(0.000000,108.000000) scale(0.100000,-0.100000)" fill="var(--logo-body, #0f314c)"><path d="M5917 1065 c-169 -46 -279 -153 -335 -323 -21 -65 -25 -96 -25 -197
@@ -486,12 +662,13 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
     <button type="button" data-hq="agreement" title="Beta Agreement">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4M9 13h6M9 17h4"/></svg>
       <span>Beta Agreement</span></button>
-    <button type="button" data-hq="signed" title="Who Has Signed">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
-      <span>Who Has Signed</span></button>
     <button type="button" data-hq="access" title="Testers and Access">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M17 11h4M19 9v4"/></svg>
       <span>Testers and Access</span></button>
+    <div class="navsep">Help</div>
+    <button type="button" data-hq="help" title="Help">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 014.8.9c0 1.7-2.4 2.2-2.4 3.8M12 17.2v.01"/></svg>
+      <span>Help &amp; How-To</span></button>
   </nav>
 
   <div class="mast-right">
@@ -507,138 +684,56 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
 
 <div class="wrap">
 
-  <section class="pane on" id="app-overview">
-    <h1 class="pt">MISMO Link</h1>
-    <p class="lede">The home for everything MISMO Link. The beta agreements are the first
-      piece: the company signs the Subscriber Agreement, and each person who will use the
-      service signs the User Agreement.</p>
-
-    <div class="card">
-      <h2>Beta Subscriber Agreement<span class="tag live">Live</span></h2>
-      <p>The page each beta company uses to read and sign the MISMO Link AI SaaS Subscriber
-        Agreement. Open to anyone with the link &mdash; no MISMO sign-in needed, because the
-        companies are outside MISMO.</p>
-      <a class="btn" href="sign/">Open the Signing Page</a>
-    </div>
-
-    <div class="card">
-      <h2>Beta User Agreement<span class="tag live">Live</span></h2>
-      <p>The page each beta tester uses to read and sign the MISMO Link AI User SaaS Agreement
-        for themselves. Open to anyone with the link &mdash; no MISMO sign-in needed.</p>
-      <a class="btn" href="user/">Open the Signing Page</a>
-    </div>
-
-    <div class="card">
-      <h2>Testers and Access<span class="tag live">Live</span></h2>
-      <p>The early beta partners company by company: membership, Member 360 contacts, who has been sent the
-        Subscriber Agreement, signatures, kick-off calls and testers to set up. People can be added and removed here.</p>
-      <button class="btn" type="button" data-go="access">Open Testers and Access</button>
-    </div>
-
-    <div class="card">
-      <h2>Who Has Signed<span class="tag live">Live</span></h2>
-      <p>Every signed agreement, Subscriber and User, who it was from and when.</p>
-      <button class="btn" type="button" data-go="signed">Open Who Has Signed</button>
-    </div>
-  </section>
+  <section class="pane on" id="app-overview"></section>
 
   <section class="pane" id="app-agreement">
-    <h1 class="pt">Beta Agreement</h1>
-    <p class="lede">Two agreements, both Version 1.0 (updated 07/01/2026). Each beta company signs
-      the SaaS Subscriber Agreement once, through someone authorized to sign for it. Each person
-      who will use MISMO Link AI then signs the User SaaS Agreement for themselves.</p>
+    <div class="phead"><div><div class="eyebrow">MISMO Link AI Beta</div><h1>Beta Agreement</h1>
+      <div class="sub">Two agreements, both Version 1.0 (updated 07/01/2026): the company signs the SaaS Subscriber Agreement once, then each tester signs the User SaaS Agreement for themselves.</div></div></div>
 
-    <div class="card">
-      <h2>Subscriber Agreement &mdash; the Company</h2>
-      <p>Send this link to the beta company's contact. They, or whoever signs for the company,
-        read the agreement, type their name and sign. A copy comes back to them by email, and the
-        signature is recorded automatically.</p>
-      <a class="btn" href="sign/">Open the Signing Page</a>
-    </div>
+    <div class="card"><div class="ch"><h2>Subscriber Agreement &mdash; the Company</h2></div><div class="cb">
+      <p>Sent to each beta company's contact. They, or whoever signs for the company, read the agreement, type their name and sign.
+        A copy comes back to them by email, and the signature is recorded in Who Has Signed.</p>
+      <div class="acts"><a class="btn" href="sign/" target="_blank" rel="noopener">Open the Signing Page</a></div>
+    </div></div>
 
-    <div class="card">
-      <h2>User Agreement &mdash; Each Tester</h2>
-      <p>Send this link to each person at the company who will use MISMO Link AI. They read the
-        agreement, type their name and sign for themselves. A copy comes back to them by email, and
-        the signature is recorded the same way as the company's.</p>
-      <a class="btn" href="user/">Open the Signing Page</a>
-    </div>
+    <div class="card"><div class="ch"><h2>User Agreement &mdash; Each Tester</h2></div><div class="cb">
+      <p>Once the company has signed, the company passes this link to each person taking part in the beta. Each one reads the
+        agreement and signs for themselves, and the signature is recorded the same way.</p>
+      <div class="acts"><a class="btn" href="user/" target="_blank" rel="noopener">Open the Signing Page</a></div>
+    </div></div>
 
-    <div class="card" id="nt-card">
-      <h2>Who Is Told When Someone Signs</h2>
-      <p>When a company signs the Subscriber Agreement, these people get an email to schedule the kick-off call and send
-        the company the User Agreement link. When a tester signs the User Agreement, they get an email to set that
-        person up. Each signer also gets their own copy.</p>
+    <div class="card"><div class="ch"><h2>Who Is Told When Someone Signs</h2></div><div class="cb">
+      <p>When a company signs, these people are emailed to schedule the kick-off call and send the company the User Agreement link.
+        When a tester signs, they are emailed to set that person up. Each signer also gets their own copy.</p>
       <ul class="nt-list" id="nt-list"><li><span>Loading&hellip;</span></li></ul>
       <div class="pt-inline" id="nt-add" hidden>
         <input type="text" id="nt-name" placeholder="Name" aria-label="Name">
         <input type="email" id="nt-email" placeholder="Email" aria-label="Email">
         <button class="btn sm" type="button" id="nt-save">Add</button>
       </div>
-    </div>
+    </div></div>
 
-    <div class="card">
-      <h2>What Gets Recorded</h2>
+    <div class="card"><div class="ch"><h2>What Gets Recorded</h2></div><div class="cb">
       <p>Which agreement was signed; the company, and the signer's name, job title and work email; the date and time; the version of the
-        agreement; the exact sentence they agreed to; and a fingerprint of the agreement text
-        as it stood on screen when they signed.</p>
-    </div>
+        agreement; the exact sentence they agreed to; a fingerprint of the agreement text as it stood on screen; and the address they signed from.</p>
+    </div></div>
   </section>
 
-  <section class="pane" id="app-signed">
-    <h1 class="pt">Who Has Signed</h1>
-    <p class="lede">Every signed agreement, newest first. Click a row to see the full record.</p>
+  <section class="pane" id="app-access"></section>
 
-    <div class="sig-tools" id="sig-tools" hidden>
-      <input type="search" id="sig-q" placeholder="Filter by name, company or email" aria-label="Filter signatures">
-      <span class="sig-count" id="sig-count"></span>
-    </div>
-
-    <div id="sig-state"></div>
-    <ul class="sig-list" id="sig-list"></ul>
-
-    <p class="meta">SOURCE &middot; mismo-link-data / data/signatures/</p>
-  </section>
-
-  <section class="pane" id="app-access">
-    <h1 class="pt">Testers and Access</h1>
-    <p class="lede">The early beta partners, company by company: whether they are a member, who has been sent the
-      Subscriber Agreement, whether the company has signed, the kick-off call, and each tester's User Agreement.
-      Click a company to open it.</p>
-
-    <div class="pt-tools" id="pt-tools" hidden>
-      <input type="search" id="pt-q" placeholder="Filter by company, name, email or project" aria-label="Filter partners">
-      <div class="pt-seg" role="group" aria-label="Show">
-        <button type="button" data-ptf="all" aria-pressed="true">All</button>
-        <button type="button" data-ptf="tosend" aria-pressed="false">To Send</button>
-        <button type="button" data-ptf="waiting" aria-pressed="false">Waiting to Sign</button>
-        <button type="button" data-ptf="kickoff" aria-pressed="false">Kick-off to Schedule</button>
-        <button type="button" data-ptf="setup" aria-pressed="false">Testers to Set Up</button>
-      </div>
-      <button class="btn sm" type="button" id="pt-add" hidden>Add a Person</button>
-      <span class="pt-count" id="pt-count"></span>
-    </div>
-
-    <div class="pt-addform" id="pt-addform" hidden>
-      <h3>Add a Person to the Beta List</h3>
-      <div class="pa-grid">
-        <div><label for="pa-co">Company</label><input id="pa-co" list="pt-cos" autocomplete="off"><datalist id="pt-cos"></datalist></div>
-        <div><label for="pa-name">Name</label><input id="pa-name" autocomplete="off"></div>
-        <div><label for="pa-title">Title</label><input id="pa-title" autocomplete="off"></div>
-        <div><label for="pa-email">Email</label><input id="pa-email" type="email" autocomplete="off"></div>
-      </div>
-      <p class="pa-msg" id="pa-msg"></p>
-      <div class="pt-inline"><button class="btn sm" type="button" id="pa-save">Add to the List</button>
-        <button class="btn sm ghost" type="button" id="pa-cancel">Cancel</button></div>
-    </div>
-
-    <div id="pt-state"></div>
-    <ul class="pt-list" id="pt-list"></ul>
-
-    <p class="meta">SOURCE &middot; mismo-link-data / data/partners/</p>
-  </section>
+  <section class="pane" id="app-help"></section>
 
 </div>
+
+<aside class="rpane" id="rpane" aria-hidden="true" aria-labelledby="rp-title">
+  <div class="ph">
+    <div><div class="pe" id="rp-eye"></div><h2 id="rp-title"></h2></div>
+    <button class="btn sm ghost x" id="rp-x" type="button">Close</button>
+  </div>
+  <div class="pb" id="rp-body"></div>
+  <div class="pf" id="rp-foot" hidden></div>
+</aside>
+<div class="pt-toast" id="pt-toast" role="status" aria-live="polite"></div>
 
 <script>
 (function(){
@@ -729,7 +824,7 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
         const tab = p.id.replace(/^app-/,'');
         const secBtn = document.querySelector('.hq nav button[data-hq="'+tab+'"]');
         const secName = secBtn ? secBtn.querySelector('span').textContent : '';
-        p.querySelectorAll('.card h2, .empty h3').forEach(h=>{
+        p.querySelectorAll('.card .ch h2').forEach(h=>{
           const name = h.childNodes[0].textContent.trim();
           if(norm(name).indexOf(t)<0) return;
           push('On This Page', name, secName, ()=>go(tab));
@@ -737,12 +832,12 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
       });
     }catch(e){}
 
-    /* When the hub is wired to the relay, one more block here over the
-       signatures in mismo-link-data, pushing the group 'Signatures'. */
+    /* companies, people, signatures and help topics, from the page's own data */
+    try{ (window.__mlSearch ? window.__mlSearch(t) : []).forEach(h=>push(h.group, h.name, h.where, h.go)); }catch(e){}
 
     const best={};
     out.forEach(h=>{ best[h.group]=Math.max(best[h.group]||0, h.s); });
-    const ORDER=['Sections','On This Page','Signatures'];
+    const ORDER=['Sections','Companies','People','Signatures','Help','On This Page'];
     out.sort((a,b)=>
       (best[b.group]-best[a.group])
       || (ORDER.indexOf(a.group)-ORDER.indexOf(b.group))
@@ -844,259 +939,6 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
 
 <script>
 /* ===================================================================
-   Who Has Signed - reads the signed agreements out of the private
-   mismo-link-data repository through MISMO's save relay.
-
-   The relay answers UNKNOWN_PROJECT until the project key is
-   registered, so until Perry does that this pane says so plainly
-   rather than looking broken. Nothing here changes when he does -
-   the list fills on the next reload.
-
-   Collection ids must be lowercase: the relay answers BAD_ID to any
-   capital letter whatever the project config allows. That silently
-   cost the CMS every save it tried for months, so the ids below are
-   lowercase and stay that way.
-   =================================================================== */
-(function(){
-  "use strict";
-  var RELAY   = "https://rgvdi67cg27o5kcmiytcqbqnrm0hmztx.lambda-url.us-east-1.on.aws";
-  var PROJECT = "mismo-link";
-  var FILE    = "signatures";          /* one file: a beta is tens of records, not thousands */
-
-  var $ = function(id){ return document.getElementById(id); };
-  var rows = [], filtered = [], opened = {};
-
-  function esc(v){ return String(v == null ? "" : v).replace(/[&<>"']/g, function(c){
-    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
-
-  function state(html){ $("sig-state").innerHTML = html; }
-
-  function skeleton(){
-    $("sig-state").innerHTML = '<div class="sig-skel"></div><div class="sig-skel"></div><div class="sig-skel"></div>';
-  }
-
-  /* The relay has no "list a folder" route, so the signatures share one
-     file. Three shapes are accepted, because which one the flow writes is
-     Perry's call and this pane should not care:
-       {docs:{"signatures/<id>":{...}}}   a shared file, the relay's own shape
-       {doc:{items:{"<id>":{...}}}}       a file of its own
-       [ {...}, {...} ]                   a plain list
-  */
-  function harvest(j){
-    var out = [];
-    if(!j) return out;
-    if(Array.isArray(j)) return j.slice();
-    if(j.docs && typeof j.docs === "object"){
-      Object.keys(j.docs).forEach(function(k){ out.push(j.docs[k]); });
-      return out;
-    }
-    var d = j.doc || j;
-    if(d && d.items && typeof d.items === "object"){
-      Object.keys(d.items).forEach(function(k){ out.push(d.items[k]); });
-      return out;
-    }
-    if(Array.isArray(d.signatures)) return d.signatures.slice();
-    return out;
-  }
-
-  function when(r){
-    var iso = r.submittedAt || r.signedAt || "";
-    var d = iso ? new Date(iso) : null;
-    if(d && !isNaN(d)) return d;
-    return null;
-  }
-  function whenText(r){
-    if(r.signedOnLocal) return r.signedOnLocal;
-    var d = when(r);
-    return d ? d.toLocaleString("en-US", {year:"numeric", month:"long", day:"numeric",
-      hour:"numeric", minute:"2-digit"}) : "—";
-  }
-
-  function rowHTML(r, i){
-    var name = r.signerName || r.typedSignature || "Unnamed signer";
-    var org  = r.organization || "";
-    var sub  = org ? org + (r.signerEmail ? " · " + r.signerEmail : "") : (r.signerEmail || "");
-    var kind = /user/i.test(r.agreementTitle || "") ? "User Agreement" : "Subscriber Agreement";
-    sub = sub ? sub + " · " + kind : kind;
-    var read = r.readToEnd === true;
-    var on   = !!opened[i];
-    return '<li class="sig">' +
-      '<button class="sig-row" type="button" data-sig="' + i + '" aria-expanded="' + (on ? "true" : "false") + '">' +
-        '<span class="caret" aria-hidden="true">&#9654;</span>' +
-        '<span class="sig-who"><b>' + esc(name) + '</b><span>' + esc(sub) + '</span></span>' +
-        '<span class="sig-when">' + esc(whenText(r)) + '</span>' +
-      '</button>' +
-      '<div class="sig-body' + (on ? " on" : "") + '" id="sigbody-' + i + '">' +
-        '<dl class="sig-kv">' +
-          kv("Signed By", r.signerName) +
-          kv("Job Title", r.signerTitle) +
-          kv("Company", r.organization) +
-          kv("Work Email", r.signerEmail) +
-          kv("Phone", r.signerPhone) +
-          kv("Typed Signature", r.typedSignature) +
-          kv("Agreement", (r.agreementTitle || "") + (r.agreementVersion ? ", Version " + r.agreementVersion : "")) +
-          kv("Signed On", whenText(r)) +
-          '<dt>Read to the End</dt><dd><span class="flag ' + (read ? "ok" : "no") + '">' +
-            (read ? "Yes" : "Not recorded") + '</span></dd>' +
-          (r.documentHash ? '<dt>Agreement Fingerprint</dt><dd class="mono">' + esc(r.documentHash) + '</dd>' : "") +
-        '</dl>' +
-        (r.acceptanceStatement ? '<p class="sig-stmt">' + esc(r.acceptanceStatement) + '</p>' : "") +
-        '<div class="sig-acts"><button class="btn" type="button" data-dl="' + i + '">Download the Signed Record</button></div>' +
-      '</div></li>';
-  }
-  function kv(k, v){
-    if(v === undefined || v === null || v === "") return "";
-    return '<dt>' + esc(k) + '</dt><dd>' + esc(v) + '</dd>';
-  }
-
-  function paint(){
-    var q = ($("sig-q") && $("sig-q").value || "").toLowerCase().trim();
-    filtered = !q ? rows.slice() : rows.filter(function(r){
-      return [r.signerName, r.organization, r.signerEmail, r.signerTitle]
-        .join(" ").toLowerCase().indexOf(q) >= 0;
-    });
-    $("sig-list").innerHTML = filtered.map(function(r){ return rowHTML(r, rows.indexOf(r)); }).join("");
-    $("sig-count").innerHTML = "<b>" + filtered.length + "</b> of <b>" + rows.length + "</b> shown";
-    if(!filtered.length && rows.length){
-      state('<div class="empty"><h3>Nothing Matches That</h3><p>No signature matches what you typed. Clear the box to see them all.</p></div>');
-    } else { state(""); }
-  }
-
-  function download(r){
-    var name = (r.signerName || "signature").replace(/[^A-Za-z0-9]+/g, "-").toLowerCase();
-    var blob = new Blob([JSON.stringify(r, null, 2)], {type:"application/json"});
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "mismo-link-agreement-" + name + ".json";
-    document.body.appendChild(a); a.click();
-    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 400);
-  }
-
-  $("sig-list").addEventListener("click", function(e){
-    var dl = e.target.closest("[data-dl]");
-    if(dl){ download(rows[+dl.getAttribute("data-dl")]); return; }
-    var row = e.target.closest("[data-sig]");
-    if(!row) return;
-    var i = +row.getAttribute("data-sig");
-    opened[i] = !opened[i];
-    row.setAttribute("aria-expanded", opened[i] ? "true" : "false");
-    var body = $("sigbody-" + i);
-    if(body) body.classList.toggle("on", !!opened[i]);
-  });
-
-  /* The relay answers UNKNOWN_PROJECT with a 503, and a 503 carries no CORS
-     headers, so the browser blocks the body and fetch throws instead of
-     handing back the status. Both routes land here. */
-  function notSwitchedOn(){
-    $("sig-tools").hidden = true;
-    state('<div class="empty"><h3>Not Switched On Yet</h3>' +
-      '<p>The relay does not yet know about this tool, so there is nothing to read. ' +
-      'Three things switch it on, and none of them change this page:</p>' +
-      '<ol class="steps"><li>The private <b>GitMISMO/mismo-link-data</b> repository &mdash; already created.</li>' +
-      '<li>The project key <b>mismo-link</b> registered on the relay, pointing at it.</li>' +
-      '<li>The write role given to whoever administers the beta.</li></ol>' +
-      '<p>Signatures are recorded from the moment the signing flow is switched on, whether or not ' +
-      'this pane can read them yet &mdash; nothing is lost in the meantime. The list fills on the next reload.</p></div>');
-  }
-
-  function load(){
-    skeleton();
-    var tk = window.ResourcesSession && ResourcesSession.token ? ResourcesSession.token() : null;
-    fetch(RELAY + "/" + PROJECT + "/data/" + FILE, {cache:"no-store",
-      headers: tk ? {Authorization:"Bearer " + tk} : {}})
-      .then(function(res){
-        return res.text().then(function(t){
-          var j = null; try{ j = JSON.parse(t); }catch(e){}
-          return {status:res.status, ok:res.ok, body:j, raw:t};
-        });
-      })
-      .then(function(x){
-        var code = x.body && (x.body.error || x.body.code) || "";
-
-        if(x.status === 401 || x.status === 403 || code === "AUTH" || code === "TOKEN"){
-          $("sig-tools").hidden = true;
-          return state('<div class="empty"><h3>Sign In to See the Signatures</h3>' +
-            '<p>Signed agreements are member information, so they are only shown to signed-in MISMO staff. ' +
-            'Use the account button at the top of this page, then reload.</p></div>');
-        }
-
-        if(code === "UNKNOWN_PROJECT" || x.status === 404 || x.status === 503){
-          $("sig-tools").hidden = true;
-          return notSwitchedOn();
-        }
-
-        if(!x.ok){
-          $("sig-tools").hidden = true;
-          return state('<div class="empty"><h3>That Did Not Load</h3>' +
-            '<p>The relay answered ' + esc(x.status) + (code ? " (" + esc(code) + ")" : "") +
-            '. Nothing has been lost &mdash; try again in a minute, and if it keeps happening Perry can see why from the relay side.</p></div>');
-        }
-
-        rows = harvest(x.body);
-        rows.sort(function(a, b){
-          var da = when(a), db = when(b);
-          return (db ? db.getTime() : 0) - (da ? da.getTime() : 0);   /* newest first */
-        });
-
-        if(!rows.length){
-          $("sig-tools").hidden = true;
-          return state('<div class="empty"><h3>No Signatures Yet</h3>' +
-            '<p>Nobody has signed yet. Each signature appears here as soon as it comes in.</p></div>');
-        }
-
-        $("sig-tools").hidden = false;
-        paint();
-      })
-      .catch(function(){
-        /* A 503 carries no CORS headers, so when the relay refuses the call
-           the browser blocks the body and the status never reaches this code.
-           There is no way to tell the two causes apart from here either: the
-           relay answered /hub/auth/me with a 200 at page load and 503 to the
-           same route seconds later, so a health probe reports whatever it
-           happens to catch. Rather than diagnose it wrongly, both causes are
-           named. */
-        $("sig-tools").hidden = true;
-        state('<div class="empty"><h3>The Signatures Could Not Be Read</h3>' +
-          '<p><b>Most likely the relay does not know about this tool yet.</b> ' +
-          'Three things switch it on, and none of them change this page:</p>' +
-          '<ol class="steps"><li>The private <b>GitMISMO/mismo-link-data</b> repository &mdash; already created.</li>' +
-          '<li>The project key <b>mismo-link</b> registered on the relay, pointing at it.</li>' +
-          '<li>The write role given to whoever administers the beta.</li></ol>' +
-          '<p>If this pane was working earlier, the relay is most likely just waking up &mdash; ' +
-          'it rests when idle and refuses the first call or two. Reload in a minute.</p>' +
-          '<p>Either way, signatures are recorded from the moment the signing flow is switched on, ' +
-          'whether or not this pane can read them yet &mdash; nothing is lost in the meantime.</p></div>');
-      });
-  }
-
-  var q = $("sig-q");
-  if(q) q.addEventListener("input", paint);
-
-  /* Loaded once, the first time the pane is opened, and on a direct arrival. */
-  var loaded = false;
-  function maybe(){
-    var pane = $("app-signed");
-    if(loaded || !pane || !pane.classList.contains("on")) return;
-    loaded = true;
-    skeleton();
-    /* Read only once the access check has passed, so a refused or signed-out
-       visitor never fires a call that would just come back 401. */
-    var gate = window.__mismoLinkGate || Promise.resolve();
-    gate.then(load, function(err){
-      state('<div class="empty"><h3>MISMO Could Not Be Reached</h3>' +
-        '<p>Your sign-in could not be checked just now. Reload in a minute ' +
-        '&mdash; nothing has been lost.</p></div>');
-    });
-  }
-  document.querySelectorAll('.hq nav button[data-hq]').forEach(function(b){
-    b.addEventListener("click", function(){ setTimeout(maybe, 0); });
-  });
-  maybe();
-})();
-</script>
-
-<script>
-/* ===================================================================
    The same sign-in every internal MISMO tool uses: /assets/session.js,
    gated on requireAccess("mismo-link"), exactly as Summit HQ, the CMS
    and Meeting Trackers are gated on their own keys.
@@ -1121,23 +963,21 @@ window.__mismoLinkGate = (function(){
 
 <script>
 /* ===================================================================
-   Testers and Access - the early beta partners, company by company.
+   MISMO Link HQ - the beta, from four private files in mismo-link-data,
+   read and saved through MISMO's save relay with the shared sign-in:
 
-   Three private files in mismo-link-data, all through MISMO's save relay:
-     data/partners    the people on the beta list (the Early Beta Partner
-                      Tracking Sheet, plus each company's Member 360 status
-                      and contacts as checked on the day they were loaded)
-     data/progress    what has happened since: who was emailed the Subscriber
-                      Agreement, kick-off calls, testers set up
-     data/signatures  every signed agreement, written by the relay when a
-                      company or a tester signs (see RELAY-REQUEST.md)
+     data/partners    the people on the beta list, with each company's
+                      Member 360 membership and contacts as checked
+     data/progress    what has happened since: Subscriber Agreement sent,
+                      kick-off calls, testers set up
+     data/signatures  every signed agreement, written by the relay's public
+                      signing route (relay request 11)
+     data/settings    who is told when someone signs
 
-   Every read and write carries the shared sign-in (a Bearer token from
-   session.js). The earlier version sent cookies instead, which the relay
-   does not use, so it always came back "could not be read".
-
-   Saves pass the sha the page read; a 409 means someone else saved in the
-   meantime, so the page reads again, re-applies the one change, and saves.
+   Pages: Overview, Beta Agreement, Testers and Access (Companies and Who
+   Has Signed), Help. A company, a person or a signature opens in the
+   right-hand panel. Every save carries the sha it read; a 409 re-reads,
+   re-applies the one change and saves again.
    =================================================================== */
 (function(){
   "use strict";
@@ -1147,75 +987,93 @@ window.__mismoLinkGate = (function(){
   var USER_URL = "https://resources.mismo.org/mismo-link/user/";
 
   var $ = function(id){ return document.getElementById(id); };
-  var P = {docs:{}, sha:null}, G = {docs:{}, sha:null}, sigs = [];
-  var opened = {}, details = {}, filter = "all", canEdit = false, adding = false;
+  var F = {
+    partners:  {docs:{}, sha:null},
+    progress:  {docs:{}, sha:null},
+    settings:  {data:{}, sha:null}
+  };
+  var sigs = [], loaded = false, failedLoad = null, canEdit = false;
+  var tab = "companies", filter = "all", panel = null;
 
+  /* ---------------- small helpers ---------------- */
   function esc(v){ return String(v == null ? "" : v).replace(/[&<>"']/g, function(c){
     return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
-  function state(html){ $("pt-state").innerHTML = html; }
   function lc(s){ return String(s || "").trim().toLowerCase(); }
   function slug(s){ return lc(s).replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "x"; }
   function orgKey(s){ return lc(s).replace(/,?\s*(inc|llc|corp|corporation|company|co)\.?$/g, "").replace(/[^a-z0-9]/g, ""); }
   function domainOf(e){ var m = lc(e).match(/@([^@\s>]+)$/); return m ? m[1] : ""; }
   var GENERIC = {"gmail.com":1,"yahoo.com":1,"outlook.com":1,"hotmail.com":1,"icloud.com":1,"aol.com":1};
-  function today(){ return new Date().toLocaleDateString("en-US", {year:"numeric", month:"long", day:"numeric"}); }
-  function me(){ var rs = window.ResourcesSession; try{ var s = rs && rs.current && rs.current(); return (s && (s.name || s.email)) || ""; }catch(e){ return ""; } }
+  var IRREG = {person:"people", company:"companies"};
+  function plural(n, w){ return n + " " + (n === 1 ? w : (IRREG[w] || w + "s")); }
+  function nowIso(){ return new Date().toISOString(); }
+  function longDay(d){ return d.toLocaleDateString("en-US", {weekday:"long", year:"numeric", month:"long", day:"numeric"}); }
+  function shortDay(x){
+    if(!x) return "";
+    var d = /^\d{4}-\d{2}-\d{2}$/.test(x) ? new Date(x + "T12:00:00Z") : new Date(x);
+    if(isNaN(d)) return String(x);
+    return d.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric", timeZone: /^\d{4}-\d{2}-\d{2}$/.test(x) ? "UTC" : undefined});
+  }
+  function stamp(x){ var t = Date.parse(x || ""); return isNaN(t) ? 0 : t; }
+  function me(){ try{ var s = window.ResourcesSession && ResourcesSession.current(); return (s && (s.name || s.email)) || ""; }catch(e){ return ""; } }
+  function addBusinessDays(ms, n){
+    var d = new Date(ms); d.setHours(12,0,0,0);
+    while(n){ d.setDate(d.getDate() + 1); var w = d.getDay(); if(w !== 0 && w !== 6) n--; }
+    return d;
+  }
+  function todayNoon(){ var d = new Date(); d.setHours(12,0,0,0); return d; }
+
+  var tt = null;
+  function toast(msg, bad){
+    var t = $("pt-toast"); t.textContent = msg; t.classList.toggle("bad", !!bad); t.classList.add("on");
+    if(tt) clearTimeout(tt); tt = setTimeout(function(){ t.classList.remove("on"); }, 3600);
+  }
 
   /* ---------------- the relay ---------------- */
-  function token(){
-    var rs = window.ResourcesSession;
-    return rs && typeof rs.token === "function" ? rs.token() : null;
-  }
+  function token(){ var rs = window.ResourcesSession; return rs && typeof rs.token === "function" ? rs.token() : null; }
   function call(method, id, body){
     var t = token();
     var go = t ? Promise.resolve(t) : (window.ResourcesSession && ResourcesSession.signIn
-      ? ResourcesSession.signIn({reason:"expired"}).then(function(){ return token(); })
-      : Promise.resolve(null));
+      ? ResourcesSession.signIn({reason:"expired"}).then(function(){ return token(); }) : Promise.resolve(null));
     return go.then(function(tk){
       if(!tk){ var e0 = new Error("SIGNED_OUT"); e0.status = 401; throw e0; }
-      var h = {Authorization:"Bearer " + tk};
-      if(body) h["Content-Type"] = "application/json";
+      var h = {Authorization:"Bearer " + tk}; if(body) h["Content-Type"] = "application/json";
       return fetch(RELAY + "/" + PROJECT + "/data/" + id, {method:method, headers:h, cache:"no-store",
         body: body ? JSON.stringify(body) : undefined});
     }).then(function(res){
       return res.json().catch(function(){ return {}; }).then(function(j){
         if(res.ok) return j;
-        var e = new Error((j && (j.error || j.code)) || ("HTTP_" + res.status)); e.status = res.status; e.body = j; throw e;
+        var e = new Error((j && (j.error || j.code)) || ("HTTP_" + res.status)); e.status = res.status; throw e;
       });
     });
   }
-  function read(id){
-    return call("GET", id).then(function(j){
-      var d = j && j.data; return {docs:(d && d.docs) || {}, sha:(j && j.sha) || null, raw:d};
-    });
-  }
-  /* change(docs) edits the docs in place; a conflict re-reads and re-applies */
-  function save(id, holder, change, tries){
+  function readDocs(id){ return call("GET", id).then(function(j){ var d = j && j.data; return {docs:(d && d.docs) || {}, sha:(j && j.sha) || null}; }); }
+  function saveDocs(id, change, tries){
     tries = tries || 0;
-    var next = JSON.parse(JSON.stringify(holder.docs));
+    var holder = F[id], next = JSON.parse(JSON.stringify(holder.docs));
     change(next);
     return call("PUT", id, {content:{docs:next}, sha:holder.sha}).then(function(j){
-      holder.docs = next; holder.sha = j.sha || holder.sha; return holder;
+      holder.docs = next; holder.sha = j.sha || holder.sha; render();
     }, function(e){
-      if(e.status === 409 && tries < 3){
-        return read(id).then(function(f){ holder.docs = f.docs; holder.sha = f.sha; return save(id, holder, change, tries + 1); });
-      }
-      throw e;
+      if(e.status === 409 && tries < 3) return readDocs(id).then(function(f){ holder.docs = f.docs; holder.sha = f.sha; return saveDocs(id, change, tries + 1); });
+      failed(e); throw e;
+    });
+  }
+  function saveSettings(change, tries){
+    tries = tries || 0;
+    var next = JSON.parse(JSON.stringify(F.settings.data || {}));
+    next.notify = Array.isArray(next.notify) ? next.notify : [];
+    delete next.savedBy; delete next.savedAt;
+    change(next);
+    return call("PUT", "settings", {content:next, sha:F.settings.sha}).then(function(j){
+      F.settings.data = next; F.settings.sha = j.sha || F.settings.sha; render();
+    }, function(e){
+      if(e.status === 409 && tries < 3) return call("GET","settings").then(function(j){ F.settings.data = j.data || {}; F.settings.sha = j.sha; return saveSettings(change, tries + 1); });
+      failed(e); throw e;
     });
   }
   function failed(e){
-    var why = e && e.status === 403 ? "Your account can view MISMO Link but not change it." :
-      "It did not save just now - nothing else was changed. Try again in a minute.";
-    toast(why, true);
-  }
-
-  /* ---------------- a small toast ---------------- */
-  var tt = null;
-  function toast(msg, bad){
-    var t = $("pt-toast");
-    if(!t){ t = document.createElement("div"); t.id = "pt-toast"; t.className = "pt-toast"; t.setAttribute("role","status"); document.body.appendChild(t); }
-    t.textContent = msg; t.classList.toggle("bad", !!bad); t.classList.add("on");
-    if(tt) clearTimeout(tt); tt = setTimeout(function(){ t.classList.remove("on"); }, 3600);
+    toast(e && e.status === 403 ? "Your account can view MISMO Link but not change it." :
+      "That did not save just now. Nothing else was changed - try again in a minute.", true);
   }
 
   /* ---------------- the sheet's columns ---------------- */
@@ -1234,8 +1092,7 @@ window.__mismoLinkGate = (function(){
   var LABEL = {}; COLS.forEach(function(c){ LABEL[c[0]] = c[1]; });
   function get(r, k){
     if(!r) return ""; var v = r[k]; if(v === undefined) v = r[LABEL[k]];
-    if(v == null) return ""; if(Array.isArray(v)) return v.join(", ");
-    return String(v).trim();
+    if(v == null) return ""; if(Array.isArray(v)) return v.join(", "); return String(v).trim();
   }
   var DETAIL = [
     ["Application", ["review","levelOfInterest","firstSubmitDate","datasetOrLinkAI","additionalApplication"]],
@@ -1244,12 +1101,15 @@ window.__mismoLinkGate = (function(){
       "practicalMetrics","practicalMetricsOther","willingToEducate","additionalQuestionnaire"]]
   ];
 
-  /* ---------------- companies ---------------- */
-  function isUser(s){ return /user/i.test(s.agreementTitle || s.form || ""); }
+  /* ---------------- companies, built fresh from the files ---------------- */
+  function isUser(s){ return /user/i.test(s.agreementTitle || s.form || s.kind || ""); }
+  function signedAt(s){ return stamp(s && (s.submittedAt || s.signedAt || s.at)); }
+  function sentOf(r){ return F.progress.docs["sent/" + lc(get(r,"email"))] || null; }
+  function setUpOf(s){ return F.progress.docs["setup/" + lc(s.signerEmail)] || null; }
   function companies(){
     var map = {}, order = [];
-    Object.keys(P.docs).forEach(function(id){
-      var r = P.docs[id]; if(!r) return;
+    Object.keys(F.partners.docs).forEach(function(id){
+      var r = F.partners.docs[id]; if(!r) return;
       var k = orgKey(get(r,"company")) || "unnamed";
       if(!map[k]){ map[k] = {key:k, name:get(r,"company") || "Unnamed", people:[], domains:{}, member:null, contacts:[]}; order.push(k); }
       var c = map[k];
@@ -1261,415 +1121,554 @@ window.__mismoLinkGate = (function(){
     order.forEach(function(k){
       var c = map[k];
       c.contacts.forEach(function(p){ var d = domainOf(p.email); if(d && !GENERIC[d]) c.domains[d] = 1; });
+      c.people.sort(function(a, b){ return get(a.r,"name").localeCompare(get(b.r,"name")); });
       c.sub = null; c.users = [];
     });
-    /* each signature goes to the company whose email domain it shares, or whose name it names */
     sigs.forEach(function(s){
-      var d = domainOf(s.signerEmail), ok = orgKey(s.organization), hit = null;
+      var d = domainOf(s.signerEmail), hit = null;
       order.forEach(function(k){ if(!hit && d && map[k].domains[d]) hit = map[k]; });
-      if(!hit && map[ok]) hit = map[ok];
+      if(!hit && map[orgKey(s.organization)]) hit = map[orgKey(s.organization)];
       if(!hit) return;
-      if(isUser(s)) hit.users.push(s); else if(!hit.sub || when(s) > when(hit.sub)) hit.sub = s;
+      if(isUser(s)) hit.users.push(s); else if(!hit.sub || signedAt(s) > signedAt(hit.sub)) hit.sub = s;
     });
     order.forEach(function(k){
-      var c = map[k], prog = G.docs["companies/" + k] || {};
+      var c = map[k], prog = F.progress.docs["companies/" + k] || {};
       c.kickoff = prog.kickoff || null;
       c.sent = c.people.filter(function(p){ return sentOf(p.r); }).length;
+      c.users.sort(function(a, b){ return signedAt(b) - signedAt(a); });
       c.toSetUp = c.users.filter(function(s){ return !setUpOf(s); }).length;
+      c.stage = c.sub ? (c.kickoff ? "kickedoff" : "kickoff") : (c.sent ? "waiting" : "tosend");
     });
     return order.map(function(k){ return map[k]; }).sort(function(a, b){ return a.name.localeCompare(b.name); });
   }
-  function when(s){ var t = Date.parse(s && (s.submittedAt || s.signedAt || s.at) || ""); return isNaN(t) ? 0 : t; }
-  function whenText(s){
-    if(s.signedOnLocal) return s.signedOnLocal;
-    var t = when(s); return t ? new Date(t).toLocaleDateString("en-US", {year:"numeric", month:"long", day:"numeric"}) : "";
-  }
-  function sentOf(r){ return G.docs["sent/" + lc(get(r,"email"))] || null; }
-  function setUpOf(s){ return G.docs["setup/" + lc(s.signerEmail)] || null; }
-
-  function stage(c){
-    if(c.sub) return c.kickoff ? "signed" : "kickoff";
-    return c.sent ? "waiting" : "tosend";
-  }
-
-  /* ---------------- painting ---------------- */
-  function flag(t, k){ return '<span class="flag' + (k ? " " + k : "") + '">' + esc(t) + '</span>'; }
+  function companyByKey(k){ return companies().filter(function(c){ return c.key === k; })[0]; }
+  var STAGE = {tosend:["To Send",""], waiting:["Waiting to Sign","wait"], kickoff:["Signed · Schedule Kick-off","wait"], kickedoff:["Signed","ok"]};
   function memberLine(m){
     if(!m) return "Membership not checked";
     if(!m.isMember) return m.status || "Not a member";
-    return ["Member", m.level, m.thru ? "through " + fmtDay(m.thru) : ""].filter(Boolean).join(" · ");
+    return ["Member", m.level, m.thru ? "through " + shortDay(m.thru) : ""].filter(Boolean).join(" · ");
   }
-  function fmtDay(ymd){
-    var d = new Date(String(ymd).slice(0,10) + "T12:00:00Z");
-    return isNaN(d) ? ymd : d.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric", timeZone:"UTC"});
-  }
+  function chip(t, k){ return '<span class="chip' + (k ? " " + k : "") + '">' + esc(t) + '</span>'; }
 
-  function personHTML(c, p){
-    var r = p.r, email = get(r,"email"), s = sentOf(r), open = !!details[p.id];
-    var who = '<b>' + esc(get(r,"name") || email || "Unnamed") + '</b>' +
-      '<span>' + esc([get(r,"title"), email].filter(Boolean).join(" · ")) + '</span>';
-    var acts = "";
-    if(email){
-      acts += '<button class="btn sm" type="button" data-mail="' + esc(p.id) + '">' + (s ? "Email Again" : "Email the Subscriber Agreement") + '</button>';
-      if(canEdit) acts += s
-        ? '<button class="btn sm ghost" type="button" data-unsend="' + esc(p.id) + '">Not Sent</button>'
-        : '<button class="btn sm ghost" type="button" data-sent="' + esc(p.id) + '">Mark Sent</button>';
+  /* ---------------- page heads, bands and tiles (Elections HQ's) ---------------- */
+  function phead(eyebrow, title, sub, tools){
+    return '<div class="phead"><div><div class="eyebrow">' + esc(eyebrow) + '</div><h1>' + esc(title) + '</h1>' +
+      (sub ? '<div class="sub">' + sub + '</div>' : "") + '</div><div class="tools">' + (tools || "") + '</div></div>';
+  }
+  function tile(v, k, s, o){ o = o || {};
+    return '<div class="tile"><div class="v' + (o.hot ? " hot" : "") + (o.sky ? " sky" : "") + '">' + esc(v) + '</div><div class="k">' + esc(k) +
+      '</div><div class="s">' + esc(s || "") + '</div></div>';
+  }
+  function notReady(where){
+    if(failedLoad){
+      return '<div class="card"><div class="empty"><b>' + (failedLoad === 401 ? "Sign in to see the beta." : "The beta records could not be read just now.") +
+        '</b> ' + (failedLoad === 401 ? "The partner list and signatures are member information, shown only to signed-in staff with MISMO Link access."
+          : "The relay rests when idle and can refuse the first call or two. Reload in a minute; nothing has been lost.") + '</div></div>';
     }
-    acts += '<button class="btn sm ghost" type="button" data-det="' + esc(p.id) + '">' + (open ? "Hide Details" : "Details") + '</button>';
-    if(canEdit) acts += '<button class="btn sm ghost danger" type="button" data-rm="' + esc(p.id) + '">Remove</button>';
-    var note = s ? '<div class="pp-note">Subscriber Agreement emailed ' + esc(s.on) + (s.by ? " by " + esc(s.by) : "") + '</div>'
-      : (!email ? '<div class="pp-note">No email address yet.</div>' : "");
-    var det = "";
-    if(open){
-      det = DETAIL.map(function(g){
-        var pairs = g[1].map(function(k){ var v = get(r,k); return v ? '<dt>' + esc(LABEL[k]) + '</dt><dd>' + esc(v) + '</dd>' : ""; }).join("");
-        return pairs ? '<div class="pt-group"><h4>' + esc(g[0]) + '</h4><dl class="pt-kv">' + pairs + '</dl></div>' : "";
-      }).join("") || '<p class="pp-note">Nothing more on file for this person.</p>';
-    }
-    return '<li class="pp"><div class="pp-who">' + who + note + '</div><div class="pp-acts">' + acts + '</div>' +
-      (det ? '<div class="pp-det">' + det + '</div>' : "") + '</li>';
+    return '<div class="card"><div class="empty">Loading the ' + where + '&hellip;</div></div>';
   }
 
-  function companyHTML(c, i){
-    var on = !!opened[c.key], st = stage(c), flags = "";
-    flags += c.member && c.member.isMember ? flag("Member","ok") : flag("Not a Member","no");
-    flags += st === "tosend" ? flag("To Send") : st === "waiting" ? flag("Waiting to Sign","wait")
-      : st === "kickoff" ? flag("Signed · Schedule Kick-off","wait") : flag("Signed","ok");
-    if(c.toSetUp) flags += flag(c.toSetUp + " to Set Up","wait");
-
-    var sub = c.sub
-      ? '<p><b>Signed</b> by ' + esc(c.sub.signerName) + (c.sub.signerTitle ? ", " + esc(c.sub.signerTitle) : "") +
-        ' on ' + esc(whenText(c.sub)) + '.</p>'
-      : '<p>' + (c.sent ? 'Emailed to ' + c.sent + ' of ' + c.people.length + ' ' + (c.people.length === 1 ? "person" : "people") + '; not signed yet.'
-                       : 'Not sent yet.') + '</p>';
-
-    var kick = "";
-    if(c.sub){
-      kick = c.kickoff
-        ? '<p><b>Kick-off scheduled</b> ' + esc(c.kickoff.on) + (c.kickoff.by ? " by " + esc(c.kickoff.by) : "") +
-          (c.kickoff.note ? ' &mdash; ' + esc(c.kickoff.note) : "") + '.' +
-          (canEdit ? ' <button class="linkbtn" type="button" data-kickundo="' + esc(c.key) + '">Undo</button>' : "") + '</p>'
-        : '<p>Not scheduled yet. Within 3 business days of signing.</p>' +
-          (canEdit ? '<div class="pt-inline"><input type="text" id="kick-' + esc(c.key) + '" placeholder="Date and time of the call (optional)">' +
-            '<button class="btn sm" type="button" data-kick="' + esc(c.key) + '">Mark Kick-off Scheduled</button></div>' : "");
-    }
-
-    var users = c.users.length
-      ? '<ul class="ul-users">' + c.users.sort(function(a,b){ return when(b) - when(a); }).map(function(s){
-          var su = setUpOf(s);
-          return '<li><div><b>' + esc(s.signerName) + '</b><span>' + esc([s.signerTitle, s.signerEmail].filter(Boolean).join(" · ")) +
-            ' · signed ' + esc(whenText(s)) + '</span></div>' +
-            (su ? '<span class="flag ok">Set Up ' + esc(su.on) + '</span>' +
-                  (canEdit ? '<button class="linkbtn" type="button" data-setundo="' + esc(s.signerEmail) + '">Undo</button>' : "")
-                : (canEdit ? '<button class="btn sm" type="button" data-setup="' + esc(s.signerEmail) + '">Mark Set Up</button>' : flag("To Set Up","wait"))) +
-            '</li>';
-        }).join("") + '</ul>'
-      : '<p>No testers have signed yet.</p>';
-    var userActs = c.sub ? '<div class="pt-inline">' +
-        '<button class="btn sm ghost" type="button" data-uinvite="' + esc(c.key) + '">Email the User Agreement Link</button>' +
-        '<button class="btn sm ghost" type="button" data-copy="' + esc(USER_URL) + '">Copy the Link</button></div>' : "";
-
-    var contacts = c.contacts.length
-      ? '<ul class="ct">' + c.contacts.map(function(p){
-          return '<li><b>' + esc(p.name || p.email) + '</b><span>' + esc([p.title, p.name ? p.email : "", (p.roles || []).join(", ")].filter(Boolean).join(" · ")) + '</span></li>';
-        }).join("") + '</ul>'
-      : '<p>' + (c.member && c.member.isMember ? "No contacts on the Member 360 record." : "Not in Member 360, so no contacts there.") + '</p>';
-    var m = c.member;
-    var mem = m ? '<p>' + esc(memberLine(m)) + (m.renewal ? ' · 2027 renewal: ' + esc(m.renewal) : "") +
-      (m.m360Name && m.m360Name !== c.name ? ' · on file as <b>' + esc(m.m360Name) + '</b>' : "") +
-      (m.checkedOn ? ' <span class="pp-note-in">(checked ' + esc(fmtDay(m.checkedOn)) + ')</span>' : "") + '</p>' : "";
-
-    var addHere = canEdit ? '<button class="btn sm ghost" type="button" data-addto="' + esc(c.key) + '">Add a Person</button>' : "";
-
-    return '<li class="ptcard">' +
-      '<button class="pt-row" type="button" data-co="' + esc(c.key) + '" aria-expanded="' + (on ? "true" : "false") + '">' +
-        '<span class="caret" aria-hidden="true">&#9654;</span>' +
-        '<span class="pt-who"><b>' + esc(c.name) + '</b><span>' + esc(memberLine(c.member)) + ' · ' + c.people.length +
-          (c.people.length === 1 ? " person" : " people") + '</span></span>' +
-        '<span class="pt-flags">' + flags + '</span>' +
-      '</button>' +
-      '<div class="pt-body' + (on ? " on" : "") + '">' +
-        '<div class="co-grid">' +
-          '<section><h4>Subscriber Agreement</h4>' + sub + '</section>' +
-          (c.sub ? '<section><h4>Kick-off Call</h4>' + kick + '</section>' : "") +
-          '<section><h4>Membership</h4>' + mem + '</section>' +
-        '</div>' +
-        '<div class="pt-group"><h4>Beta People</h4><ul class="pp-list">' +
-          c.people.map(function(p){ return personHTML(c, p); }).join("") + '</ul>' + addHere + '</div>' +
-        (c.sub ? '<div class="pt-group"><h4>User Agreements</h4>' + users + userActs + '</div>' : "") +
-        '<div class="pt-group"><h4>Member 360 Contacts</h4>' + contacts + '</div>' +
-      '</div></li>';
+  /* ---------------- what is waiting on the team ---------------- */
+  function waiting(all){
+    var out = [], today = todayNoon().getTime();
+    all.forEach(function(c){
+      if(c.sub && !c.kickoff){
+        var due = addBusinessDays(signedAt(c.sub) || Date.now(), 3);
+        out.push({due:due, what:"Schedule the kick-off call", who:c.name, sub:"Signed by " + (c.sub.signerName || "") + " " + shortDay(c.sub.submittedAt), key:c.key});
+      }
+      c.users.forEach(function(s){
+        if(setUpOf(s)) return;
+        out.push({due:addBusinessDays(signedAt(s) || Date.now(), 3), what:"Set up " + (s.signerName || "a tester"), who:c.name, sub:"User Agreement signed " + shortDay(s.submittedAt), key:c.key});
+      });
+    });
+    out.forEach(function(x){ x.late = x.due.getTime() < today; });
+    return out.sort(function(a, b){ return a.due - b.due || a.who.localeCompare(b.who); });
   }
 
-  function matches(c){
-    var st = stage(c);
-    if(filter === "tosend") return st === "tosend";
-    if(filter === "waiting") return st === "waiting";
-    if(filter === "kickoff") return st === "kickoff";
-    if(filter === "setup") return c.toSetUp > 0;
-    return true;
+  function activity(){
+    var ev = [];
+    sigs.forEach(function(s){
+      ev.push([s.submittedAt, isUser(s) ? "User Agreement signed" : "Subscriber Agreement signed",
+        (s.signerName || "") + (s.organization ? " · " + s.organization : "")]);
+    });
+    Object.keys(F.progress.docs).forEach(function(k){
+      var v = F.progress.docs[k] || {};
+      if(k.indexOf("sent/") === 0) ev.push([v.at || v.on, "Subscriber Agreement emailed", (v.to || "") + (v.company ? " · " + v.company : "")]);
+      else if(k.indexOf("setup/") === 0) ev.push([v.at || v.on, "Tester set up", k.slice(6)]);
+      else if(k.indexOf("companies/") === 0 && v.kickoff) ev.push([v.kickoff.at || v.kickoff.on, "Kick-off scheduled", (companyByKey(k.slice(10)) || {}).name || ""]);
+    });
+    Object.keys(F.partners.docs).forEach(function(k){
+      var r = F.partners.docs[k]; if(r && r.addedOn) ev.push([r.addedAt || r.addedOn, "Added to the beta list", get(r,"name") + " · " + get(r,"company")]);
+    });
+    return ev.filter(function(e){ return stamp(e[0]); }).sort(function(a, b){ return stamp(b[0]) - stamp(a[0]); });
   }
 
-  function paint(){
+  /* ================= OVERVIEW ================= */
+  function renderOverview(){
+    var el = $("app-overview");
+    var head = phead("MISMO Link AI Beta", "Overview", "Where the early beta stands, company by company, and what is waiting on the team.", "");
+    if(!loaded){ el.innerHTML = head + notReady("beta"); return; }
     var all = companies();
-    var q = lc($("pt-q") && $("pt-q").value);
-    var shown = all.filter(function(c){
-      if(!matches(c)) return false;
-      if(!q) return true;
-      var hay = [c.name, c.member && c.member.m360Name].concat(c.people.map(function(p){
-        return [get(p.r,"name"), get(p.r,"email"), get(p.r,"title"), get(p.r,"projectName")].join(" ");
-      })).join(" ").toLowerCase();
-      return hay.indexOf(q) >= 0;
-    });
-    var counts = {all:all.length, tosend:0, waiting:0, kickoff:0, setup:0};
-    all.forEach(function(c){ var s = stage(c); if(counts[s] != null) counts[s]++; if(c.toSetUp) counts.setup++; });
-    document.querySelectorAll("#pt-tools [data-ptf]").forEach(function(b){
-      var n = counts[b.getAttribute("data-ptf")]; var lab = b.getAttribute("data-label") || b.textContent;
-      b.setAttribute("data-label", lab); b.textContent = lab + (n != null ? " (" + n + ")" : "");
-    });
-    $("pt-list").innerHTML = shown.map(companyHTML).join("");
     var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
-    $("pt-count").innerHTML = "<b>" + shown.length + "</b> of <b>" + all.length + "</b> companies · <b>" + people + "</b> people";
-    $("pt-add").hidden = !canEdit;
-    paintAdd(all);
-    if(!shown.length && all.length) state('<div class="empty"><h3>Nothing Matches That</h3><p>No company matches the filter. Clear the box, or choose All.</p></div>');
-    else if(!all.length) state('<div class="empty"><h3>No Partners Yet</h3><p>Use Add a Person to start the list.</p></div>');
-    else state("");
+    var members = all.filter(function(c){ return c.member && c.member.isMember; }).length;
+    var signed = all.filter(function(c){ return c.sub; }).length;
+    var wait = all.filter(function(c){ return c.stage === "waiting"; }).length;
+    var tosend = all.filter(function(c){ return c.stage === "tosend"; }).length;
+    var kick = all.filter(function(c){ return c.stage === "kickoff"; }).length;
+    var testers = all.reduce(function(n, c){ return n + c.users.length; }, 0);
+    var setup = all.reduce(function(n, c){ return n + c.toSetUp; }, 0);
+    var due = waiting(all), late = due.filter(function(x){ return x.late; }).length;
+
+    var say = late ? '<span class="hot">' + plural(late, "step") + ' past due.</span> ' + (due.length > late ? (due.length - late) + " more waiting on the team." : "")
+      : due.length ? plural(due.length, "step") + ' waiting on the team, the next due <em>' + esc(shortDay(due[0].due.toISOString())) + '</em>.'
+      : tosend ? '<em>' + plural(tosend, "company") + '</em> ' + (tosend === 1 ? "is" : "are") + ' ready to be sent the Subscriber Agreement.'
+      : wait ? 'Waiting on <em>' + plural(wait, "company") + '</em> to sign the Subscriber Agreement.'
+      : "Every company has signed and every tester is set up.";
+
+    var cols = [["tosend","To Send","var(--border-strong)"],["waiting","Waiting to Sign","var(--warn)"],
+                ["kickoff","Kick-off to Schedule","var(--bad)"],["kickedoff","Signed and Kicked Off","var(--good)"]];
+    var board = '<div class="kanban" style="--cols:4">' + cols.map(function(col){
+      var list = all.filter(function(c){ return c.stage === col[0]; });
+      return '<div class="kcol"><div class="kh"><i style="background:' + col[2] + '"></i>' + esc(col[1]) + '<span class="n">' + list.length + '</span></div><div class="kb">' +
+        (list.map(function(c){
+          return '<button type="button" class="kcard" data-co="' + esc(c.key) + '"><b>' + esc(c.name) + '</b><small>' + esc(memberLine(c.member)) + '</small>' +
+            '<span class="kt">' + (c.member && !c.member.isMember ? chip("Not a Member","changes") : "") +
+            (c.users.length ? chip(plural(c.users.length, "tester") + " signed","in") : "") + (c.toSetUp ? chip(c.toSetUp + " to set up","review") : "") + '</span></button>';
+        }).join("") || '<div class="kmore">None</div>') + '</div></div>';
+    }).join("") + '</div>';
+
+    var dueCard = '<div class="card"><div class="ch"><h2>Waiting on the Team</h2><span class="note">each due 3 business days after signing</span></div>' +
+      (due.length ? '<div class="duelist">' + due.map(function(x){
+        return '<button type="button" class="due' + (x.late ? " late" : "") + '" data-co="' + esc(x.key) + '"><span class="dd">' + (x.late ? "Past due · " : "Due ") +
+          esc(shortDay(x.due.toISOString())) + '</span><b>' + esc(x.what) + '</b><span class="dw">' + esc(x.who) + ' · ' + esc(x.sub) + '</span></button>';
+      }).join("") + '</div>' : '<div class="empty">Nothing is waiting on the team. Kick-off calls and tester setup appear here as companies and testers sign.</div>') + '</div>';
+
+    var ev = activity();
+    var feed = '<div class="card"><div class="ch"><h2>What\'s Happening</h2><span class="note">the latest ten</span></div>' +
+      (ev.length ? '<div class="feed">' + ev.slice(0, 10).map(function(e){
+        return '<div class="fe"><span class="fw">' + esc(shortDay(e[0])) + '</span><span class="fx"><b>' + esc(e[1]) + '</b><span class="fd">' + esc(e[2]) + '</span></span></div>';
+      }).join("") + '</div>' : '<div class="empty">Quiet so far. Sending the first Subscriber Agreement starts the feed.</div>') + '</div>';
+
+    var checked = all.map(function(c){ return c.member && c.member.checkedOn; }).filter(Boolean).sort().pop();
+    el.innerHTML = head +
+      '<div class="band"><div class="today">Today · ' + esc(longDay(new Date())) + '</div><div class="say">' + say + '</div><div class="tiles">' +
+        tile(all.length, "Companies", plural(people, "person") + " on the list", {sky:true}) +
+        tile(members, "MISMO Members", (all.length - members) ? (all.length - members) + " not a member" : "every company") +
+        tile(signed, "Companies Signed", "of " + all.length + " on the list") +
+        tile(wait, "Waiting to Sign", "sent, not signed yet") +
+        tile(kick, "Kick-offs to Book", "after the company signs", {hot:kick > 0}) +
+        tile(setup, "Testers to Set Up", "of " + testers + " who have signed", {hot:setup > 0}) +
+      '</div></div>' +
+      '<div class="card"><div class="ch"><h2>Where Each Company Stands</h2><span class="note">click a company to open it</span></div><div class="cb">' + board + '</div></div>' +
+      '<div class="grid2">' + dueCard + feed + '</div>' +
+      '<p class="foot">Membership as checked in Member 360' + (checked ? " on " + esc(shortDay(checked)) : "") +
+      '. A company counts as signed when someone from it signs the Subscriber Agreement; testers are matched to their company by email domain.</p>';
   }
 
-  /* ---------------- adding a person ---------------- */
-  function paintAdd(all){
-    var box = $("pt-addform");
-    if(!adding || !canEdit){ box.hidden = true; return; }
-    box.hidden = false;
-    var dl = $("pt-cos");
-    dl.innerHTML = all.map(function(c){ return '<option value="' + esc(c.name) + '">'; }).join("");
+  /* ================= TESTERS AND ACCESS ================= */
+  function renderAccess(){
+    var el = $("app-access");
+    var tools = canEdit && loaded ? '<button class="btn" type="button" id="ta-add">Add a Person</button>' : "";
+    var head = phead("MISMO Link AI Beta", "Testers and Access", "The beta list company by company, and every signed agreement. Click a company or a signature to open it.", tools);
+    if(!loaded){ el.innerHTML = head + notReady("partner list"); return; }
+    var all = companies();
+    var tabs = '<div class="subtabs" role="group">' +
+      '<button type="button" data-tab="companies" aria-pressed="' + (tab === "companies") + '">Companies<span class="n">' + all.length + '</span></button>' +
+      '<button type="button" data-tab="signed" aria-pressed="' + (tab === "signed") + '">Who Has Signed<span class="n">' + sigs.length + '</span></button></div>';
+    el.innerHTML = head + tabs + (tab === "signed" ? signedHTML() : companiesHTML(all));
+    var a = $("ta-add"); if(a) a.onclick = function(){ openAdd(""); };
+    var q = $("ta-q"); if(q){ q.oninput = function(){ qv = q.value; paintRows(); }; q.value = qv; }
+    paintRows();
   }
-  function openAdd(company){
-    adding = true; paint();
-    if(company) $("pa-co").value = company;
-    ($("pa-co").value ? $("pa-name") : $("pa-co")).focus();
-    $("pt-addform").scrollIntoView({block:"nearest", behavior:"smooth"});
+  var qv = "";
+  function companiesHTML(all){
+    var counts = {all:all.length, tosend:0, waiting:0, kickoff:0, setup:0};
+    all.forEach(function(c){ if(counts[c.stage] != null) counts[c.stage]++; if(c.toSetUp) counts.setup++; });
+    var segs = [["all","All"],["tosend","To Send"],["waiting","Waiting to Sign"],["kickoff","Kick-off to Schedule"],["setup","Testers to Set Up"]];
+    return '<div class="ta-tools"><input type="search" id="ta-q" placeholder="Filter by company, name, email or project" aria-label="Filter">' +
+      '<div class="pt-seg" role="group" aria-label="Show">' + segs.map(function(s){
+        return '<button type="button" data-f="' + s[0] + '" aria-pressed="' + (filter === s[0]) + '">' + esc(s[1]) + ' (' + counts[s[0]] + ')</button>';
+      }).join("") + '</div></div>' +
+      '<div class="card"><div class="rows" id="ta-rows"></div></div>' +
+      '<p class="foot">From the Early Beta Partner Tracking Sheet, with each company\'s Member 360 membership and contacts. Records: mismo-link-data, data/partners.</p>';
   }
+  function signedHTML(){
+    return '<div class="ta-tools"><input type="search" id="ta-q" placeholder="Filter by name, company or email" aria-label="Filter"></div>' +
+      '<div class="card"><div class="rows" id="ta-rows"></div></div>' +
+      '<p class="foot">Newest first. Each signature is recorded by the relay when someone signs on the Subscriber or User Agreement page. Records: mismo-link-data, data/signatures.</p>';
+  }
+  function paintRows(){
+    var box = $("ta-rows"); if(!box) return;
+    var q = lc(qv);
+    if(tab === "signed"){
+      var list = sigs.slice().sort(function(a, b){ return signedAt(b) - signedAt(a); }).filter(function(s){
+        return !q || lc([s.signerName, s.organization, s.signerEmail, s.signerTitle].join(" ")).indexOf(q) >= 0;
+      });
+      box.innerHTML = list.length ? list.map(function(s){
+        return '<button type="button" class="row" data-sig="' + esc(s.id || sigs.indexOf(s)) + '"><span class="rw"><b>' + esc(s.signerName || "Unnamed signer") + '</b><span>' +
+          esc([s.organization, s.signerEmail].filter(Boolean).join(" · ")) + '</span></span><span class="rf">' +
+          chip(isUser(s) ? "User Agreement" : "Subscriber Agreement", isUser(s) ? "in" : "ok") + '<span class="rd">' + esc(shortDay(s.submittedAt)) + '</span></span></button>';
+      }).join("") : '<div class="empty">' + (sigs.length ? "Nothing matches that." : "Nobody has signed yet. Each signature appears here as soon as it comes in.") + '</div>';
+      return;
+    }
+    var all = companies().filter(function(c){
+      if(filter === "setup" ? !c.toSetUp : (filter !== "all" && c.stage !== filter)) return false;
+      if(!q) return true;
+      return lc([c.name, c.member && c.member.m360Name].concat(c.people.map(function(p){
+        return [get(p.r,"name"), get(p.r,"email"), get(p.r,"title"), get(p.r,"projectName")].join(" ");
+      })).join(" ")).indexOf(q) >= 0;
+    });
+    box.innerHTML = all.length ? all.map(function(c){
+      var st = STAGE[c.stage];
+      return '<button type="button" class="row" data-co="' + esc(c.key) + '"><span class="rw"><b>' + esc(c.name) + '</b><span>' + esc(memberLine(c.member)) + ' · ' +
+        plural(c.people.length, "person") + '</span></span><span class="rf">' +
+        (!c.member ? chip("Not Checked","wait") : c.member.isMember ? chip("Member","ok") : chip("Not a Member","changes")) + chip(st[0], st[1] === "wait" ? "review" : st[1] === "ok" ? "ok" : "wait") +
+        (c.toSetUp ? chip(c.toSetUp + " to Set Up","review") : "") + '</span></button>';
+    }).join("") : '<div class="empty">No company matches. Clear the box, or choose All.</div>';
+  }
+
+  /* ================= THE RIGHT-HAND PANEL ================= */
+  function openPanel(p){ panel = p; drawPanel(); $("rpane").classList.add("open"); $("rpane").setAttribute("aria-hidden","false"); }
+  function closePanel(){ panel = null; $("rpane").classList.remove("open"); $("rpane").setAttribute("aria-hidden","true"); }
+  function drawPanel(){
+    if(!panel) return;
+    var foot = $("rp-foot"); foot.hidden = true; foot.innerHTML = "";
+    if(panel.kind === "company"){
+      var c = companyByKey(panel.key); if(!c){ closePanel(); return; }
+      $("rp-eye").textContent = "Company"; $("rp-title").textContent = c.name;
+      $("rp-body").innerHTML = companyBody(c);
+    } else if(panel.kind === "person"){
+      var r = F.partners.docs[panel.id]; if(!r){ closePanel(); return; }
+      $("rp-eye").textContent = get(r,"company"); $("rp-title").textContent = get(r,"name") || get(r,"email");
+      $("rp-body").innerHTML = personBody(panel.id, r);
+    } else if(panel.kind === "sig"){
+      var s = sigs.filter(function(x, i){ return String(x.id || i) === String(panel.id); })[0]; if(!s){ closePanel(); return; }
+      $("rp-eye").textContent = isUser(s) ? "User Agreement" : "Subscriber Agreement"; $("rp-title").textContent = s.signerName || "Signature";
+      $("rp-body").innerHTML = sigBody(s);
+    } else if(panel.kind === "add"){
+      $("rp-eye").textContent = "Beta List"; $("rp-title").textContent = "Add a Person";
+      $("rp-body").innerHTML = addBody();
+      foot.hidden = false;
+      foot.innerHTML = '<button class="btn" type="button" id="pa-save">Save</button><button class="btn ghost" type="button" data-close>Cancel</button><span class="msg" id="pa-msg"></span>';
+      $("pa-save").onclick = doAdd;
+      var co = $("pa-co"); if(panel.company) co.value = panel.company;
+      setTimeout(function(){ (co.value ? $("pa-name") : co).focus(); }, 60);
+    }
+  }
+  function sect(title, html){ return '<section class="psec"><h3>' + esc(title) + '</h3>' + html + '</section>'; }
+  function kv(pairs){ return '<dl class="kv">' + pairs.filter(function(p){ return p[1]; }).map(function(p){ return '<dt>' + esc(p[0]) + '</dt><dd>' + esc(p[1]) + '</dd>'; }).join("") + '</dl>'; }
+
+  function companyBody(c){
+    var st = '<div class="boxes">' +
+      '<div class="box"><h4>Subscriber Agreement</h4>' + (c.sub
+        ? '<p><b>Signed</b> by ' + esc(c.sub.signerName) + (c.sub.signerTitle ? ", " + esc(c.sub.signerTitle) : "") + ', ' + esc(shortDay(c.sub.submittedAt)) + '.</p>'
+        : '<p>' + (c.sent ? 'Emailed to ' + c.sent + ' of ' + plural(c.people.length, "person") + '. Not signed yet.' : 'Not sent yet.') + '</p>') + '</div>' +
+      '<div class="box"><h4>Kick-off Call</h4>' + (!c.sub ? '<p>After the company signs.</p>' : c.kickoff
+        ? '<p><b>Scheduled</b>' + (c.kickoff.note ? ": " + esc(c.kickoff.note) : "") + '<br><span class="muted">Marked ' + esc(shortDay(c.kickoff.at || c.kickoff.on)) + (c.kickoff.by ? " by " + esc(c.kickoff.by) : "") + '</span>' +
+          (canEdit ? ' <button class="linkbtn" type="button" data-kickundo="' + esc(c.key) + '">Undo</button>' : "") + '</p>'
+        : '<p>Due by <b>' + esc(shortDay(addBusinessDays(signedAt(c.sub) || Date.now(), 3).toISOString())) + '</b> (3 business days after signing).</p>' +
+          (canEdit ? '<div class="pt-inline"><input type="text" id="kick-note" placeholder="Date and time of the call"><button class="btn sm" type="button" data-kick="' + esc(c.key) + '">Mark Scheduled</button></div>' : "")) + '</div>' +
+      '<div class="box"><h4>Membership</h4><p>' + esc(memberLine(c.member)) + (c.member && c.member.renewal ? '<br><span class="muted">2027 renewal: ' + esc(c.member.renewal) + '</span>' : "") +
+        (c.member && c.member.m360Name && c.member.m360Name !== c.name ? '<br><span class="muted">In Member 360 as ' + esc(c.member.m360Name) + '</span>' : "") + '</p></div>' +
+      '</div>';
+
+    var people = '<div class="plist">' + c.people.map(function(p){
+      var r = p.r, email = get(r,"email"), s = sentOf(r);
+      return '<div class="prow"><button type="button" class="pwho" data-person="' + esc(p.id) + '"><b>' + esc(get(r,"name") || email || "Unnamed") + '</b><span>' +
+        esc([get(r,"title"), email].filter(Boolean).join(" · ")) + '</span>' +
+        (s ? '<span class="muted">Subscriber Agreement emailed ' + esc(shortDay(s.at || s.on)) + (s.by ? " by " + esc(s.by) : "") + '</span>' : (!email ? '<span class="muted">No email address yet.</span>' : "")) +
+        '</button><div class="pacts">' +
+        (email ? '<button class="btn sm" type="button" data-mail="' + esc(p.id) + '">' + (s ? "Email Again" : "Email the Subscriber Agreement") + '</button>' : "") +
+        (canEdit && email ? (s ? '<button class="btn sm ghost" type="button" data-unsend="' + esc(p.id) + '">Not Sent</button>' : '<button class="btn sm ghost" type="button" data-sent="' + esc(p.id) + '">Mark Sent</button>') : "") +
+        (canEdit ? '<button class="btn sm ghost danger" type="button" data-rm="' + esc(p.id) + '">Remove</button>' : "") +
+        '</div></div>';
+    }).join("") + '</div>' + (canEdit ? '<div class="pt-inline"><button class="btn sm ghost" type="button" data-addto="' + esc(c.key) + '">Add a Person to ' + esc(c.name) + '</button></div>' : "");
+
+    var users = c.sub ? sect("User Agreements", (c.users.length ? '<div class="plist">' + c.users.map(function(s){
+        var su = setUpOf(s);
+        return '<div class="prow"><button type="button" class="pwho" data-sig="' + esc(s.id) + '"><b>' + esc(s.signerName) + '</b><span>' +
+          esc([s.signerTitle, s.signerEmail].filter(Boolean).join(" · ")) + ' · signed ' + esc(shortDay(s.submittedAt)) + '</span></button><div class="pacts">' +
+          (su ? chip("Set Up " + shortDay(su.at || su.on), "ok") + (canEdit ? '<button class="linkbtn" type="button" data-setundo="' + esc(s.signerEmail) + '">Undo</button>' : "")
+              : (canEdit ? '<button class="btn sm" type="button" data-setup="' + esc(s.signerEmail) + '">Mark Set Up</button>' : chip("To Set Up","review"))) +
+          '</div></div>';
+      }).join("") + '</div>' : '<p class="muted">No testers have signed yet.</p>') +
+      '<div class="pt-inline"><button class="btn sm ghost" type="button" data-uinvite="' + esc(c.key) + '">Email the User Agreement Link</button>' +
+      '<button class="btn sm ghost" type="button" data-copy="' + esc(USER_URL) + '">Copy the Link</button></div>') : "";
+
+    var contacts = sect("Member 360 Contacts", c.contacts.length ? '<div class="plist">' + c.contacts.map(function(p){
+        return '<div class="prow"><div class="pwho static"><b>' + esc(p.name || p.email) + '</b><span>' +
+          esc([p.title, p.name ? p.email : "", (p.roles || []).join(", ")].filter(Boolean).join(" · ")) + '</span></div></div>';
+      }).join("") + '</div>' : '<p class="muted">' + (c.member && c.member.isMember ? "No contacts on the Member 360 record." : "Not in Member 360, so no contacts there.") + '</p>');
+
+    return st + sect("Beta People", people) + users + contacts;
+  }
+
+  function personBody(id, r){
+    var c = companyByKey(orgKey(get(r,"company")));
+    var back = c ? '<div class="pt-inline" style="margin:0 0 14px"><button class="btn sm ghost" type="button" data-co="' + esc(c.key) + '">&larr;&nbsp;Back to ' + esc(c.name) + '</button></div>' : "";
+    var s = sentOf(r);
+    var who = kv([["Company", get(r,"company")], ["Title", get(r,"title")], ["Email", get(r,"email")],
+      ["Subscriber Agreement", s ? "Emailed " + shortDay(s.at || s.on) + (s.by ? " by " + s.by : "") : "Not sent yet"],
+      ["Added", r.addedOn ? r.addedOn + (r.addedBy ? " by " + r.addedBy : "") : ""]]);
+    var groups = DETAIL.map(function(g){
+      var pairs = g[1].map(function(k){ return [LABEL[k], get(r,k)]; }).filter(function(p){ return p[1]; });
+      return pairs.length ? sect(g[0], kv(pairs)) : "";
+    }).join("");
+    return back + sect("Person", who) + (groups || '<p class="muted">Nothing more on file from the application or the questionnaire.</p>');
+  }
+
+  function sigBody(s){
+    var c = companies().filter(function(x){ return x.sub === s || x.users.indexOf(s) >= 0; })[0];
+    var back = c ? '<div class="pt-inline" style="margin:0 0 14px"><button class="btn sm ghost" type="button" data-co="' + esc(c.key) + '">&larr;&nbsp;Back to ' + esc(c.name) + '</button></div>' : "";
+    return back + sect("Signature", kv([["Signed By", s.signerName], ["Job Title", s.signerTitle], ["Company", s.organization],
+      ["Work Email", s.signerEmail], ["Phone", s.signerPhone], ["Typed Signature", s.typedSignature],
+      ["Agreement", (s.agreementTitle || "") + (s.agreementVersion ? ", Version " + s.agreementVersion : "")],
+      ["Signed On", s.signedOnLocal || shortDay(s.submittedAt)], ["Reference", s.id], ["Read to the End", s.readToEnd ? "Yes" : "Not recorded"],
+      ["Signed From", s.ip], ["Agreement Fingerprint", s.documentHash]])) +
+      (s.acceptanceStatement ? sect("What They Agreed To", '<p class="stmt">' + esc(s.acceptanceStatement) + '</p>') : "");
+  }
+
+  function addBody(){
+    var names = companies().map(function(c){ return '<option value="' + esc(c.name) + '">'; }).join("");
+    return '<p class="muted" style="margin:0 0 14px">A new company is added the same way: type its name. A company already on the list keeps its membership and Member 360 contacts.</p>' +
+      '<div class="fgrid"><div><label for="pa-co">Company</label><input id="pa-co" list="pa-cos" autocomplete="off"><datalist id="pa-cos">' + names + '</datalist></div>' +
+      '<div><label for="pa-name">Name</label><input id="pa-name" autocomplete="off"></div>' +
+      '<div><label for="pa-title">Title</label><input id="pa-title" autocomplete="off"></div>' +
+      '<div><label for="pa-email">Email</label><input id="pa-email" type="email" autocomplete="off"></div></div>';
+  }
+  function openAdd(company){ if(canEdit) openPanel({kind:"add", company:company || ""}); }
   function doAdd(){
-    var co = $("pa-co").value.trim(), name = $("pa-name").value.trim(),
-        title = $("pa-title").value.trim(), email = $("pa-email").value.trim();
+    var co = $("pa-co").value.trim(), name = $("pa-name").value.trim(), title = $("pa-title").value.trim(), email = $("pa-email").value.trim();
     var msg = !co ? "Company is needed." : !name ? "Name is needed." :
       (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) ? "That email does not look right." : "";
     $("pa-msg").textContent = msg; if(msg) return;
-    /* a company already on the list keeps its spelling, membership and contacts */
-    var same = companies().filter(function(c){ return c.key === orgKey(co); })[0];
-    var rec = {company: same ? same.name : co, name:name, title:title, email:email,
-      addedOn: today(), addedBy: me()};
+    var same = companyByKey(orgKey(co));
+    var rec = {company: same ? same.name : co, name:name, title:title, email:email, addedOn:shortDay(nowIso()), addedAt:nowIso(), addedBy:me()};
     if(same && same.member){ rec.member = same.member; rec.memberContacts = same.contacts; }
-    var id = "partners/" + slug(rec.company + "-" + name);
-    var btn = $("pa-save"); btn.disabled = true;
-    save("partners", P, function(d){ var k = id, n = 2; while(d[k]) k = id + "-" + (n++); d[k] = rec; }).then(function(){
-      ["pa-name","pa-title","pa-email"].forEach(function(f){ $(f).value = ""; });
-      opened[orgKey(rec.company)] = true; adding = false; paint();
-      toast(name + " added to " + rec.company + "." + (same ? "" : " Check Member 360 for their membership."));
-    }, failed).then(function(){ btn.disabled = false; });
+    var id = "partners/" + slug(rec.company + "-" + name), btn = $("pa-save"); btn.disabled = true;
+    saveDocs("partners", function(d){ var k = id, n = 2; while(d[k]) k = id + "-" + (n++); d[k] = rec; }).then(function(){
+      toast(name + " added to " + rec.company + "." + (same ? "" : " It is a new company, so check Member 360 for its membership."));
+      openPanel({kind:"company", key:orgKey(rec.company)});
+    }, function(){ btn.disabled = false; });
   }
 
-  /* ---------------- emails (drafts in the person's own mail program) ---------------- */
+  /* ---------------- emails: drafts in the person's own mail program ---------------- */
   function mailto(to, subject, body){
     window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
   }
   function draftSubscriber(r){
     var first = get(r,"name").split(" ")[0] || "there", co = get(r,"company") || "your company";
     mailto(get(r,"email"), "MISMO Link AI beta: Subscriber Agreement to sign",
-      "Hi " + first + ",\n\n" +
-      "Thank you for taking part in the MISMO Link AI early beta.\n\n" +
-      "Before we can switch on access for " + co + ", the company needs to sign the MISMO Link AI SaaS " +
-      "Subscriber Agreement. It is signed once, on the company's behalf, by someone with authority to sign " +
-      "agreements for it. If that is not you, please forward this link to the person who can:\n\n" + SIGN_URL + "\n\n" +
-      "No account is needed to sign it, and a copy comes back to the signer by email. Once it is signed, a member " +
-      "of our team will be in touch within 3 business days to schedule a kick-off call.\n\n" +
-      "Any questions, just reply to this message.\n\nBest regards,\n");
+      "Hi " + first + ",\n\nThank you for taking part in the MISMO Link AI early beta.\n\n" +
+      "Before we can switch on access for " + co + ", the company needs to sign the MISMO Link AI SaaS Subscriber Agreement. " +
+      "It is signed once, on the company's behalf, by someone with authority to sign agreements for it. If that is not you, " +
+      "please forward this link to the person who can:\n\n" + SIGN_URL + "\n\n" +
+      "No account is needed to sign it, and a copy comes back to the signer by email. Once it is signed, a member of our team " +
+      "will be in touch within 3 business days to schedule a kick-off call.\n\nAny questions, just reply to this message.\n\nBest regards,\n");
   }
   function draftUserInvite(c){
-    var s = c.sub, to = s && s.signerEmail || get(c.people[0] && c.people[0].r, "email");
-    var first = (s && s.signerName || "").split(" ")[0] || "there";
+    var s = c.sub, to = (s && s.signerEmail) || get(c.people[0] && c.people[0].r, "email");
+    var first = ((s && s.signerName) || "").split(" ")[0] || "there";
     mailto(to, "MISMO Link AI beta: User Agreement for your testers",
-      "Hi " + first + ",\n\n" +
-      "Thank you for signing the MISMO Link AI Subscriber Agreement for " + c.name + ".\n\n" +
-      "Please share this link with each person at " + c.name + " who will take part in the beta. Each person " +
-      "reads and signs the User Agreement for themselves:\n\n" + USER_URL + "\n\n" +
-      "Within 3 business days of signing, each of them will hear from our team with instructions and credentials.\n\n" +
-      "Best regards,\n");
+      "Hi " + first + ",\n\nThank you for signing the MISMO Link AI Subscriber Agreement for " + c.name + ".\n\n" +
+      "Please share this link with each person at " + c.name + " who will take part in the beta. Each person reads and signs the " +
+      "User Agreement for themselves:\n\n" + USER_URL + "\n\n" +
+      "Within 3 business days of signing, each of them will hear from our team with instructions and credentials.\n\nBest regards,\n");
   }
 
-  /* ---------------- clicks ---------------- */
-  function person(id){ return P.docs[id]; }
-  function companyByKey(k){ return companies().filter(function(c){ return c.key === k; })[0]; }
+  /* ---------------- clicks, wherever they are ---------------- */
   function markSent(r){
     var key = "sent/" + lc(get(r,"email"));
-    return save("progress", G, function(d){ d[key] = {on:today(), by:me(), to:get(r,"email"), company:get(r,"company")}; });
+    return saveDocs("progress", function(d){ d[key] = {at:nowIso(), on:shortDay(nowIso()), by:me(), to:get(r,"email"), company:get(r,"company")}; });
   }
-
-  $("pt-list").addEventListener("click", function(e){
-    var b = e.target.closest("button"); if(!b) return;
+  document.addEventListener("click", function(e){
+    var b = e.target.closest("[data-co],[data-person],[data-sig],[data-mail],[data-sent],[data-unsend],[data-rm],[data-addto],[data-kick],[data-kickundo],[data-setup],[data-setundo],[data-uinvite],[data-copy],[data-tab],[data-f],[data-close]");
+    if(!b || !b.closest("#app-overview,#app-access,#rpane")) return;
     var a = function(n){ return b.getAttribute(n); };
-    if(a("data-co") != null){ var k = a("data-co"); opened[k] = !opened[k]; paint(); return; }
-    if(a("data-det") != null){ details[a("data-det")] = !details[a("data-det")]; paint(); return; }
-    if(a("data-mail") != null){
-      var r = person(a("data-mail")); draftSubscriber(r);
-      if(canEdit && !sentOf(r)) markSent(r).then(paint, failed);
-      return;
-    }
-    if(a("data-sent") != null){ markSent(person(a("data-sent"))).then(paint, failed); return; }
-    if(a("data-unsend") != null){
-      var ru = person(a("data-unsend"));
-      save("progress", G, function(d){ delete d["sent/" + lc(get(ru,"email"))]; }).then(paint, failed); return;
-    }
+    if(a("data-close") != null){ closePanel(); return; }
+    if(a("data-tab") != null){ tab = a("data-tab"); qv = ""; renderAccess(); return; }
+    if(a("data-f") != null){ filter = a("data-f"); renderAccess(); return; }
+    if(a("data-co") != null){ openPanel({kind:"company", key:a("data-co")}); return; }
+    if(a("data-person") != null){ openPanel({kind:"person", id:a("data-person")}); return; }
+    if(a("data-sig") != null){ openPanel({kind:"sig", id:a("data-sig")}); return; }
+    if(a("data-mail") != null){ var r = F.partners.docs[a("data-mail")]; draftSubscriber(r); if(canEdit && !sentOf(r)) markSent(r).catch(function(){}); return; }
+    if(a("data-sent") != null){ markSent(F.partners.docs[a("data-sent")]).catch(function(){}); return; }
+    if(a("data-unsend") != null){ var ru = F.partners.docs[a("data-unsend")];
+      saveDocs("progress", function(d){ delete d["sent/" + lc(get(ru,"email"))]; }).catch(function(){}); return; }
     if(a("data-rm") != null){
-      var id = a("data-rm"), rr = person(id);
+      var id = a("data-rm"), rr = F.partners.docs[id];
       if(!window.confirm("Remove " + (get(rr,"name") || "this person") + " from the beta list for " + get(rr,"company") +
         "?\n\nTheir application answers go with them. Anything they have already signed stays on record.")) return;
-      save("partners", P, function(d){ delete d[id]; }).then(function(){ toast((get(rr,"name") || "They") + " removed."); paint(); }, failed);
-      return;
+      var ck = orgKey(get(rr,"company"));
+      saveDocs("partners", function(d){ delete d[id]; }).then(function(){
+        toast((get(rr,"name") || "They") + " removed.");
+        if(!companyByKey(ck)) closePanel();
+      }).catch(function(){}); return;
     }
     if(a("data-addto") != null){ var c0 = companyByKey(a("data-addto")); openAdd(c0 && c0.name); return; }
     if(a("data-kick") != null){
-      var ck = a("data-kick"), inp = $("kick-" + ck), note = inp ? inp.value.trim() : "";
-      save("progress", G, function(d){ d["companies/" + ck] = Object.assign({}, d["companies/" + ck], {kickoff:{on:today(), by:me(), note:note}}); })
-        .then(paint, failed); return;
+      var kk = a("data-kick"), note = ($("kick-note") && $("kick-note").value.trim()) || "";
+      saveDocs("progress", function(d){ d["companies/" + kk] = Object.assign({}, d["companies/" + kk], {kickoff:{at:nowIso(), on:shortDay(nowIso()), by:me(), note:note}}); }).catch(function(){}); return;
     }
-    if(a("data-kickundo") != null){
-      var ku = a("data-kickundo");
-      save("progress", G, function(d){ if(d["companies/" + ku]) delete d["companies/" + ku].kickoff; }).then(paint, failed); return;
-    }
-    if(a("data-setup") != null){
-      var em = lc(a("data-setup"));
-      save("progress", G, function(d){ d["setup/" + em] = {on:today(), by:me()}; }).then(paint, failed); return;
-    }
-    if(a("data-setundo") != null){
-      var eu = lc(a("data-setundo"));
-      save("progress", G, function(d){ delete d["setup/" + eu]; }).then(paint, failed); return;
-    }
+    if(a("data-kickundo") != null){ var ku = a("data-kickundo");
+      saveDocs("progress", function(d){ if(d["companies/" + ku]) delete d["companies/" + ku].kickoff; }).catch(function(){}); return; }
+    if(a("data-setup") != null){ var em = lc(a("data-setup"));
+      saveDocs("progress", function(d){ d["setup/" + em] = {at:nowIso(), on:shortDay(nowIso()), by:me()}; }).catch(function(){}); return; }
+    if(a("data-setundo") != null){ var eu = lc(a("data-setundo"));
+      saveDocs("progress", function(d){ delete d["setup/" + eu]; }).catch(function(){}); return; }
     if(a("data-uinvite") != null){ draftUserInvite(companyByKey(a("data-uinvite"))); return; }
-    if(a("data-copy") != null){
-      var link = a("data-copy");
-      (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(function(){ toast("Link copied."); },
-        function(){ window.prompt("Copy this link:", link); });
-    }
+    if(a("data-copy") != null){ var link = a("data-copy");
+      (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(function(){ toast("Link copied."); }, function(){ window.prompt("Copy this link:", link); }); }
+  });
+  $("rp-x").addEventListener("click", closePanel);
+  document.addEventListener("keydown", function(e){
+    var t = e.target, typing = t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA");
+    if(e.key === "Escape" && panel && !typing) closePanel();
   });
 
-  var seg = document.querySelector("#pt-tools .pt-seg");
-  if(seg) seg.addEventListener("click", function(e){
-    var b = e.target.closest("[data-ptf]"); if(!b) return;
-    filter = b.getAttribute("data-ptf");
-    seg.querySelectorAll("[data-ptf]").forEach(function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
-    paint();
-  });
-  $("pt-q").addEventListener("input", paint);
-  $("pt-add").addEventListener("click", function(){ openAdd(""); });
-  $("pa-cancel").addEventListener("click", function(){ adding = false; $("pa-msg").textContent = ""; paint(); });
-  $("pa-save").addEventListener("click", doAdd);
-
-  /* ---------------- loading ---------------- */
-  function harvestSigs(d){
-    if(!d) return [];
-    if(Array.isArray(d)) return d;
-    if(d.docs) return Object.keys(d.docs).map(function(k){ return d.docs[k]; });
-    if(d.doc && d.doc.items) return Object.keys(d.doc.items).map(function(k){ return d.doc.items[k]; });
-    return [];
-  }
-  function load(){
-    state('<div class="pt-skel"></div><div class="pt-skel"></div><div class="pt-skel"></div>');
-    var rs = window.ResourcesSession;
-    try{ canEdit = !!(rs && rs.canEdit && rs.canEdit("mismo-link")); }catch(e){ canEdit = false; }
-    Promise.all([read("partners"), read("progress"), call("GET","signatures").catch(function(){ return {data:null}; })])
-      .then(function(x){
-        P = {docs:x[0].docs, sha:x[0].sha};
-        G = {docs:x[1].docs, sha:x[1].sha};
-        sigs = harvestSigs(x[2] && x[2].data);
-        $("pt-tools").hidden = false;
-        paint();
-      }, function(e){
-        $("pt-tools").hidden = true;
-        if(e && (e.status === 401 || e.status === 403)){
-          return state('<div class="empty"><h3>Sign In to See the Partners</h3><p>The beta partner list is member ' +
-            'information, so it is only shown to signed-in MISMO staff with MISMO Link access.</p></div>');
-        }
-        state('<div class="empty"><h3>The Partners Could Not Be Read</h3><p>The relay did not answer just now. ' +
-          'It rests when idle and can refuse the first call or two &mdash; reload in a minute. Nothing has been lost.</p></div>');
-      });
-  }
-  window.__mlReloadPartners = load;
-
-  var loaded = false;
-  function maybe(){
-    var pane = $("app-access");
-    if(loaded || !pane || !pane.classList.contains("on")) return;
-    loaded = true;
-    (window.__mismoLinkGate || Promise.resolve()).then(load, function(){
-      state('<div class="empty"><h3>MISMO Could Not Be Reached</h3><p>Your sign-in could not be checked just now. Reload in a minute.</p></div>');
-    });
-  }
-  document.querySelectorAll('.hq nav button[data-hq]').forEach(function(b){
-    b.addEventListener("click", function(){ setTimeout(maybe, 0); });
-  });
-  maybe();
-})();
-</script>
-<script>
-/* Who Is Told - data/settings in mismo-link-data, read by the relay's signing route. */
-(function(){
-  "use strict";
-  var RELAY = "https://rgvdi67cg27o5kcmiytcqbqnrm0hmztx.lambda-url.us-east-1.on.aws";
-  var $ = function(id){ return document.getElementById(id); };
-  var S = {data:null, sha:null}, canEdit = false;
-  function esc(v){ return String(v == null ? "" : v).replace(/[&<>"']/g, function(c){
-    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
-  function call(method, body){
-    var tk = window.ResourcesSession && ResourcesSession.token ? ResourcesSession.token() : null;
-    var h = tk ? {Authorization:"Bearer " + tk} : {};
-    if(body) h["Content-Type"] = "application/json";
-    return fetch(RELAY + "/mismo-link/data/settings", {method:method, headers:h, cache:"no-store",
-      body: body ? JSON.stringify(body) : undefined}).then(function(r){
-      return r.json().catch(function(){ return {}; }).then(function(j){ if(!r.ok){ var e = new Error("x"); e.status = r.status; throw e; } return j; });
-    });
-  }
-  function list(){ return (S.data && Array.isArray(S.data.notify)) ? S.data.notify : []; }
-  function paint(){
-    var l = list();
-    $("nt-list").innerHTML = l.length ? l.map(function(p, i){
-      return '<li><span><b>' + esc(p.name || p.email) + '</b> &middot; ' + esc(p.email) + '</span>' +
-        (canEdit ? '<button class="linkbtn" type="button" data-ntrm="' + i + '">Remove</button>' : "") + '</li>';
-    }).join("") : '<li><span>Nobody yet &mdash; signatures are still recorded, but no one is emailed.</span></li>';
-    $("nt-add").hidden = !canEdit;
-  }
-  function put(change){
-    var next = JSON.parse(JSON.stringify(S.data || {})); next.notify = list().slice(); change(next);
-    delete next.savedBy; delete next.savedAt;
-    return call("PUT", {content:next, sha:S.sha}).then(function(j){ S.data = next; S.sha = j.sha; paint(); },
-      function(e){ if(e.status === 409) return load().then(function(){ return put(change); }); alert("That did not save. Try again in a minute."); });
-  }
-  function load(){
-    try{ canEdit = !!(window.ResourcesSession && ResourcesSession.canEdit("mismo-link")); }catch(e){}
-    return call("GET").then(function(j){ S.data = j.data || {}; S.sha = j.sha; paint(); },
-      function(){ $("nt-list").innerHTML = '<li><span>Could not be read just now. Reload in a minute.</span></li>'; });
+  /* ================= WHO IS TOLD (Beta Agreement page) ================= */
+  function renderNotify(){
+    var l = (F.settings.data && Array.isArray(F.settings.data.notify)) ? F.settings.data.notify : [];
+    $("nt-list").innerHTML = !loaded ? '<li><span>' + (failedLoad ? "Sign in to see who is told." : "Loading&hellip;") + '</span></li>' :
+      l.length ? l.map(function(p, i){
+        return '<li><span><b>' + esc(p.name || p.email) + '</b> &middot; ' + esc(p.email) + '</span>' +
+          (canEdit ? '<button class="linkbtn" type="button" data-ntrm="' + i + '">Remove</button>' : "") + '</li>';
+      }).join("") : '<li><span>Nobody yet. Signatures are still recorded, and MISMO Link administrators are told instead.</span></li>';
+    $("nt-add").hidden = !(canEdit && loaded);
   }
   $("nt-list").addEventListener("click", function(e){
     var b = e.target.closest("[data-ntrm]"); if(!b) return;
-    var i = +b.getAttribute("data-ntrm");
-    put(function(n){ n.notify.splice(i, 1); });
+    var i = +b.getAttribute("data-ntrm"); saveSettings(function(n){ n.notify.splice(i, 1); }).catch(function(){});
   });
   $("nt-save").addEventListener("click", function(){
     var name = $("nt-name").value.trim(), email = $("nt-email").value.trim();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ $("nt-email").focus(); return; }
-    put(function(n){ n.notify.push({name:name, email:email}); }).then(function(){ $("nt-name").value = ""; $("nt-email").value = ""; });
+    saveSettings(function(n){ n.notify.push({name:name, email:email}); }).then(function(){ $("nt-name").value = ""; $("nt-email").value = ""; }, function(){});
   });
-  (window.__mismoLinkGate || Promise.resolve()).then(load, function(){});
 
-  /* overview buttons open a section the same way the menu does */
-  document.addEventListener("click", function(e){
-    var b = e.target.closest("[data-go]"); if(!b) return;
-    var nav = document.querySelector('.hq nav button[data-hq="' + b.getAttribute("data-go") + '"]');
-    if(nav) nav.click();
-  });
+  /* ================= HELP ================= */
+  var HELP = [
+    ["Getting Started","How MISMO Link HQ is laid out",
+      '<p class="lead">MISMO Link HQ runs the MISMO Link AI early beta: who is taking part, the two agreements, and getting each company and tester switched on.</p>' +
+      '<ul><li><b>Overview</b>: the headline numbers, where each company stands, what is waiting on the team, and what has happened lately.</li>' +
+      '<li><b>Beta Agreement</b>: the two signing pages, who is told when someone signs, and what is recorded.</li>' +
+      '<li><b>Testers and Access</b>: the beta list company by company (<b>Companies</b>) and every signed agreement (<b>Who Has Signed</b>).</li>' +
+      '<li><b>Help</b>: this page.</li></ul>' +
+      '<p>Clicking a company, a person or a signature opens it in the panel on the right. Press <b>Close</b> or Escape to put it away. The search box at the top of the menu finds companies, people, signatures and help topics.</p>'],
+    ["Getting Started","The beta, step by step",
+      '<ol><li><b>Send the Subscriber Agreement.</b> On Testers and Access, open the company and press <b>Email the Subscriber Agreement</b> beside the person. A ready-to-send email opens in your mail program with the signing link.</li>' +
+      '<li><b>The company signs.</b> Someone with authority signs once, for the company. They get a copy, and the beta team gets an email to schedule the kick-off.</li>' +
+      '<li><b>Schedule the kick-off call</b> within 3 business days, and mark it scheduled on the company.</li>' +
+      '<li><b>Send the User Agreement link</b> to the company with <b>Email the User Agreement Link</b>. The company passes it to everyone taking part.</li>' +
+      '<li><b>Each tester signs</b> the User Agreement for themselves. The beta team gets an email for each one.</li>' +
+      '<li><b>Set each tester up</b> with instructions and credentials within 3 business days, and press <b>Mark Set Up</b>.</li></ol>'],
+    ["Companies and People","Reading the company list",
+      '<p>Companies are listed A to Z. Each row shows its membership, how many people from it are on the beta list, and where it stands:</p>' +
+      '<ul><li><b>To Send</b>: nobody from the company has been sent the Subscriber Agreement.</li><li><b>Waiting to Sign</b>: sent, not signed yet.</li>' +
+      '<li><b>Signed · Schedule Kick-off</b>: the company has signed and the kick-off call is not marked scheduled.</li><li><b>Signed</b>: signed and kicked off.</li>' +
+      '<li><b>To Set Up</b>: testers who have signed the User Agreement and are not marked set up.</li></ul>' +
+      '<p>The buttons above the list show only the companies at one step. The filter box searches company names, people, emails and project names.</p>'],
+    ["Companies and People","Membership and Member 360 contacts",
+      '<p>Each company was checked against Member 360 when the list was loaded: whether it is a member, at what level, through when, and its 2027 renewal. The company panel shows the Member 360 contacts too (Primary, Alternate, Billing and so on), so you know who else to reach.</p>' +
+      '<p>Where Member 360 knows the company by another name (NFTY Door is NFTY Technology LLC there), the panel says so. New Century Financial Mortgage is a Sole membership in Michael Williamson\'s name.</p>' +
+      '<p>A company added later is not checked automatically. Look it up in Member 360.</p>'],
+    ["Companies and People","Adding and removing people",
+      '<p>Press <b>Add a Person</b> at the top of Testers and Access, or <b>Add a Person to</b> a company inside its panel. Fill in the company, name, title and email, then <b>Save</b>. Typing a company that is not on the list adds a new company.</p>' +
+      '<p><b>Remove</b> beside a person takes them off the beta list after you confirm. Their application answers go with them; anything they have signed stays on record in Who Has Signed.</p>' +
+      '<p>Adding and removing needs Edit access to MISMO Link (set in People &amp; Access). View access can see everything and change nothing.</p>'],
+    ["Agreements","Sending the Subscriber Agreement",
+      '<p><b>Email the Subscriber Agreement</b> opens a draft in your own mail program, addressed to the person, with the signing link and the note that the kick-off will be scheduled within 3 business days of signing. Change anything before you send it.</p>' +
+      '<p>Pressing it also marks the person as sent, with the date and your name, for everyone. If you sent it another way, use <b>Mark Sent</b>; if it did not go, <b>Not Sent</b> undoes it.</p>'],
+    ["Agreements","When a company signs",
+      '<p>The signer gets a copy by email with a reference number and the next step: a member of the team will be in touch within 3 business days to schedule a kick-off call.</p>' +
+      '<p>Everyone on <b>Who Is Told</b> gets an email naming the company and the signer, with the date it is due by. The company moves to <b>Signed · Schedule Kick-off</b>, and the step appears on the Overview under Waiting on the Team.</p>' +
+      '<p>Once the call is booked, open the company, type the date and time, and press <b>Mark Scheduled</b>.</p>'],
+    ["Agreements","The User Agreement and testers",
+      '<p>After the company signs, open it and press <b>Email the User Agreement Link</b>. A draft opens to the person who signed, asking them to share the link with everyone at the company taking part. <b>Copy the Link</b> copies it for anywhere else.</p>' +
+      '<p>Each tester signs for themselves. They get a copy saying they will hear from the team within 3 business days with instructions and credentials, and Who Is Told gets an email to set them up.</p>' +
+      '<p>Testers are matched to their company by email domain, so they appear on the right company even if they type its name differently. When a tester is set up, press <b>Mark Set Up</b>.</p>'],
+    ["Agreements","Who Has Signed and what is recorded",
+      '<p><b>Who Has Signed</b>, on Testers and Access, lists every signed agreement, newest first, marked Subscriber or User. Open one for the full record:</p>' +
+      '<ul><li>the signer\'s name, job title, company, email and phone, and the name they typed;</li><li>the agreement and its version;</li><li>the date and time, and where they signed from;</li>' +
+      '<li>that they read to the end, the exact sentence they agreed to, and a fingerprint of the agreement text as it stood on screen.</li></ul>'],
+    ["Agreements","If a signature could not be sent",
+      '<p>If a signing page cannot reach MISMO when someone presses Sign and Send, nothing is lost: the signed agreement is saved to their computer as a file, and they are asked to email it to info@mismo.org. File it with the beta records and let the relay owner know.</p>'],
+    ["Emails","Who Is Told",
+      '<p>On <b>Beta Agreement</b>, Who Is Told lists the people emailed when someone signs. Add someone with their name and email; <b>Remove</b> takes them off. If the list is ever empty, MISMO Link administrators are told instead, so a signature is never missed.</p>'],
+    ["Emails","The emails, and where they come from",
+      '<ul><li><b>Subscriber Agreement and User Agreement link</b>: drafts in your own mail program, sent by you.</li>' +
+      '<li><b>The signer\'s copy</b> and <b>the beta team\'s alert</b>: sent automatically by the resources.mismo.org relay when someone signs, through the same mail flow as the platform\'s other emails.</li></ul>' +
+      '<p>The signer\'s copy repeats nothing they typed, so the page cannot be used to send strangers words of someone else\'s choosing.</p>'],
+    ["How It\'s Connected","Where MISMO Link HQ lives",
+      '<ul><li>MISMO Link HQ is at <b>resources.mismo.org/mismo-link/</b>, behind the shared resources.mismo.org sign-in. Access is set per person in People &amp; Access against <b>mismo-link</b>.</li>' +
+      '<li>The pages are in the public GitHub repository <b>GitMISMO/mismo-link</b>, which holds no records.</li>' +
+      '<li>Every record is in the private repository <b>GitMISMO/mismo-link-data</b>, read and saved through the save relay (project <b>mismo-link</b>): data/partners, data/progress, data/signatures and data/settings. Every save is a commit, so there is a history.</li></ul>'],
+    ["How It\'s Connected","The signing pages",
+      '<ul><li><b>resources.mismo.org/mismo-link/sign/</b>: the SaaS Subscriber Agreement, signed once per company.</li>' +
+      '<li><b>resources.mismo.org/mismo-link/user/</b>: the User SaaS Agreement, signed by each tester.</li></ul>' +
+      '<p>Both are open to anyone with the link, because the signers are outside MISMO. They post to the relay\'s public signing route, which only adds signatures, only from resources.mismo.org, and refuses robots and repeat floods. The route is relay request 11; the request and its tests are in GitMISMO/mismo-link under _dev/relay-request-11.</p>'],
+    ["How It\'s Connected","The beta list and Member 360",
+      '<p>The list started from the Early Beta Partner Tracking Sheet (all 23 columns), with duplicates merged, missing emails filled in from each company\'s team list, and Rate.com added. Each company\'s membership and contacts were taken from Member 360 on October 30, 2026; Aptify is the source of truth for membership terms.</p>']
+  ];
+  var helpAt = 0;
+  function renderHelp(){
+    var el = $("app-help"), groups = [];
+    HELP.forEach(function(h){ if(groups.indexOf(h[0]) < 0) groups.push(h[0]); });
+    var cur = HELP[helpAt];
+    el.innerHTML = phead("Help", "Help and How-To", "How to run the MISMO Link AI beta in MISMO Link HQ, step by step.", "") +
+      '<div class="helpwrap"><nav class="helpnav">' + groups.map(function(g){
+        return '<div class="hg">' + esc(g) + '</div>' + HELP.map(function(h, i){
+          return h[0] === g ? '<button type="button" data-h="' + i + '"' + (i === helpAt ? ' aria-current="true"' : "") + '>' + esc(h[1].charAt(0).toUpperCase() + h[1].slice(1)) + '</button>' : "";
+        }).join("");
+      }).join("") + '</nav><div class="helpbody"><div class="card"><div class="cb"><div class="eyebrow">' + esc(cur[0]) + '</div><h2>' +
+        esc(cur[1].charAt(0).toUpperCase() + cur[1].slice(1)) + '</h2>' + cur[2] + '</div></div></div></div>';
+    el.querySelectorAll("[data-h]").forEach(function(b){ b.onclick = function(){ helpAt = +b.getAttribute("data-h"); renderHelp(); window.scrollTo(0,0); }; });
+  }
+  window.__mlHelp = function(i){ helpAt = i; renderHelp(); };
+
+  /* ================= search, for the menu's search box ================= */
+  window.__mlSearch = function(t){
+    var out = [], go = function(tabName){ var b = document.querySelector('.hq nav button[data-hq="' + tabName + '"]'); if(b && !b.hasAttribute("aria-current")) b.click(); };
+    if(loaded){
+      companies().forEach(function(c){
+        if(lc(c.name).indexOf(t) >= 0) out.push({group:"Companies", name:c.name, where:memberLine(c.member), go:function(){ go("access"); openPanel({kind:"company", key:c.key}); }});
+        c.people.forEach(function(p){
+          var hay = lc([get(p.r,"name"), get(p.r,"email")].join(" "));
+          if(hay.indexOf(t) >= 0) out.push({group:"People", name:get(p.r,"name") || get(p.r,"email"), where:c.name, go:function(){ go("access"); openPanel({kind:"person", id:p.id}); }});
+        });
+      });
+      sigs.forEach(function(s){
+        if(lc([s.signerName, s.organization, s.signerEmail].join(" ")).indexOf(t) >= 0)
+          out.push({group:"Signatures", name:s.signerName || "", where:(isUser(s) ? "User" : "Subscriber") + " · " + (s.organization || ""), go:function(){ go("access"); openPanel({kind:"sig", id:s.id}); }});
+      });
+    }
+    HELP.forEach(function(h, i){
+      if(lc(h[1] + " " + h[2].replace(/<[^>]+>/g, " ")).indexOf(t) >= 0) out.push({group:"Help", name:h[1].charAt(0).toUpperCase() + h[1].slice(1), where:h[0], go:function(){ go("help"); window.__mlHelp(i); }});
+    });
+    return out;
+  };
+
+  /* ================= loading ================= */
+  function render(){ renderOverview(); renderAccess(); renderNotify(); drawPanel(); }
+  function harvestSigs(d){
+    if(!d) return [];
+    var list = Array.isArray(d) ? d : d.docs ? Object.keys(d.docs).map(function(k){ var s = d.docs[k]; if(s && !s.id) s.id = k.replace(/^signatures\//, ""); return s; }) : [];
+    list.forEach(function(s, i){ if(s && !s.id) s.id = "row-" + i; });
+    return list.filter(Boolean);
+  }
+  function load(){
+    try{ canEdit = !!(window.ResourcesSession && ResourcesSession.canEdit && ResourcesSession.canEdit("mismo-link")); }catch(e){ canEdit = false; }
+    Promise.all([readDocs("partners"), readDocs("progress"), call("GET","signatures").catch(function(){ return {data:null}; }), call("GET","settings").catch(function(){ return {data:null}; })])
+      .then(function(x){
+        F.partners = x[0]; F.progress = x[1]; sigs = harvestSigs(x[2] && x[2].data);
+        F.settings = {data:(x[3] && x[3].data) || {}, sha:(x[3] && x[3].sha) || null};
+        loaded = true; failedLoad = null; render();
+      }, function(e){ failedLoad = (e && (e.status === 401 || e.status === 403)) ? 401 : 1; render(); });
+  }
+  renderHelp(); render();
+  (window.__mismoLinkGate || Promise.resolve()).then(load, function(){ failedLoad = 1; render(); });
 })();
 </script>
+
 </body>
 </html>
