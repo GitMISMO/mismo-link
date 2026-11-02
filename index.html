@@ -597,6 +597,29 @@ body.railmini .hq .mast-right #theme-btn{margin-top:4px;padding-top:10px;border-
 .hq nav .navsep{font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.42);padding:10px 10px 4px}
 body.railmini .hq nav .navsep{display:none}
 </style>
+<style>
+/* ---------- Pilot Email: the onboarding email, edited and saved for everyone ---------- */
+#app-email .em-fld{margin-bottom:18px}
+#app-email .em-fld label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);font-weight:600;margin-bottom:5px}
+#app-email .em-in{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 11px;font-family:inherit;font-size:13.5px;background:var(--surface-2);color:var(--ink)}
+#app-email .em-in:focus{outline:2px solid var(--sky);outline-offset:-1px;border-color:var(--sky)}
+#app-email .em-editor{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:20px 24px;min-height:380px;font-size:13.5px;line-height:1.62;color:var(--ink)}
+#app-email .em-editor:focus{outline:2px solid var(--sky);outline-offset:-1px}
+#app-email .em-editor p{margin:0 0 12px;font-size:13.5px;color:var(--ink);line-height:1.62}
+#app-email .em-editor p:last-child{margin-bottom:0}
+#app-email .em-editor ol,#app-email .em-editor ul{margin:0 0 12px;padding-left:26px}
+#app-email .em-editor li{margin-bottom:9px}
+#app-email .em-editor b,#app-email .em-editor strong{font-weight:600}
+#app-email .em-editor a{color:var(--navy-mid)}
+#app-email .em-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#app-email .em-state{font-size:12px;color:var(--ink-3);margin-left:auto;white-space:nowrap}
+#app-email .em-state b{font-weight:600}
+#app-email .em-state.dirty b,#app-email .em-state.local b{color:var(--warn)}
+#app-email .em-state.saved b{color:var(--good)}
+#app-email .em-note{border:1px solid var(--border);border-left:3px solid var(--warn);background:var(--surface-2);border-radius:8px;padding:13px 16px;font-size:13px;line-height:1.6;color:var(--ink-2);margin:0 0 16px}
+#app-email .em-note b{color:var(--ink)}
+#app-email .em-note[hidden]{display:none}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="mismo-logo" viewBox="0 0 708 108"><g transform="translate(0.000000,108.000000) scale(0.100000,-0.100000)" fill="var(--logo-body, #0f314c)"><path d="M5917 1065 c-169 -46 -279 -153 -335 -323 -21 -65 -25 -96 -25 -197
@@ -669,6 +692,9 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
     <button type="button" data-hq="agreement" title="Beta Agreement">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l4 4v16H6z"/><path d="M14 2v4h4M9 13h6M9 17h4"/></svg>
       <span>Beta Agreement</span></button>
+<button type="button" data-hq="email" title="Pilot Email">
+<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+<span>Pilot Email</span></button>
     <button type="button" data-hq="access" title="Testers and Access">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M17 11h4M19 9v4"/></svg>
       <span>Testers and Access</span></button>
@@ -726,7 +752,25 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
     </div></div>
   </section>
 
-  <section class="pane" id="app-access"></section>
+  <section class="pane" id="app-email">
+<div class="phead"><div><div class="eyebrow">MISMO Link AI Beta</div><h1>Pilot Email</h1>
+<div class="sub">The email sent to each organization joining the Pilot Program. Edit it here, press <b>Copy for Outlook</b>, and paste it into a new message. Saving makes this the version everyone sends.</div></div></div>
+<div class="em-note" id="em-note" hidden></div>
+<div class="card"><div class="cb">
+<div class="em-fld"><label for="em-subj">Subject Line</label>
+<input class="em-in" type="text" id="em-subj" autocomplete="off"></div>
+<div class="em-fld"><label for="em-body">Email Body</label>
+<div class="em-editor" id="em-body" contenteditable="true" spellcheck="true" aria-label="Email body"></div></div>
+<div class="em-bar">
+<button class="btn" type="button" id="em-copy">Copy for Outlook</button>
+<button class="btn ghost" type="button" id="em-save">Save</button>
+<button class="btn ghost" type="button" id="em-revert">Revert to Saved</button>
+<span class="em-state" id="em-state"></span>
+</div>
+</div></div>
+</section>
+
+<section class="pane" id="app-access"></section>
 
   <section class="pane" id="app-help"></section>
 
@@ -1683,5 +1727,150 @@ window.__mismoLinkGate = (function(){
 })();
 </script>
 
+<script>
+/* ===================================================================
+Pilot Email - the onboarding email sent to each organization joining
+the Pilot Program. Saved in data/emails (slot pilotInvite) through the
+same relay, so everyone sends the latest wording. /mismo-link/#email
+opens this tab directly.
+=================================================================== */
+(function(){
+"use strict";
+var RELAY = "https://rgvdi67cg27o5kcmiytcqbqnrm0hmztx.lambda-url.us-east-1.on.aws";
+var PROJECT = "mismo-link", DOCID = "emails", SLOT = "pilotInvite";
+var LKEY = "tools:mismo-link:pilot-email";
+var SEED = {
+    subject: 'MISMO Link AI Pilot Program – Ready to Get Started!',
+    html: '<p>Hello,</p>\n<p>We&rsquo;re excited to announce that MISMO Link AI is ready to begin onboarding organizations participating in the Pilot Program!</p>\n<p>Thank you for your interest in being an early participant and for your patience as we finalized the necessary agreements and onboarding process. We appreciate your continued support and look forward to getting your team started with this exciting new MISMO offering.</p>\n<p>To help ensure a smooth onboarding experience, we&rsquo;ve outlined the process and next steps below.</p>\n<p><b>What to Expect During Onboarding</b></p>\n<ol>\n<li><b>Organization Agreement:</b> An authorized representative of your organization will need to review and sign the MISMO Link AI SaaS Subscriber Agreement: <a href="https://resources.mismo.org/mismo-link/sign/">https://resources.mismo.org/mismo-link/sign/</a></li>\n<li><b>Kickoff Call:</b> Once the agreement is completed, I will reach out within three business days to coordinate a kickoff call. During this call, we&rsquo;ll review the onboarding process, available support resources, and next steps for providing access to your team.</li>\n<li><b>Individual User Agreements:</b> Following the kickoff call, you&rsquo;ll receive a link to share with employees in your organization who will need access to MISMO Link AI. Each user will be required to complete the MISMO Link AI User SaaS Agreement before access can be established.</li>\n<li><b>User Access and Setup:</b> Once individual agreements are completed, we&rsquo;ll coordinate account setup and send each user instructions for connecting MISMO Link AI to their preferred AI assistant, either Claude or ChatGPT. Users interested in connecting through another AI assistant can contact us for additional guidance.</li>\n<li><b>Ongoing Support:</b> We&rsquo;ll provide information about help desk resources, opportunities for bi-weekly check-ins, and how to get assistance throughout the Pilot Program. Questions can also be directed to <a href="mailto:linksupport@mismo.org">linksupport@mismo.org</a>.</li>\n</ol>\n<p><b>A Note About the Link Dataset Management Module</b></p>\n<p>If your organization also expressed interest in piloting the MISMO Link Dataset Management Module, we will send a separate email with additional information and instructions for getting started with that portion of the Pilot Program.</p>\n<p><b>Next Steps</b></p>\n<p>To get started, please have an authorized representative of your organization complete the MISMO Link AI SaaS Subscriber Agreement using the link provided above. Once submitted, I&rsquo;ll be in touch to schedule your kickoff call.</p>\n<p>We&rsquo;re excited to partner with you as we introduce MISMO Link AI and look forward to your feedback and insights as early participants. Your involvement will play an important role in helping shape the future of this innovative tool.</p>\n<p>Thank you again for your participation and continued support of MISMO!</p>\n<p>Best regards,<br>Kellie Stoll<br>MISMO Facilitator</p>'
+  };
+var saved = null, usingRelay = false, dirty = false, started = false, tmr = null;
+
+function $(id){ return document.getElementById(id); }
+function token(){ var rs = window.ResourcesSession; return rs && typeof rs.token === "function" ? rs.token() : null; }
+function toast(msg, bad){
+var t = $("pt-toast"); if(!t) return;
+t.textContent = msg; t.classList.toggle("bad", !!bad); t.classList.add("on");
+if(tmr) clearTimeout(tmr); tmr = setTimeout(function(){ t.classList.remove("on"); }, 3600);
+}
+function call(method, body){
+var tk = token();
+if(!tk){ var e0 = new Error("SIGNED_OUT"); e0.status = 401; return Promise.reject(e0); }
+var h = {Authorization: "Bearer " + tk};
+if(body) h["Content-Type"] = "application/json";
+return fetch(RELAY + "/" + PROJECT + "/data/" + DOCID, {method: method, headers: h, cache: "no-store",
+body: body ? JSON.stringify(body) : undefined}).then(function(r){
+if(!r.ok){ var e = new Error("status " + r.status); e.status = r.status; throw e; }
+return r.status === 204 ? null : r.json();
+});
+}
+function current(){ return {subject: $("em-subj").value, html: $("em-body").innerHTML}; }
+function put(v){ $("em-subj").value = v.subject || ""; $("em-body").innerHTML = v.html || ""; }
+function same(a, b){ return a && b && a.subject === b.subject && a.html === b.html; }
+function keepLocal(){ try{ localStorage.setItem(LKEY, JSON.stringify(current())); }catch(e){} }
+function readLocal(){ try{ var r = localStorage.getItem(LKEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } }
+
+function paintState(){
+var s = $("em-state");
+dirty = !same(current(), saved);
+s.className = "em-state " + (dirty ? "dirty" : (usingRelay ? "saved" : "local"));
+s.innerHTML = dirty ? "<b>Unsaved changes</b>"
+: (usingRelay ? "<b>Saved</b> for everyone" : "<b>Saved on this computer only</b>");
+$("em-save").disabled = !dirty;
+$("em-revert").disabled = !dirty;
+}
+
+function load(){
+return call("GET").then(function(j){
+var d = j && j.data, docs = (d && d.docs) || {};
+usingRelay = true;
+put(docs[SLOT] || SEED);
+saved = current();
+$("em-note").hidden = true;
+paintState();
+}).catch(function(e){
+usingRelay = false;
+put(readLocal() || SEED);
+saved = current();
+var n = $("em-note");
+n.innerHTML = "<b>Could not reach the save relay</b> (" + (e.status || "no response") + "). "
++ "Edits are kept on this computer only for now. Editing and copying still work.";
+n.hidden = false;
+paintState();
+});
+}
+
+function save(){
+if(!dirty) return;
+var v = current();
+keepLocal();
+if(!usingRelay){ saved = v; paintState(); toast("Saved on this computer."); return; }
+$("em-save").disabled = true;
+call("GET").then(function(j){
+var d = j && j.data, docs = (d && d.docs) || {};
+docs[SLOT] = v;
+return call("PUT", {content: {docs: docs}, sha: (j && j.sha) || null});
+}).then(function(){
+saved = v; paintState(); toast("Saved. This is now the version everyone sends.");
+}).catch(function(e){
+paintState();
+toast(e.status === 403 ? "Your account can view MISMO Link but not change it."
+: "That did not save (" + (e.status || "no response") + "). Your wording is kept on this computer.", true);
+});
+}
+
+function copy(){
+var v = current();
+var html = '<div style="font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#1a1a1a">' + v.html + '</div>';
+var text = $("em-body").innerText;
+function fallback(){
+var ta = document.createElement("textarea");
+ta.value = text; document.body.appendChild(ta); ta.select();
+try{ document.execCommand("copy"); toast("Copied. Paste it into a new Outlook message."); }
+catch(e){ toast("This browser would not copy - select the text and copy it by hand.", true); }
+ta.remove();
+}
+if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+try{
+navigator.clipboard.write([new ClipboardItem({
+"text/html": new Blob([html], {type: "text/html"}),
+"text/plain": new Blob([text], {type: "text/plain"})
+})]).then(function(){ toast("Copied with its formatting. Paste it into a new Outlook message."); }).catch(fallback);
+return;
+}catch(e){}
+}
+fallback();
+}
+
+function wire(){
+if(started) return; started = true;
+put(SEED); saved = current();
+$("em-subj").addEventListener("input", function(){ keepLocal(); paintState(); });
+$("em-body").addEventListener("input", function(){ keepLocal(); paintState(); });
+$("em-body").addEventListener("paste", function(e){
+e.preventDefault();
+var t = (e.clipboardData || window.clipboardData).getData("text/plain");
+document.execCommand("insertText", false, t);
+});
+$("em-copy").addEventListener("click", copy);
+$("em-save").addEventListener("click", save);
+$("em-revert").addEventListener("click", function(){
+if(saved) put(saved);
+keepLocal(); paintState(); toast("Put back to the last saved wording.");
+});
+window.addEventListener("beforeunload", function(e){ if(dirty){ e.preventDefault(); e.returnValue = ""; } });
+load();
+}
+
+function fromHash(){ if(location.hash === "#email" && window.__show) window.__show("email"); }
+fromHash();
+window.addEventListener("hashchange", fromHash);
+
+var g = window.__mismoLinkGate;
+(g && typeof g.then === "function" ? g : Promise.resolve(true)).then(function(ok){
+if(ok === false) return;
+wire();
+}, wire);
+})();
+</script>
 </body>
 </html>
