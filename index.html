@@ -1188,6 +1188,7 @@ window.__mismoLinkGate = (function(){
       c.sent = c.people.filter(function(p){ return sentOf(p.r); }).length;
       c.users.sort(function(a, b){ return signedAt(b) - signedAt(a); });
       c.toSetUp = c.users.filter(function(s){ return !setUpOf(s); }).length;
+c.given = c.users.length - c.toSetUp;
       c.stage = c.sub ? (c.kickoff ? "kickedoff" : "kickoff") : (c.sent ? "waiting" : "tosend");
     });
     return order.map(function(k){ return map[k]; }).sort(function(a, b){ return a.name.localeCompare(b.name); });
@@ -1339,9 +1340,9 @@ window.__mismoLinkGate = (function(){
   }
   var qv = "";
   function companiesHTML(all){
-    var counts = {all:all.length, tosend:0, waiting:0, kickoff:0, setup:0};
-    all.forEach(function(c){ if(counts[c.stage] != null) counts[c.stage]++; if(c.toSetUp) counts.setup++; });
-    var segs = [["all","All"],["tosend","To Send"],["waiting","Waiting to Sign"],["kickoff","Kick-off to Schedule"],["setup","Testers to Set Up"]];
+    var counts = {all:all.length, tosend:0, waiting:0, kickoff:0, setup:0, given:0};
+    all.forEach(function(c){ if(counts[c.stage] != null) counts[c.stage]++; if(c.toSetUp) counts.setup++; if(c.given) counts.given++; });
+    var segs = [["all","All"],["tosend","To Send"],["waiting","Waiting to Sign"],["kickoff","Kick-off to Schedule"],["setup","Testers to Set Up"],["given","Access Given"]];
     return '<div class="ta-tools"><input type="search" id="ta-q" placeholder="Filter by company, name, email or project" aria-label="Filter">' +
       '<div class="pt-seg" role="group" aria-label="Show">' + segs.map(function(s){
         return '<button type="button" data-f="' + s[0] + '" aria-pressed="' + (filter === s[0]) + '">' + esc(s[1]) + ' (' + counts[s[0]] + ')</button>';
@@ -1369,7 +1370,7 @@ window.__mismoLinkGate = (function(){
       return;
     }
     var all = companies().filter(function(c){
-      if(filter === "setup" ? !c.toSetUp : (filter !== "all" && c.stage !== filter)) return false;
+      if(filter === "setup" ? !c.toSetUp : filter === "given" ? !c.given : (filter !== "all" && c.stage !== filter)) return false;
       if(!q) return true;
       return lc([c.name, c.member && c.member.m360Name].concat(c.people.map(function(p){
         return [get(p.r,"name"), get(p.r,"email"), get(p.r,"title"), get(p.r,"projectName")].join(" ");
@@ -1380,7 +1381,7 @@ window.__mismoLinkGate = (function(){
       return '<button type="button" class="row" data-co="' + esc(c.key) + '"><span class="rw"><b>' + esc(c.name) + '</b><span>' + esc(memberLine(c.member)) + ' · ' +
         plural(c.people.length, "person") + '</span></span><span class="rf">' +
         (!c.member ? chip("Not Checked","wait") : c.member.isMember ? chip("Member","ok") : chip("Not a Member","changes")) + chip(st[0], st[1] === "wait" ? "review" : st[1] === "ok" ? "ok" : "wait") +
-        (c.toSetUp ? chip(c.toSetUp + " to Set Up","review") : "") + '</span></button>';
+        (c.toSetUp ? chip(c.toSetUp + " to Set Up","review") : "") + (c.given ? chip("Access Given" + (c.given > 1 ? " · " + c.given : ""),"ok") : "") + '</span></button>';
     }).join("") : '<div class="empty">No company matches. Clear the box, or choose All.</div>';
   }
 
@@ -1445,8 +1446,8 @@ window.__mismoLinkGate = (function(){
         var su = setUpOf(s);
         return '<div class="prow"><button type="button" class="pwho" data-sig="' + esc(s.id) + '"><b>' + esc(s.signerName) + '</b><span>' +
           esc([s.signerTitle, s.signerEmail].filter(Boolean).join(" · ")) + ' · signed ' + esc(shortDay(s.submittedAt)) + '</span></button><div class="pacts">' +
-          (su ? chip("Set Up " + shortDay(su.at || su.on), "ok") + (canEdit ? '<button class="linkbtn" type="button" data-setundo="' + esc(s.signerEmail) + '">Undo</button>' : "")
-              : (canEdit ? '<button class="btn sm" type="button" data-setup="' + esc(s.signerEmail) + '">Mark Set Up</button>' : chip("To Set Up","review"))) +
+          (su ? chip("Access Given " + shortDay(su.at || su.on), "ok") + (canEdit ? '<button class="linkbtn" type="button" data-setundo="' + esc(s.signerEmail) + '">Undo</button>' : "")
+              : (canEdit ? '<button class="btn sm" type="button" data-setup="' + esc(s.signerEmail) + '">Mark Access Given</button>' : chip("To Set Up","review"))) +
           '</div></div>';
       }).join("") + '</div>' : '<p class="muted">No testers have signed yet.</p>') +
       '<div class="pt-inline"><button class="btn sm ghost" type="button" data-uinvite="' + esc(c.key) + '">Email the User Agreement Link</button>' +
