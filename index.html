@@ -362,6 +362,9 @@ body.railmini .hq .mast-right #theme-btn{margin-top:4px;padding-top:10px;border-
 :root[data-theme="dark"] .btn.ghost{background:transparent; color:var(--ink-2);}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn.ghost{background:transparent; color:var(--ink-2);} }
 .btn.ghost.danger{color:var(--bad); border-color:rgba(179,55,44,.35);}
+.btn.danger{background:var(--bad); color:#fff;}
+.btn.danger:hover{background:#8f2b22;}
+.prow .pwho .muted{display:block; margin-top:3px;}
 .btn[disabled]{opacity:.5; cursor:not-allowed;}
 .linkbtn{background:none; border:none; padding:0 2px; color:var(--navy-mid); font:inherit; font-size:12.5px;
   text-decoration:underline; cursor:pointer;}
@@ -1172,6 +1175,11 @@ window.__mismoLinkGate = (function(){
     order.forEach(function(k){
       var c = map[k];
       c.contacts.forEach(function(p){ var d = domainOf(p.email); if(d && !GENERIC[d]) c.domains[d] = 1; });
+      /* Removed people stay on the record so the reason survives, but they are
+         out of every count, stage and filter until they are put back. */
+      c.gone = c.people.filter(function(p){ return p.r && p.r.removed; })
+        .sort(function(a, b){ return String((b.r.removed || {}).at || "").localeCompare(String((a.r.removed || {}).at || "")); });
+      c.people = c.people.filter(function(p){ return !(p.r && p.r.removed); });
       c.people.sort(function(a, b){ return get(a.r,"name").localeCompare(get(b.r,"name")); });
       c.sub = null; c.users = [];
     });
@@ -1340,9 +1348,9 @@ c.given = c.users.length - c.toSetUp;
   }
   var qv = "";
   function companiesHTML(all){
-    var counts = {all:all.length, tosend:0, waiting:0, kickoff:0, setup:0, given:0};
-    all.forEach(function(c){ if(counts[c.stage] != null) counts[c.stage]++; if(c.toSetUp) counts.setup++; if(c.given) counts.given++; });
-    var segs = [["all","All"],["tosend","To Send"],["waiting","Waiting to Sign"],["kickoff","Kick-off to Schedule"],["setup","Testers to Set Up"],["given","Access Given"]];
+    var counts = {all:all.length, tosend:0, waiting:0, kickoff:0, setup:0, given:0, removed:0};
+    all.forEach(function(c){ if(counts[c.stage] != null) counts[c.stage]++; if(c.toSetUp) counts.setup++; if(c.given) counts.given++; if(c.gone.length) counts.removed++; });
+    var segs = [["all","All"],["tosend","To Send"],["waiting","Waiting to Sign"],["kickoff","Kick-off to Schedule"],["setup","Testers to Set Up"],["given","Access Given"],["removed","Removed"]];
     return '<div class="ta-tools"><input type="search" id="ta-q" placeholder="Filter by company, name, email or project" aria-label="Filter">' +
       '<div class="pt-seg" role="group" aria-label="Show">' + segs.map(function(s){
         return '<button type="button" data-f="' + s[0] + '" aria-pressed="' + (filter === s[0]) + '">' + esc(s[1]) + ' (' + counts[s[0]] + ')</button>';
@@ -1370,9 +1378,14 @@ c.given = c.users.length - c.toSetUp;
       return;
     }
     var all = companies().filter(function(c){
-      if(filter === "setup" ? !c.toSetUp : filter === "given" ? !c.given : (filter !== "all" && c.stage !== filter)) return false;
+      var keep = filter === "all" ? true
+        : filter === "setup" ? !!c.toSetUp
+        : filter === "given" ? !!c.given
+        : filter === "removed" ? !!c.gone.length
+        : c.stage === filter;
+      if(!keep) return false;
       if(!q) return true;
-      return lc([c.name, c.member && c.member.m360Name].concat(c.people.map(function(p){
+      return lc([c.name, c.member && c.member.m360Name].concat(c.people.concat(c.gone).map(function(p){
         return [get(p.r,"name"), get(p.r,"email"), get(p.r,"title"), get(p.r,"projectName")].join(" ");
       })).join(" ")).indexOf(q) >= 0;
     });
@@ -1381,7 +1394,8 @@ c.given = c.users.length - c.toSetUp;
       return '<button type="button" class="row" data-co="' + esc(c.key) + '"><span class="rw"><b>' + esc(c.name) + '</b><span>' + esc(memberLine(c.member)) + ' · ' +
         plural(c.people.length, "person") + '</span></span><span class="rf">' +
         (!c.member ? chip("Not Checked","wait") : c.member.isMember ? chip("Member","ok") : chip("Not a Member","changes")) + chip(st[0], st[1] === "wait" ? "review" : st[1] === "ok" ? "ok" : "wait") +
-        (c.toSetUp ? chip(c.toSetUp + " to Set Up","review") : "") + (c.given ? chip("Access Given" + (c.given > 1 ? " · " + c.given : ""),"ok") : "") + '</span></button>';
+        (c.toSetUp ? chip(c.toSetUp + " to Set Up","review") : "") + (c.given ? chip("Access Given" + (c.given > 1 ? " · " + c.given : ""),"ok") : "") +
+        (c.gone.length ? chip(c.gone.length + " Removed","changes") : "") + '</span></button>';
     }).join("") : '<div class="empty">No company matches. Clear the box, or choose All.</div>';
   }
 
@@ -1411,7 +1425,40 @@ c.given = c.users.length - c.toSetUp;
       $("pa-save").onclick = doAdd;
       var co = $("pa-co"); if(panel.company) co.value = panel.company;
       setTimeout(function(){ (co.value ? $("pa-name") : co).focus(); }, 60);
+    } else if(panel.kind === "remove"){
+      var rm = F.partners.docs[panel.id]; if(!rm){ closePanel(); return; }
+      $("rp-eye").textContent = get(rm,"company"); $("rp-title").textContent = "Remove " + (get(rm,"name") || get(rm,"email"));
+      $("rp-body").innerHTML = removeBody(rm);
+      foot.hidden = false;
+      foot.innerHTML = '<button class="btn danger" type="button" id="rm-go">Remove</button><button class="btn ghost" type="button" data-close>Cancel</button><span class="msg" id="rm-msg"></span>';
+      $("rm-go").onclick = function(){ doRemove(panel.id); };
+      setTimeout(function(){ var w = $("rm-why"); if(w) w.focus(); }, 60);
     }
+  }
+  var RM_REASONS = ["Left the company", "No longer taking part", "Company withdrew from the pilot",
+    "Duplicate record", "Added by mistake", "Never responded", "Other"];
+  function removeBody(r){
+    return '<p class="muted" style="margin:0 0 14px">They come off the beta list but stay on record, with the reason, so you can see later why they went &mdash; and put them back in one click. Anything they have already signed is untouched.</p>' +
+      '<div class="fgrid"><div><label for="rm-why">Reason</label><select id="rm-why">' +
+        '<option value="">Choose a reason&hellip;</option>' +
+        RM_REASONS.map(function(x){ return '<option value="' + esc(x) + '">' + esc(x) + '</option>'; }).join("") +
+      '</select></div>' +
+      '<div><label for="rm-note">Note (optional)</label><input id="rm-note" autocomplete="off" placeholder="Anything worth knowing later"></div></div>';
+  }
+  function doRemove(id){
+    var r = F.partners.docs[id]; if(!r) return;
+    var why = $("rm-why").value, note = $("rm-note").value.trim();
+    if(!why){ $("rm-msg").textContent = "Choose a reason."; return; }
+    if(why === "Other" && !note){ $("rm-msg").textContent = "Say why, in the note."; return; }
+    $("rm-msg").textContent = ""; $("rm-go").disabled = true;
+    var ck = orgKey(get(r,"company"));
+    saveDocs("partners", function(d){
+      if(d[id]) d[id].removed = {reason:why, note:note, on:shortDay(nowIso()), at:nowIso(), by:me()};
+    }).then(function(){
+      toast((get(r,"name") || "They") + " removed — " + why.toLowerCase() + ".");
+      var c = companyByKey(ck);
+      if(c) openPanel({kind:"company", key:ck}); else closePanel();
+    }, function(){ $("rm-go").disabled = false; $("rm-msg").textContent = "That did not save."; });
   }
   function sect(title, html){ return '<section class="psec"><h3>' + esc(title) + '</h3>' + html + '</section>'; }
   function kv(pairs){ return '<dl class="kv">' + pairs.filter(function(p){ return p[1]; }).map(function(p){ return '<dt>' + esc(p[0]) + '</dt><dd>' + esc(p[1]) + '</dd>'; }).join("") + '</dl>'; }
@@ -1458,7 +1505,18 @@ c.given = c.users.length - c.toSetUp;
           esc([p.title, p.name ? p.email : "", (p.roles || []).join(", ")].filter(Boolean).join(" · ")) + '</span></div></div>';
       }).join("") + '</div>' : '<p class="muted">' + (c.member && c.member.isMember ? "No contacts on the Member 360 record." : "Not in Member 360, so no contacts there.") + '</p>');
 
-    return st + sect("Beta People", people) + users + contacts;
+    var gone = c.gone.length ? sect("Removed from the Beta List", '<div class="plist">' + c.gone.map(function(p){
+        var r = p.r, rm = r.removed || {}, email = get(r,"email");
+        return '<div class="prow"><button type="button" class="pwho" data-person="' + esc(p.id) + '"><b>' + esc(get(r,"name") || email || "Unnamed") + '</b><span>' +
+          esc([get(r,"title"), email].filter(Boolean).join(" · ")) + '</span>' +
+          '<span class="muted">' + esc(rm.reason || "No reason recorded") + (rm.note ? " — " + esc(rm.note) : "") +
+          '<br>Removed ' + esc(rm.on || shortDay(rm.at)) + (rm.by ? " by " + esc(rm.by) : "") + '</span>' +
+          '</button><div class="pacts">' +
+          (canEdit ? '<button class="btn sm ghost" type="button" data-restore="' + esc(p.id) + '">Put Back</button>' : chip("Removed","changes")) +
+          '</div></div>';
+      }).join("") + '</div>') : "";
+
+    return st + sect("Beta People", people) + gone + users + contacts;
   }
 
   function personBody(id, r){
@@ -1472,7 +1530,10 @@ c.given = c.users.length - c.toSetUp;
       var pairs = g[1].map(function(k){ return [LABEL[k], get(r,k)]; }).filter(function(p){ return p[1]; });
       return pairs.length ? sect(g[0], kv(pairs)) : "";
     }).join("");
-    return back + sect("Person", who) + (groups || '<p class="muted">Nothing more on file from the application or the questionnaire.</p>');
+    var rmv = r.removed ? sect("Removed from the Beta List",
+      kv([["Reason", r.removed.reason], ["Note", r.removed.note], ["Removed", (r.removed.on || shortDay(r.removed.at)) + (r.removed.by ? " by " + r.removed.by : "")]]) +
+      (canEdit ? '<div class="pt-inline"><button class="btn sm ghost" type="button" data-restore="' + esc(id) + '">Put Back on the List</button></div>' : "")) : "";
+    return back + rmv + sect("Person", who) + (groups || '<p class="muted">Nothing more on file from the application or the questionnaire.</p>');
   }
 
   function sigBody(s){
@@ -1514,7 +1575,33 @@ c.given = c.users.length - c.toSetUp;
   function mailto(to, subject, body){
     window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
   }
-  function draftSubscriber(r){
+  /* The wording comes from the Pilot Email tab, so there is one place to change
+     it. A mailto link can only carry plain text, and Windows cuts the whole link
+     off near 2,000 characters - so a long email goes to the clipboard instead and
+     Outlook opens addressed and titled, ready to paste. */
+  function htmlToText(html){
+    var d = document.createElement("div");
+    d.innerHTML = String(html || "")
+      .replace(/<\/(p|div|h[1-6])>/gi, "\n\n")
+      .replace(/<li[^>]*>/gi, "\n  • ")
+      .replace(/<\/(ol|ul)>/gi, "\n")
+      .replace(/<br\s*\/?>/gi, "\n");
+    return (d.textContent || "").replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+  }
+  function copyRich(html, text){
+    var wrapped = '<div style="font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#1a1a1a">' + html + '</div>';
+    if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+      try{
+        return navigator.clipboard.write([new ClipboardItem({
+          "text/html": new Blob([wrapped], {type:"text/html"}),
+          "text/plain": new Blob([text], {type:"text/plain"})
+        })]);
+      }catch(e){}
+    }
+    return (navigator.clipboard && navigator.clipboard.writeText)
+      ? navigator.clipboard.writeText(text) : Promise.reject(new Error("no clipboard"));
+  }
+  function draftSubscriberFallback(r){
     var first = get(r,"name").split(" ")[0] || "there", co = get(r,"company") || "your company";
     mailto(get(r,"email"), "MISMO Link AI beta: Subscriber Agreement to sign",
       "Hi " + first + ",\n\nThank you for taking part in the MISMO Link AI early beta.\n\n" +
@@ -1523,6 +1610,23 @@ c.given = c.users.length - c.toSetUp;
       "please forward this link to the person who can:\n\n" + SIGN_URL + "\n\n" +
       "No account is needed to sign it, and a copy comes back to the signer by email. Once it is signed, a member of our team " +
       "will be in touch within 3 business days to schedule a kick-off call.\n\nAny questions, just reply to this message.\n\nBest regards,\n");
+  }
+  function draftSubscriber(r){
+    var pe = window.__pilotEmail, to = get(r,"email");
+    /* Pilot Email not loaded (relay down, or the tab never opened): send the
+       plain wording rather than nothing, and say which one went. */
+    if(!pe || !pe.html){ draftSubscriberFallback(r); toast("Pilot Email not loaded, so the plain version opened."); return; }
+    var subject = pe.subject || "MISMO Link AI Pilot Program";
+    var text = htmlToText(pe.html);
+    var full = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(text);
+    if(full.length <= 1900){ window.location.href = full; toast("Outlook opened with the Pilot Email."); return; }
+    copyRich(pe.html, text).then(function(){
+      window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject);
+      toast("Outlook opened and the Pilot Email is on your clipboard — press Ctrl+V in the message.");
+    }, function(){
+      window.location.href = full;
+      toast("Outlook opened. If the message looks cut short, copy it from the Pilot Email tab.", true);
+    });
   }
   function draftUserInvite(c){
     var s = c.sub, to = (s && s.signerEmail) || get(c.people[0] && c.people[0].r, "email");
@@ -1540,7 +1644,7 @@ c.given = c.users.length - c.toSetUp;
     return saveDocs("progress", function(d){ d[key] = {at:nowIso(), on:shortDay(nowIso()), by:me(), to:get(r,"email"), company:get(r,"company")}; });
   }
   document.addEventListener("click", function(e){
-    var b = e.target.closest("[data-co],[data-person],[data-sig],[data-mail],[data-sent],[data-unsend],[data-rm],[data-addto],[data-kick],[data-kickundo],[data-setup],[data-setundo],[data-uinvite],[data-copy],[data-tab],[data-f],[data-close]");
+    var b = e.target.closest("[data-co],[data-person],[data-sig],[data-mail],[data-sent],[data-unsend],[data-rm],[data-restore],[data-addto],[data-kick],[data-kickundo],[data-setup],[data-setundo],[data-uinvite],[data-copy],[data-tab],[data-f],[data-close]");
     if(!b || !b.closest("#app-overview,#app-access,#rpane")) return;
     var a = function(n){ return b.getAttribute(n); };
     if(a("data-close") != null){ closePanel(); return; }
@@ -1553,14 +1657,13 @@ c.given = c.users.length - c.toSetUp;
     if(a("data-sent") != null){ markSent(F.partners.docs[a("data-sent")]).catch(function(){}); return; }
     if(a("data-unsend") != null){ var ru = F.partners.docs[a("data-unsend")];
       saveDocs("progress", function(d){ delete d["sent/" + lc(get(ru,"email"))]; }).catch(function(){}); return; }
-    if(a("data-rm") != null){
-      var id = a("data-rm"), rr = F.partners.docs[id];
-      if(!window.confirm("Remove " + (get(rr,"name") || "this person") + " from the beta list for " + get(rr,"company") +
-        "?\n\nTheir application answers go with them. Anything they have already signed stays on record.")) return;
-      var ck = orgKey(get(rr,"company"));
-      saveDocs("partners", function(d){ delete d[id]; }).then(function(){
-        toast((get(rr,"name") || "They") + " removed.");
-        if(!companyByKey(ck)) closePanel();
+    /* Removing is a flag, not a delete: the record stays so the reason stays
+       with it and anyone can be put back. */
+    if(a("data-rm") != null){ openPanel({kind:"remove", id:a("data-rm")}); return; }
+    if(a("data-restore") != null){
+      var rid = a("data-restore"), rz = F.partners.docs[rid];
+      saveDocs("partners", function(d){ if(d[rid]) delete d[rid].removed; }).then(function(){
+        toast((get(rz,"name") || "They") + " is back on the beta list.");
       }).catch(function(){}); return;
     }
     if(a("data-addto") != null){ var c0 = companyByKey(a("data-addto")); openAdd(c0 && c0.name); return; }
@@ -1632,7 +1735,8 @@ c.given = c.users.length - c.toSetUp;
       '<p>A company added later is not checked automatically. Look it up in Member 360.</p>'],
     ["Companies and People","Adding and removing people",
       '<p>Press <b>Add a Person</b> at the top of Testers and Access, or <b>Add a Person to</b> a company inside its panel. Fill in the company, name, title and email, then <b>Save</b>. Typing a company that is not on the list adds a new company.</p>' +
-      '<p><b>Remove</b> beside a person takes them off the beta list after you confirm. Their application answers go with them; anything they have signed stays on record in Who Has Signed.</p>' +
+      '<p><b>Remove</b> beside a person asks why, then takes them off the beta list. Nothing is deleted: they move to <b>Removed from the Beta List</b> on the company, with the reason and who removed them, and <b>Put Back</b> returns them. The <b>Removed</b> filter finds every company with someone on it. Anything they have signed stays on record in Who Has Signed either way.</p>' +
+      '<p><b>Email the Subscriber Agreement</b> sends the wording saved on the <b>Pilot Email</b> tab, so changing it there changes what everyone sends. Outlook opens addressed and titled; if the email is too long to travel in the link, it is put on your clipboard instead and you press Ctrl+V. Either way the person moves to <b>Waiting to Sign</b>.</p>' +
       '<p>Adding and removing needs Edit access to MISMO Link (set in People &amp; Access). View access can see everything and change nothing.</p>'],
     ["Agreements","Sending the Subscriber Agreement",
       '<p><b>Email the Subscriber Agreement</b> opens a draft in your own mail program, addressed to the person, with the signing link and the note that the kick-off will be scheduled within 3 business days of signing. Change anything before you send it.</p>' +
@@ -1765,7 +1869,10 @@ return r.status === 204 ? null : r.json();
 });
 }
 function current(){ return {subject: $("em-subj").value, html: $("em-body").innerHTML}; }
-function put(v){ $("em-subj").value = v.subject || ""; $("em-body").innerHTML = v.html || ""; }
+/* Testers and Access sends this wording, so hand it the saved version to read.
+   Saved only, never the box as it stands - a half-typed edit must not go out. */
+function publish(v){ window.__pilotEmail = {subject: (v && v.subject) || "", html: (v && v.html) || ""}; }
+function put(v){ $("em-subj").value = v.subject || ""; $("em-body").innerHTML = v.html || ""; publish(v); }
 function same(a, b){ return a && b && a.subject === b.subject && a.html === b.html; }
 function keepLocal(){ try{ localStorage.setItem(LKEY, JSON.stringify(current())); }catch(e){} }
 function readLocal(){ try{ var r = localStorage.getItem(LKEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } }
@@ -1811,7 +1918,7 @@ var d = j && j.data, docs = (d && d.docs) || {};
 docs[SLOT] = v;
 return call("PUT", {content: {docs: docs}, sha: (j && j.sha) || null});
 }).then(function(){
-saved = v; paintState(); toast("Saved. This is now the version everyone sends.");
+saved = v; publish(v); paintState(); toast("Saved. This is now the version everyone sends.");
 }).catch(function(e){
 paintState();
 toast(e.status === 403 ? "Your account can view MISMO Link but not change it."
