@@ -1627,22 +1627,62 @@ c.given = c.users.length - c.toSetUp;
       "No account is needed to sign it, and a copy comes back to the signer by email. Once it is signed, a member of our team " +
       "will be in touch within 3 business days to schedule a kick-off call.\n\nAny questions, just reply to this message.\n\nBest regards,\n");
   }
+  /* A mailto link cannot carry this email: Windows cuts the whole link off near
+     2,000 characters and the Pilot Email is longer, so the body silently vanished.
+     An .eml file carries it in full, with its formatting - and X-Unsent:1 makes
+     Outlook open it as a draft ready to send rather than as a received message. */
+  function b64utf8(str){
+    var bytes = new TextEncoder().encode(str), bin = "";
+    for(var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+  function mimeSubject(s){
+    /* A subject with an en dash or a curly quote has to be encoded, or Outlook
+       shows mojibake in the subject line. */
+    return /^[\x20-\x7E]*$/.test(s) ? s : "=?utf-8?B?" + b64utf8(s) + "?=";
+  }
+  function draftEml(to, subject, html, filename){
+    var body = '<html><head><meta charset="utf-8"></head>'
+      + '<body style="font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#1a1a1a">'
+      + html + '</body></html>';
+    var eml = [
+      "To: " + to,
+      "Subject: " + mimeSubject(subject),
+      "X-Unsent: 1",
+      "MIME-Version: 1.0",
+      "Content-Type: text/html; charset=utf-8",
+      "Content-Transfer-Encoding: base64",
+      "", b64utf8(body).replace(/(.{76})/g, "$1\r\n")
+    ].join("\r\n");
+    var blob = new Blob([eml], {type:"message/rfc822"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }
   function draftSubscriber(r){
     var pe = window.__pilotEmail, to = get(r,"email");
     /* Pilot Email not loaded (relay down, or the tab never opened): send the
        plain wording rather than nothing, and say which one went. */
     if(!pe || !pe.html){ draftSubscriberFallback(r); toast("Pilot Email not loaded, so the plain version opened."); return; }
     var subject = pe.subject || "MISMO Link AI Pilot Program";
-    var text = htmlToText(pe.html);
-    var full = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(text);
-    if(full.length <= 1900){ window.location.href = full; toast("Outlook opened with the Pilot Email."); return; }
-    copyRich(pe.html, text).then(function(){
-      window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject);
-      toast("Outlook opened and the Pilot Email is on your clipboard — press Ctrl+V in the message.");
-    }, function(){
-      window.location.href = full;
-      toast("Outlook opened. If the message looks cut short, copy it from the Pilot Email tab.", true);
-    });
+    var who = (get(r,"company") || get(r,"name") || "partner").replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    try{
+      draftEml(to, subject, pe.html, "MISMO Link Pilot Email - " + who + ".eml");
+      toast("Draft downloaded \u2014 open it and Outlook shows the whole email, ready to send.");
+    }catch(e){
+      /* Something blocked the download: fall back to the clipboard rather than
+         opening an empty message. */
+      var text = htmlToText(pe.html);
+      copyRich(pe.html, text).then(function(){
+        window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject);
+        toast("Outlook opened and the Pilot Email is on your clipboard \u2014 press Ctrl+V.", true);
+      }, function(){
+        window.location.href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeURIComponent(subject);
+        toast("Outlook opened, but the email would not attach \u2014 copy it from the Pilot Email tab.", true);
+      });
+    }
   }
   function draftUserInvite(c){
     var s = c.sub, to = (s && s.signerEmail) || get(c.people[0] && c.people[0].r, "email");
@@ -1752,7 +1792,7 @@ c.given = c.users.length - c.toSetUp;
     ["Companies and People","Adding and removing people",
       '<p>Press <b>Add a Person</b> at the top of Testers and Access, or <b>Add a Person to</b> a company inside its panel. Fill in the company, name, title and email, then <b>Save</b>. Typing a company that is not on the list adds a new company.</p>' +
       '<p><b>Remove</b> beside a person asks why, then takes them off the beta list. Nothing is deleted: they move to <b>Removed from the Beta List</b> on the company, with the reason and who removed them, and <b>Put Back</b> returns them. The <b>Removed</b> filter finds every company with someone on it. Anything they have signed stays on record in Who Has Signed either way.</p>' +
-      '<p><b>Email the Subscriber Agreement</b> sends the wording saved on the <b>Pilot Email</b> tab, so changing it there changes what everyone sends. Outlook opens addressed and titled; if the email is too long to travel in the link, it is put on your clipboard instead and you press Ctrl+V. Either way the person moves to <b>Waiting to Sign</b>.</p>' +
+      '<p><b>Email the Subscriber Agreement</b> downloads the message as a draft file, already addressed, with the subject and the whole <b>Pilot Email</b> in it, formatting and all. Open the downloaded file and Outlook shows it ready to read over and send — nothing to paste. Change the wording on the <b>Pilot Email</b> tab and everyone sends the new version. The person moves to <b>Waiting to Sign</b> as soon as you press the button.</p>' +
       '<p>Adding and removing needs Edit access to MISMO Link (set in People &amp; Access). View access can see everything and change nothing.</p>'],
     ["Agreements","Sending the Subscriber Agreement",
       '<p><b>Email the Subscriber Agreement</b> opens a draft in your own mail program, addressed to the person, with the signing link and the note that the kick-off will be scheduled within 3 business days of signing. Change anything before you send it.</p>' +
