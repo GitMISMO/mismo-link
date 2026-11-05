@@ -1214,11 +1214,13 @@ window.__mismoLinkGate = (function(){
       c.toSetUp = c.users.filter(function(s){ return !setUpOf(s); }).length;
 c.given = c.users.length - c.toSetUp;
       c.stage = c.sub ? (c.kickoff ? "kickedoff" : "kickoff") : (c.sent ? "waiting" : "tosend");
+/* everyone from the company taken off the list: it leaves To Send for its own Removed box */
+if(!c.sub && !c.people.length && c.gone.length) c.stage = "removed";
     });
     return order.map(function(k){ return map[k]; }).sort(function(a, b){ return a.name.localeCompare(b.name); });
   }
   function companyByKey(k){ return companies().filter(function(c){ return c.key === k; })[0]; }
-  var STAGE = {tosend:["To Send",""], waiting:["Waiting to Sign","wait"], kickoff:["Signed · Schedule Kick-off","wait"], kickedoff:["Signed","ok"]};
+  var STAGE = {tosend:["To Send",""], waiting:["Waiting to Sign","wait"], kickoff:["Signed · Schedule Kick-off","wait"], kickedoff:["Signed","ok"], removed:["Removed","changes"]};
   function memberLine(m){
     if(!m) return "Membership not checked";
     if(!m.isMember) return m.status || "Not a member";
@@ -1285,8 +1287,9 @@ c.given = c.users.length - c.toSetUp;
     var head = phead("MISMO Link AI Beta", "Overview", "Where the early beta stands, company by company, and what is waiting on the team.", "");
     if(!loaded){ el.innerHTML = head + notReady("beta"); return; }
     var all = companies();
-    var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
-    var members = all.filter(function(c){ return c.member && c.member.isMember; }).length;
+    var removedN = all.filter(function(c){ return c.stage === "removed"; }).length;
+var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
+    var members = all.filter(function(c){ return c.stage !== "removed" && c.member && c.member.isMember; }).length;
     var signed = all.filter(function(c){ return c.sub; }).length;
     var wait = all.filter(function(c){ return c.stage === "waiting"; }).length;
     var tosend = all.filter(function(c){ return c.stage === "tosend"; }).length;
@@ -1305,8 +1308,9 @@ c.given = c.users.length - c.toSetUp;
     var STEPS = [["tosend","To Send","var(--border-strong)","not yet sent the Subscriber Agreement"],
                  ["waiting","Waiting to Sign","var(--warn)","sent, not signed yet"],
                  ["kickoff","Kick-off to Book","var(--bad)","signed; the kick-off call is due within 3 business days"],
-                 ["kickedoff","Signed and Kicked Off","var(--good)","testers are signing the User Agreement"]];
-    var board = STEPS.map(function(st){
+                 ["kickedoff","Signed and Kicked Off","var(--good)","testers are signing the User Agreement"],
+["removed","Removed","var(--ink-3)","taken off the pilot list; open one to see why or put them back"]];
+    var board = STEPS.filter(function(st){ return st[0] !== "removed" || removedN; }).map(function(st){
       var list = all.filter(function(c){ return c.stage === st[0]; });
       return '<div class="card stepcard"><div class="ch"><i class="sq" style="background:' + st[2] + '"></i><h2>' + esc(st[1]) + '</h2><span class="cnt">' + list.length +
         '</span><span class="note">' + esc(st[3]) + '</span></div>' +
@@ -1334,9 +1338,9 @@ c.given = c.users.length - c.toSetUp;
     var checked = all.map(function(c){ return c.member && c.member.checkedOn; }).filter(Boolean).sort().pop();
     el.innerHTML = head +
       '<div class="band"><div class="today">Today · ' + esc(longDay(new Date())) + '</div><div class="say">' + say + '</div><div class="tiles">' +
-        tile(all.length, "Companies", plural(people, "person") + " on the list", {sky:true}) +
-        tile(members, "MISMO Members", (all.length - members) ? (all.length - members) + " not a member" : "every company") +
-        tile(signed, "Companies Signed", "of " + all.length + " on the list") +
+        tile(all.length - removedN, "Companies", plural(people, "person") + " on the list" + (removedN ? " · " + removedN + " removed" : ""), {sky:true}) +
+        tile(members, "MISMO Members", (all.length - removedN - members) ? (all.length - removedN - members) + " not a member" : "every company") +
+        tile(signed, "Companies Signed", "of " + (all.length - removedN) + " on the list") +
         tile(wait, "Waiting to Sign", "sent, not signed yet") +
         tile(kick, "Kick-offs to Book", "after the company signs", {hot:kick > 0}) +
         tile(setup, "Testers to Set Up", "of " + testers + " who have signed", {hot:setup > 0}) +
@@ -1409,9 +1413,9 @@ c.given = c.users.length - c.toSetUp;
       var st = STAGE[c.stage];
       return '<button type="button" class="row" data-co="' + esc(c.key) + '"><span class="rw"><b>' + esc(c.name) + '</b><span>' + esc(memberLine(c.member)) + ' · ' +
         plural(c.people.length, "person") + '</span></span><span class="rf">' +
-        (!c.member ? chip("Not Checked","wait") : c.member.isMember ? chip("Member","ok") : chip("Not a Member","changes")) + chip(st[0], st[1] === "wait" ? "review" : st[1] === "ok" ? "ok" : "wait") +
+        (!c.member ? chip("Not Checked","wait") : c.member.isMember ? chip("Member","ok") : chip("Not a Member","changes")) + chip(st[0], st[1] === "changes" ? "changes" : st[1] === "wait" ? "review" : st[1] === "ok" ? "ok" : "wait") +
         (c.toSetUp ? chip(c.toSetUp + " to Set Up","review") : "") + (c.given ? chip("Access Given" + (c.given > 1 ? " · " + c.given : ""),"ok") : "") +
-        (c.gone.length ? chip(c.gone.length + " Removed","changes") : "") + '</span></button>';
+        (c.gone.length && c.stage !== "removed" ? chip(c.gone.length + " Removed","changes") : "") + '</span></button>';
     }).join("") : '<div class="empty">No company matches. Clear the box, or choose All.</div>';
   }
 
@@ -1782,7 +1786,7 @@ c.given = c.users.length - c.toSetUp;
     ["Companies and People","Reading the company list",
       '<p>Companies are listed A to Z. Each row shows its membership, how many people from it are on the beta list, and where it stands:</p>' +
       '<ul><li><b>To Send</b>: nobody from the company has been sent the Subscriber Agreement.</li><li><b>Waiting to Sign</b>: sent, not signed yet.</li>' +
-      '<li><b>Signed · Schedule Kick-off</b>: the company has signed and the kick-off call is not marked scheduled.</li><li><b>Signed</b>: signed and kicked off.</li>' +
+      '<li><b>Signed · Schedule Kick-off</b>: the company has signed and the kick-off call is not marked scheduled.</li><li><b>Signed</b>: signed and kicked off.</li><li><b>Removed</b>: everyone from the company has been taken off the beta list. The company moves to its own Removed box on the Overview; <b>Put Back</b> on a person returns it to where it was.</li>' +
       '<li><b>To Set Up</b>: testers who have signed the User Agreement and are not marked set up.</li></ul>' +
       '<p>The buttons above the list show only the companies at one step. The filter box searches company names, people, emails and project names.</p>'],
     ["Companies and People","Membership and Member 360 contacts",
