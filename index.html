@@ -1213,14 +1213,14 @@ window.__mismoLinkGate = (function(){
       c.users.sort(function(a, b){ return signedAt(b) - signedAt(a); });
       c.toSetUp = c.users.filter(function(s){ return !setUpOf(s); }).length;
 c.given = c.users.length - c.toSetUp;
-      c.stage = c.sub ? (c.kickoff ? "kickedoff" : "kickoff") : (c.sent ? "waiting" : "tosend");
+      c.stage = c.sub ? (c.kickoff ? (c.kickoff.held ? "kickedoff" : "scheduled") : "kickoff") : (c.sent ? "waiting" : "tosend");
 /* everyone from the company taken off the list: it leaves To Send for its own Removed box */
 if(!c.sub && !c.people.length && c.gone.length) c.stage = "removed";
     });
     return order.map(function(k){ return map[k]; }).sort(function(a, b){ return a.name.localeCompare(b.name); });
   }
   function companyByKey(k){ return companies().filter(function(c){ return c.key === k; })[0]; }
-  var STAGE = {tosend:["To Send",""], waiting:["Waiting to Sign","wait"], kickoff:["Signed · Schedule Kick-off","wait"], kickedoff:["Signed","ok"], removed:["Removed","changes"]};
+  var STAGE = {tosend:["To Send",""], waiting:["Waiting to Sign","wait"], kickoff:["Signed · Schedule Kick-off","wait"], scheduled:["Kick-off Scheduled","wait"], kickedoff:["Kick-off Complete","ok"], removed:["Removed","changes"]};
   function memberLine(m){
     if(!m) return "Membership not checked";
     if(!m.isMember) return m.status || "Not a member";
@@ -1273,7 +1273,8 @@ if(!c.sub && !c.people.length && c.gone.length) c.stage = "removed";
       var v = F.progress.docs[k] || {};
       if(k.indexOf("sent/") === 0) ev.push([v.at || v.on, "Subscriber Agreement emailed", (v.to || "") + (v.company ? " · " + v.company : "")]);
       else if(k.indexOf("setup/") === 0) ev.push([v.at || v.on, "Tester set up", k.slice(6)]);
-      else if(k.indexOf("companies/") === 0 && v.kickoff) ev.push([v.kickoff.at || v.kickoff.on, "Kick-off scheduled", (companyByKey(k.slice(10)) || {}).name || ""]);
+      else if(k.indexOf("companies/") === 0 && v.kickoff){ ev.push([v.kickoff.at || v.kickoff.on, "Kick-off scheduled", ((companyByKey(k.slice(10)) || {}).name || "") + (v.kickoff.note ? " · " + v.kickoff.note : "")]);
+if(v.kickoff.held) ev.push([v.kickoff.held.at || v.kickoff.held.on, "Kick-off complete", (companyByKey(k.slice(10)) || {}).name || ""]); }
     });
     Object.keys(F.partners.docs).forEach(function(k){
       var r = F.partners.docs[k]; if(r && r.addedOn) ev.push([r.addedAt || r.addedOn, "Added to the beta list", get(r,"name") + " · " + get(r,"company")]);
@@ -1308,7 +1309,8 @@ var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
     var STEPS = [["tosend","To Send","var(--border-strong)","not yet sent the Subscriber Agreement"],
                  ["waiting","Waiting to Sign","var(--warn)","sent, not signed yet"],
                  ["kickoff","Kick-off to Book","var(--bad)","signed; the kick-off call is due within 3 business days"],
-                 ["kickedoff","Signed and Kicked Off","var(--good)","testers are signing the User Agreement"],
+                 ["scheduled","Kick-off Scheduled","var(--c1)","call booked; mark it complete once it has been held"],
+["kickedoff","Kick-off Complete","var(--good)","testers are signing the User Agreement"],
 ["removed","Removed","var(--ink-3)","taken off the pilot list; open one to see why or put them back"]];
     var board = STEPS.filter(function(st){ return st[0] !== "removed" || removedN; }).map(function(st){
       var list = all.filter(function(c){ return c.stage === st[0]; });
@@ -1317,7 +1319,7 @@ var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
         (list.length ? '<div class="cogrid">' + list.map(function(c){
           var m = c.member, ml = !m ? "Membership not checked" : !m.isMember ? "" :
             [m.level, m.thru ? "through " + new Date(String(m.thru).slice(0,10) + "T12:00:00Z").toLocaleDateString("en-US", {month:"short", year:"numeric", timeZone:"UTC"}) : ""].filter(Boolean).join(" · ");
-          return '<button type="button" class="kcard" data-co="' + esc(c.key) + '"><b>' + esc(c.name) + '</b>' + (ml ? '<small>' + esc(ml) + '</small>' : "") +
+          return '<button type="button" class="kcard" data-co="' + esc(c.key) + '"><b>' + esc(c.name) + '</b>' + (ml ? '<small>' + esc(ml) + '</small>' : "") + (c.stage === "scheduled" && c.kickoff && c.kickoff.note ? '<small>Kick-off: ' + esc(c.kickoff.note) + '</small>' : "") + (c.stage === "kickedoff" && c.kickoff && c.kickoff.held ? '<small>Kick-off held ' + esc(c.kickoff.held.on || shortDay(c.kickoff.held.at)) + '</small>' : "") +
             '<span class="kt">' + (m && !m.isMember ? chip("Not a Member","changes") : "") +
             (c.users.length ? chip(plural(c.users.length, "tester") + " signed","in") : "") + (c.toSetUp ? chip(c.toSetUp + " to set up","review") : "") + '</span></button>';
         }).join("") + '</div>' : '<div class="empty slim">None right now.</div>') + '</div>';
@@ -1368,9 +1370,9 @@ var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
   }
   var qv = "";
   function companiesHTML(all){
-    var counts = {all:all.length, tosend:0, waiting:0, kickoff:0, setup:0, given:0, removed:0};
+    var counts = {all:all.length, tosend:0, waiting:0, kickoff:0, scheduled:0, kickedoff:0, setup:0, given:0, removed:0};
     all.forEach(function(c){ if(counts[c.stage] != null) counts[c.stage]++; if(c.toSetUp) counts.setup++; if(c.given) counts.given++; if(c.gone.length) counts.removed++; });
-    var segs = [["all","All"],["tosend","To Send"],["waiting","Waiting to Sign"],["kickoff","Kick-off to Schedule"],["setup","Testers to Set Up"],["given","Access Given"],["removed","Removed"]];
+    var segs = [["all","All"],["tosend","To Send"],["waiting","Waiting to Sign"],["kickoff","Kick-off to Schedule"],["scheduled","Kick-off Scheduled"],["kickedoff","Kick-off Complete"],["setup","Testers to Set Up"],["given","Access Given"],["removed","Removed"]];
     return '<div class="ta-tools"><input type="search" id="ta-q" placeholder="Filter by company, name, email or project" aria-label="Filter">' +
       '<div class="pt-seg" role="group" aria-label="Show">' + segs.map(function(s){
         return '<button type="button" data-f="' + s[0] + '" aria-pressed="' + (filter === s[0]) + '">' + esc(s[1]) + ' (' + counts[s[0]] + ')</button>';
@@ -1489,8 +1491,14 @@ var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
         ? '<p><b>Signed</b> by ' + esc(c.sub.signerName) + (c.sub.signerTitle ? ", " + esc(c.sub.signerTitle) : "") + ', ' + esc(shortDay(c.sub.submittedAt)) + '.</p>'
         : '<p>' + (c.sent ? 'Emailed to ' + c.sent + ' of ' + plural(c.people.length, "person") + '. Not signed yet.' : 'Not sent yet.') + '</p>') + '</div>' +
       '<div class="box"><h4>Kick-off Call</h4>' + (!c.sub ? '<p>After the company signs.</p>' : c.kickoff
-        ? '<p><b>Scheduled</b>' + (c.kickoff.note ? ": " + esc(c.kickoff.note) : "") + '<br><span class="muted">Marked ' + esc(shortDay(c.kickoff.at || c.kickoff.on)) + (c.kickoff.by ? " by " + esc(c.kickoff.by) : "") + '</span>' +
-          (canEdit ? ' <button class="linkbtn" type="button" data-kickundo="' + esc(c.key) + '">Undo</button>' : "") + '</p>'
+        ? (c.kickoff.held
+          ? '<p><b>Complete</b> ' + esc(c.kickoff.held.on || shortDay(c.kickoff.held.at)) + (c.kickoff.held.by ? " by " + esc(c.kickoff.held.by) : "") +
+            (c.kickoff.note ? '<br><span class="muted">Scheduled for ' + esc(c.kickoff.note) + '</span>' : "") +
+            (canEdit ? ' <button class="linkbtn" type="button" data-heldundo="' + esc(c.key) + '">Undo</button>' : "") + '</p>'
+          : '<p><b>Scheduled</b>' + (c.kickoff.note ? ": " + esc(c.kickoff.note) : "") + '<br><span class="muted">Marked ' + esc(shortDay(c.kickoff.at || c.kickoff.on)) + (c.kickoff.by ? " by " + esc(c.kickoff.by) : "") + '</span>' +
+            (canEdit ? ' <button class="linkbtn" type="button" data-kickundo="' + esc(c.key) + '">Undo</button>' : "") + '</p>' +
+            (canEdit ? '<div class="pt-inline"><button class="btn sm" type="button" data-held="' + esc(c.key) + '">Mark Kick-off Complete</button></div>' +
+              '<div class="pt-inline"><input type="text" id="kick-note" value="' + esc(c.kickoff.note || "") + '" placeholder="New date and time" aria-label="New date and time"><button class="btn sm ghost" type="button" data-kick="' + esc(c.key) + '">Reschedule</button></div>' : ""))
         : '<p>Due by <b>' + esc(shortDay(addBusinessDays(signedAt(c.sub) || Date.now(), 3).toISOString())) + '</b> (3 business days after signing).</p>' +
           (canEdit ? '<div class="pt-inline"><input type="text" id="kick-note" placeholder="Date and time of the call"><button class="btn sm" type="button" data-kick="' + esc(c.key) + '">Mark Scheduled</button></div>' : "")) + '</div>' +
       '<div class="box"><h4>Membership</h4><p>' + esc(memberLine(c.member)) + (c.member && c.member.renewal ? '<br><span class="muted">2027 renewal: ' + esc(c.member.renewal) + '</span>' : "") +
@@ -1704,7 +1712,7 @@ var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
     return saveDocs("progress", function(d){ d[key] = {at:nowIso(), on:shortDay(nowIso()), by:me(), to:get(r,"email"), company:get(r,"company")}; });
   }
   document.addEventListener("click", function(e){
-    var b = e.target.closest("[data-co],[data-person],[data-sig],[data-mail],[data-sent],[data-unsend],[data-rm],[data-restore],[data-addto],[data-kick],[data-kickundo],[data-setup],[data-setundo],[data-uinvite],[data-copy],[data-tab],[data-f],[data-close]");
+    var b = e.target.closest("[data-co],[data-person],[data-sig],[data-mail],[data-sent],[data-unsend],[data-rm],[data-restore],[data-addto],[data-kick],[data-kickundo],[data-held],[data-heldundo],[data-setup],[data-setundo],[data-uinvite],[data-copy],[data-tab],[data-f],[data-close]");
     if(!b || !b.closest("#app-overview,#app-access,#rpane")) return;
     var a = function(n){ return b.getAttribute(n); };
     if(a("data-close") != null){ closePanel(); return; }
@@ -1731,7 +1739,11 @@ var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
       var kk = a("data-kick"), note = ($("kick-note") && $("kick-note").value.trim()) || "";
       saveDocs("progress", function(d){ d["companies/" + kk] = Object.assign({}, d["companies/" + kk], {kickoff:{at:nowIso(), on:shortDay(nowIso()), by:me(), note:note}}); }).catch(function(){}); return;
     }
-    if(a("data-kickundo") != null){ var ku = a("data-kickundo");
+    if(a("data-held") != null){ var kh = a("data-held");
+saveDocs("progress", function(d){ var p = d["companies/" + kh]; if(p && p.kickoff) p.kickoff.held = {at:nowIso(), on:shortDay(nowIso()), by:me()}; }).catch(function(){}); return; }
+if(a("data-heldundo") != null){ var hu = a("data-heldundo");
+saveDocs("progress", function(d){ var p = d["companies/" + hu]; if(p && p.kickoff) delete p.kickoff.held; }).catch(function(){}); return; }
+if(a("data-kickundo") != null){ var ku = a("data-kickundo");
       saveDocs("progress", function(d){ if(d["companies/" + ku]) delete d["companies/" + ku].kickoff; }).catch(function(){}); return; }
     if(a("data-setup") != null){ var em = lc(a("data-setup"));
       saveDocs("progress", function(d){ d["setup/" + em] = {at:nowIso(), on:shortDay(nowIso()), by:me()}; }).catch(function(){}); return; }
@@ -1779,14 +1791,14 @@ var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
     ["Getting Started","The beta, step by step",
       '<ol><li><b>Send the Subscriber Agreement.</b> On Testers and Access, open the company and press <b>Email the Subscriber Agreement</b> beside the person. A ready-to-send email opens in your mail program with the signing link.</li>' +
       '<li><b>The company signs.</b> Someone with authority signs once, for the company. They get a copy, and the beta team gets an email to schedule the kick-off.</li>' +
-      '<li><b>Schedule the kick-off call</b> within 3 business days, and mark it scheduled on the company.</li>' +
+      '<li><b>Schedule the kick-off call</b> within 3 business days, mark it scheduled on the company, then press <b>Mark Kick-off Complete</b> once the call has been held.</li>' +
       '<li><b>Send the User Agreement link</b> to the company with <b>Email the User Agreement Link</b>. The company passes it to everyone taking part.</li>' +
       '<li><b>Each tester signs</b> the User Agreement for themselves. The beta team gets an email for each one.</li>' +
       '<li><b>Set each tester up</b> with instructions and credentials within 3 business days, and press <b>Mark Set Up</b>.</li></ol>'],
     ["Companies and People","Reading the company list",
       '<p>Companies are listed A to Z. Each row shows its membership, how many people from it are on the beta list, and where it stands:</p>' +
       '<ul><li><b>To Send</b>: nobody from the company has been sent the Subscriber Agreement.</li><li><b>Waiting to Sign</b>: sent, not signed yet.</li>' +
-      '<li><b>Signed · Schedule Kick-off</b>: the company has signed and the kick-off call is not marked scheduled.</li><li><b>Signed</b>: signed and kicked off.</li><li><b>Removed</b>: everyone from the company has been taken off the beta list. The company moves to its own Removed box on the Overview; <b>Put Back</b> on a person returns it to where it was.</li>' +
+      '<li><b>Signed · Schedule Kick-off</b>: the company has signed and the kick-off call is not marked scheduled.</li><li><b>Kick-off Scheduled</b>: the call is booked but has not been held yet.</li><li><b>Kick-off Complete</b>: the call has been held and marked complete.</li><li><b>Removed</b>: everyone from the company has been taken off the beta list. The company moves to its own Removed box on the Overview; <b>Put Back</b> on a person returns it to where it was.</li>' +
       '<li><b>To Set Up</b>: testers who have signed the User Agreement and are not marked set up.</li></ul>' +
       '<p>The buttons above the list show only the companies at one step. The filter box searches company names, people, emails and project names.</p>'],
     ["Companies and People","Membership and Member 360 contacts",
@@ -1804,7 +1816,7 @@ var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
     ["Agreements","When a company signs",
       '<p>The signer gets a copy by email with a reference number and the next step: a member of the team will be in touch within 3 business days to schedule a kick-off call.</p>' +
       '<p>Everyone on <b>Who Is Told</b> gets an email naming the company and the signer, with the date it is due by. The company moves to <b>Signed · Schedule Kick-off</b>, and the step appears on the Overview under Waiting on the Team.</p>' +
-      '<p>Once the call is booked, open the company, type the date and time, and press <b>Mark Scheduled</b>.</p>'],
+      '<p>Once the call is booked, open the company, type the date and time, and press <b>Mark Scheduled</b>. The company moves to <b>Kick-off Scheduled</b>, with the date and time under its name. If the call moves, type the new date and time and press <b>Reschedule</b>. Nothing moves on its own when the date passes: once the call has actually been held, press <b>Mark Kick-off Complete</b>.</p>'],
     ["Agreements","The User Agreement and testers",
       '<p>After the company signs, open it and press <b>Email the User Agreement Link</b>. A draft opens to the person who signed, asking them to share the link with everyone at the company taking part. <b>Copy the Link</b> copies it for anywhere else.</p>' +
       '<p>Each tester signs for themselves. They get a copy saying they will hear from the team within 3 business days with instructions and credentials, and Who Is Told gets an email to set them up.</p>' +
