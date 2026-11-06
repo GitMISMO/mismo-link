@@ -1771,7 +1771,14 @@ if(a("data-kickundo") != null){ var ku = a("data-kickundo");
   }
   $("nt-list").addEventListener("click", function(e){
     var b = e.target.closest("[data-ntrm]"); if(!b) return;
-    var i = +b.getAttribute("data-ntrm"); saveSettings(function(n){ n.notify.splice(i, 1); }).catch(function(){});
+    /* removes that person by email, not by place in the list: after a 409 the list is the
+       newest one, and someone else may have added or removed a name above (November 5, 2026) */
+    var i = +b.getAttribute("data-ntrm"), was = ((F.settings.data && F.settings.data.notify) || [])[i];
+    if(!was) return;
+    var who = function(p){ return p ? lc(p.email) + "|" + lc(p.name) : ""; }, key = who(was);
+    saveSettings(function(n){
+      for(var k = 0; k < n.notify.length; k++){ if(who(n.notify[k]) === key){ n.notify.splice(k, 1); return; } }
+    }).catch(function(){});
   });
   $("nt-save").addEventListener("click", function(){
     var name = $("nt-name").value.trim(), email = $("nt-email").value.trim();
@@ -1946,6 +1953,8 @@ function current(){ return {subject: $("em-subj").value, html: $("em-body").inne
 function publish(v){ window.__pilotEmail = {subject: (v && v.subject) || "", html: (v && v.html) || ""}; }
 function put(v){ $("em-subj").value = v.subject || ""; $("em-body").innerHTML = v.html || ""; publish(v); }
 function same(a, b){ return a && b && a.subject === b.subject && a.html === b.html; }
+/* the wording as the editing box writes it back, so a saved copy compares fairly with the box */
+function normHtml(h){ var t = document.createElement("div"); t.innerHTML = h || ""; return t.innerHTML; }
 function keepLocal(){ try{ localStorage.setItem(LKEY, JSON.stringify(current())); }catch(e){} }
 function readLocal(){ try{ var r = localStorage.getItem(LKEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } }
 
@@ -1985,12 +1994,33 @@ var v = current();
 keepLocal();
 if(!usingRelay){ saved = v; paintState(); toast("Saved on this computer."); return; }
 $("em-save").disabled = true;
+/* Saving without overwriting anyone (November 5, 2026). This tab can sit open for hours, and
+   saving used to write both the subject and the wording exactly as the boxes had them, so a
+   newer version someone else saved in the meantime was quietly put back. Now only the part
+   changed here is written; the other keeps the newest saved version. If both people changed
+   the same part, the person saving is asked which to keep. */
+var was = saved || v, out = null;
 call("GET").then(function(j){
 var d = j && j.data, docs = (d && d.docs) || {};
-docs[SLOT] = v;
+var now = docs[SLOT] ? {subject: docs[SLOT].subject || "", html: normHtml(docs[SLOT].html)} : was;
+out = {};
+var clash = [];
+["subject", "html"].forEach(function(k){
+  if(v[k] === was[k]) out[k] = now[k];                       /* not changed here: the newest stands */
+  else { out[k] = v[k]; if(now[k] !== was[k] && now[k] !== v[k]) clash.push(k); }
+});
+if(clash.length && !window.confirm("While you had the Pilot Email open, someone else saved a new " +
+  clash.map(function(k){ return k === "html" ? "wording" : "subject line"; }).join(" and ") +
+  ".\n\nOK keeps yours. Cancel keeps theirs for " + (clash.length === 1 ? "that part" : "those parts") +
+  (clash.length < 2 ? " - your other change still saves." : "."))){
+  clash.forEach(function(k){ out[k] = now[k]; });
+}
+docs[SLOT] = out;
 return call("PUT", {content: {docs: docs}, sha: (j && j.sha) || null});
 }).then(function(){
-saved = v; publish(v); paintState(); toast("Saved. This is now the version everyone sends.");
+if(same(current(), v)){ put(out); saved = current(); }        /* show what was saved, theirs included */
+else saved = {subject: out.subject, html: normHtml(out.html)};   /* still typing: leave the boxes alone */
+publish(out); paintState(); toast("Saved. This is now the version everyone sends.");
 }).catch(function(e){
 paintState();
 toast(e.status === 403 ? "Your account can view MISMO Link but not change it."
