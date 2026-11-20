@@ -655,6 +655,32 @@ body.railmini .hq nav .navsep{display:none}
 #rpane .fb-file{display:flex;gap:10px;align-items:center;margin:0 0 8px;font-size:13px}
 #rpane .fb-meta{margin-top:16px}
 </style>
+<style>
+/* ---------- Help Desk ---------- */
+#app-helpdesk .hd-tile{cursor:pointer}
+#app-helpdesk .hd-tile:hover{border-color:var(--sky)}
+#app-helpdesk .hd-note{border:1px solid var(--border);border-left:3px solid var(--warn);background:var(--surface);border-radius:8px;padding:11px 14px;font-size:13px;color:var(--ink-2);margin:0 0 14px}
+#app-helpdesk .hd-team{margin-top:22px}
+#rpane .hd-acts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 16px}
+#rpane .hd-esc{border:1px solid var(--border);border-left:3px solid var(--sky);border-radius:8px;padding:12px 14px;margin:0 0 16px;background:var(--surface-2)}
+#rpane .hd-esc[hidden]{display:none}
+#rpane .fgrid .wide{grid-column:1/-1}
+#rpane textarea,#rpane select{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 11px;font-family:inherit;font-size:13.5px;background:var(--surface);color:var(--ink);line-height:1.5}
+#rpane textarea:focus,#rpane select:focus{outline:2px solid var(--sky);outline-offset:-1px;border-color:var(--sky)}
+#rpane .hd-esc label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-2);margin-bottom:4px}
+#rpane .hd-text{white-space:pre-wrap;overflow-wrap:anywhere}
+#rpane .hd-files{margin:8px 0 0;padding-left:18px;font-size:13px}
+#rpane .hd-log{list-style:none;margin:0 0 12px;padding:0;border:1px solid var(--border);border-radius:7px;overflow:hidden}
+#rpane .hd-log li{padding:10px 12px;border-bottom:1px solid var(--rule)}
+#rpane .hd-log li:last-child{border-bottom:0}
+#rpane .hd-log .hd-lh{font-size:12px;color:var(--ink-2)}
+#rpane .hd-log .hd-lh b{color:var(--ink)}
+#rpane .hd-log .hd-lt{font-size:13.5px;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:3px;color:var(--ink)}
+#rpane .hd-log .hd-email-in{border-left:3px solid var(--sky)}
+#rpane .hd-log .hd-escalate{border-left:3px solid var(--bad)}
+#rpane .hd-log .hd-resolve{border-left:3px solid var(--good)}
+#rpane .hd-addnote textarea{margin-bottom:6px}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="mismo-logo" viewBox="0 0 708 108"><g transform="translate(0.000000,108.000000) scale(0.100000,-0.100000)" fill="var(--logo-body, #0f314c)"><path d="M5917 1065 c-169 -46 -279 -153 -335 -323 -21 -65 -25 -96 -25 -197
@@ -733,6 +759,9 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
     <button type="button" data-hq="access" title="Testers and Access">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M17 11h4M19 9v4"/></svg>
       <span>Testers and Access</span></button>
+<button type="button" data-hq="helpdesk" title="Help Desk">
+<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6"/></svg>
+<span>Help Desk</span></button>
 <button type="button" data-hq="feedback" title="Feedback">
 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H10l-5 4v-4H4z"/><path d="M8 9h8M8 12h5"/></svg>
 <span>Feedback</span></button>
@@ -810,7 +839,9 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
 
 <section class="pane" id="app-access"></section>
 
-  <section class="pane" id="app-feedback"></section>
+  <section class="pane" id="app-helpdesk"></section>
+
+<section class="pane" id="app-feedback"></section>
 
 <section class="pane" id="app-help"></section>
 
@@ -1814,7 +1845,7 @@ if(a("data-kickundo") != null){ var ku = a("data-kickundo");
       '<ul><li><b>Overview</b>: the headline numbers, where each company stands, what is waiting on the team, and what has happened lately.</li>' +
       '<li><b>Beta Agreement</b>: the two signing pages, who is told when someone signs, and what is recorded.</li>' +
       '<li><b>Testers and Access</b>: the beta list company by company (<b>Companies</b>) and every signed agreement (<b>Who Has Signed</b>).</li>' +
-      '<li><b>Feedback</b>: what pilot participants report, with a status and outcome, and Export to Excel.</li><li><b>Help</b>: this page.</li></ul>' +
+      '<li><b>Help Desk</b>: requests for help from the help form and linksupport@mismo.org, Kellie first, Chris when escalated.</li><li><b>Feedback</b>: what pilot participants report, with a status and outcome, and Export to Excel.</li><li><b>Help</b>: this page.</li></ul>' +
       '<p>Clicking a company, a person or a signature opens it in the panel on the right. Press <b>Close</b> or Escape to put it away. The search box at the top of the menu finds companies, people, signatures and help topics.</p>'],
     ["Getting Started","The beta, step by step",
       '<ol><li><b>Send the Subscriber Agreement.</b> On Testers and Access, open the company and press <b>Email the Subscriber Agreement</b> beside the person. A ready-to-send email opens in your mail program with the signing link.</li>' +
@@ -1861,7 +1892,12 @@ if(a("data-kickundo") != null){ var ku = a("data-kickundo");
       '<ul><li><b>Subscriber Agreement and User Agreement link</b>: drafts in your own mail program, sent by you.</li>' +
       '<li><b>The signer\'s copy</b> and <b>the beta team\'s alert</b>: sent automatically by the resources.mismo.org relay when someone signs, through the same mail flow as the platform\'s other emails.</li></ul>' +
       '<p>The signer\'s copy repeats nothing they typed, so the page cannot be used to send strangers words of someone else\'s choosing.</p>'],
-    ["Feedback","Logging and exporting feedback",
+    ["Help Desk","Working the help desk",
+'<p><b>Help Desk</b> holds every request for help: from the public help form (resources.mismo.org/mismo-link/help/), from email to linksupport@mismo.org, and anything logged by hand with <b>Log a Ticket</b>.</p>' +
+'<p>Every ticket has one status: <b>New</b>, <b>Working</b>, <b>Waiting on Them</b>, <b>With Chris</b> or <b>Resolved</b>. Kellie gets everything first. <b>Escalate to Chris</b> asks for a severity and a note, moves the ticket to With Chris and opens an email to Chris in Outlook for you to send.</p>' +
+'<p><b>Reply by Email</b> opens a reply in Outlook with linksupport@mismo.org copied and the ticket number in the subject, so the sent email and their answer land back on the ticket. Nothing is ever sent from the page itself.</p>' +
+'<p>Feedback tickets have <b>Copy to Feedback</b>, which puts them in the Feedback tab for Export to Excel. Tickets brought over from Smartsheet keep their numbers, notes and dates; their attachments are still in Smartsheet.</p>'],
+["Feedback","Logging and exporting feedback",
 '<p><b>Feedback</b> keeps what pilot participants report: the date, who reported it, the company, what they said, a status and the outcome. Press <b>Add Feedback</b>, fill it in and press <b>Save</b>. Open any row to change it.</p>' +
 '<p>Attach a file up to 3 MB, or paste a link to anything bigger (Teams, SharePoint, OneDrive). The status is one of New, In Review, Shared, Resolved or Closed.</p>' +
 '<p><b>Export to Excel</b> saves what is showing as a spreadsheet, so pick a status or search first to export just those. <b>Archive</b> takes an item off the list without deleting it; choose <b>Archived</b> to see it again or put it back.</p>'],
@@ -2531,7 +2567,452 @@ var g = window.__mismoLinkGate;
 (g && typeof g.then === "function" ? g : Promise.resolve(true)).then(function(ok){
   if(ok === false || started) return; started = true; load();
 }, function(){ failed = 1; render(); });
-window.__mlFeedbackXlsx = xlsxBlob; /* kept reachable for checks */
+window.__mlFeedbackXlsx = xlsxBlob;
+window.__mlFeedbackReload = load; /* the Help Desk calls this after Copy to Feedback */ /* kept reachable for checks */
+})();
+</script>
+<script>
+/* ===================================================================
+Help Desk - MISMO Link support tickets. One list, one status: Kellie
+first, Chris when she escalates. Tickets come from the public help form
+(resources.mismo.org/mismo-link/help/, relay request 12), from email to
+linksupport@mismo.org (Power Automate -> data/mailin, read here like
+360@ for Member 360), or are logged by staff. Kept in data/helpdesk.
+Nothing is ever sent from here: replies and escalations open a draft
+in Outlook for the person to send.
+=================================================================== */
+(function(){
+"use strict";
+var RELAY = "https://rgvdi67cg27o5kcmiytcqbqnrm0hmztx.lambda-url.us-east-1.on.aws";
+var PROJECT = "mismo-link", DOC = "helpdesk", MAILIN = "mailin", SUPPORT = "linksupport@mismo.org";
+var STATUSES = ["New", "Working", "Waiting on Them", "With Chris", "Resolved"];
+var OPEN = {"New":1, "Working":1, "Waiting on Them":1, "With Chris":1};
+var TYPES = ["Question", "Something's not working", "Feedback"];
+var SEVERITY = ["Low", "Medium", "High", "Urgent"];
+var CHIP = {"New":"review", "Working":"in", "Waiting on Them":"wait", "With Chris":"changes", "Resolved":"ok"};
+var DEFAULT_TEAM = {level1:{name:"Kellie Stoll", email:"kstoll@mismo.org"}, level2:{name:"Chris Trujillo", email:""}};
+
+var hd = {docs:{}, sha:null}, loaded = false, failed = null, canEdit = false, started = false;
+var partners = {}, filter = "open", q = "", openId, tmr = null, mailNote = "";
+
+function $(id){ return document.getElementById(id); }
+function esc(v){ return String(v == null ? "" : v).replace(/[&<>"']/g, function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function lc(s){ return String(s || "").trim().toLowerCase(); }
+function me(){ try{ var s = window.ResourcesSession && ResourcesSession.current(); return (s && (s.name || s.email)) || ""; }catch(e){ return ""; } }
+function myEmail(){ try{ var s = window.ResourcesSession && ResourcesSession.current(); return lc(s && s.email); }catch(e){ return ""; } }
+function nowIso(){ return new Date().toISOString(); }
+function toast(msg, bad){
+  var t = $("pt-toast"); if(!t) return;
+  t.textContent = msg; t.classList.toggle("bad", !!bad); t.classList.add("on");
+  if(tmr) clearTimeout(tmr); tmr = setTimeout(function(){ t.classList.remove("on"); }, 3800);
+}
+function day(x){
+  if(!x) return "";
+  var d = /^\d{4}-\d{2}-\d{2}$/.test(x) ? new Date(x + "T12:00:00") : new Date(x);
+  return isNaN(d) ? String(x) : d.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"});
+}
+function when(x){
+  var d = new Date(x); if(isNaN(d)) return day(x);
+  return d.toLocaleString("en-US", {month:"short", day:"numeric", year:"numeric", hour:"numeric", minute:"2-digit"});
+}
+function domainOf(e){ var m = lc(e).match(/@([^@\s>]+)$/); return m ? m[1] : ""; }
+function emailOf(s){ var m = String(s || "").match(/[^\s<>"',;]+@[^\s<>"',;]+\.[A-Za-z]{2,}/); return m ? lc(m[0]) : ""; }
+function nameOf(s){ var m = String(s || "").match(/^\s*"?([^"<]+?)"?\s*</); return m ? m[1].trim() : ""; }
+function team(){ var t = hd.docs.settings || {}; return {level1:Object.assign({}, DEFAULT_TEAM.level1, t.level1), level2:Object.assign({}, DEFAULT_TEAM.level2, t.level2)}; }
+function isStaff(e){ var d = domainOf(e); return d === "mismo.org" || d === "mba.org"; }
+
+/* ---------- the relay ---------- */
+function token(){ var rs = window.ResourcesSession; return rs && typeof rs.token === "function" ? rs.token() : null; }
+function call(method, id, body){
+  var t = token();
+  var go = t ? Promise.resolve(t) : (window.ResourcesSession && ResourcesSession.signIn
+    ? ResourcesSession.signIn({reason:"expired"}).then(function(){ return token(); }) : Promise.resolve(null));
+  return go.then(function(tk){
+    if(!tk){ var e0 = new Error("SIGNED_OUT"); e0.status = 401; throw e0; }
+    var h = {Authorization:"Bearer " + tk}; if(body) h["Content-Type"] = "application/json";
+    return fetch(RELAY + "/" + PROJECT + "/data/" + id, {method:method, headers:h, cache:"no-store",
+      body: body ? JSON.stringify(body) : undefined});
+  }).then(function(res){
+    return res.json().catch(function(){ return {}; }).then(function(j){
+      if(res.ok) return j;
+      var e = new Error((j && (j.error || j.code)) || ("HTTP_" + res.status)); e.status = res.status; throw e;
+    });
+  });
+}
+function readDocs(id){
+  return call("GET", id).then(function(j){ var d = j && j.data; return {docs:(d && d.docs) || {}, sha:(j && j.sha) || null}; },
+    function(e){ if(e.status === 404) return {docs:{}, sha:null}; throw e; });
+}
+/* One change re-applied to what was read; a 409 re-reads and tries again. */
+function saveHd(change, tries){
+  tries = tries || 0;
+  var next = JSON.parse(JSON.stringify(hd.docs));
+  change(next);
+  return call("PUT", DOC, {content:{docs:next}, sha:hd.sha}).then(function(j){
+    hd.docs = next; hd.sha = (j && j.sha) || hd.sha; render(); if(openId) drawPanel();
+  }, function(e){
+    if(e.status === 409 && tries < 3) return readDocs(DOC).then(function(f){ hd = f; return saveHd(change, tries + 1); });
+    throw e;
+  });
+}
+function failedSave(e){
+  toast(e && e.status === 403 ? "Your account can view MISMO Link but not change it." : "That did not save just now. Try again in a minute.", true);
+}
+
+/* ---------- tickets ---------- */
+function tickets(){
+  return Object.keys(hd.docs).filter(function(k){ return k.indexOf("tickets/") === 0; }).map(function(k){ return hd.docs[k]; })
+    .filter(Boolean).sort(function(a, b){ return String(b.at || "").localeCompare(String(a.at || "")) || String(b.id).localeCompare(String(a.id)); });
+}
+function nextNumber(d){
+  var n = Object.keys(d).map(function(k){ var m = k.match(/^tickets\/MLHD-(\d+)$/); return m ? +m[1] : 0; }).reduce(function(a, x){ return Math.max(a, x); }, 0);
+  return "MLHD-" + String(n + 1).padStart(5, "0");
+}
+function summary(t){ var s = String(t.subject || t.text || "").replace(/\s+/g, " ").trim(); return s.length > 150 ? s.slice(0, 147) + "..." : s; }
+function companyFor(email){
+  var d = domainOf(email); if(!d || isStaff(email)) return "";
+  var hit = ""; Object.keys(partners).forEach(function(k){ var r = partners[k]; if(!hit && r && domainOf(r.email || r.Email) === d) hit = r.company || r.Company || ""; });
+  return hit;
+}
+function shown(){
+  return tickets().filter(function(t){
+    if(filter === "open" && !OPEN[t.status]) return false;
+    if(filter !== "open" && filter !== "all" && t.status !== filter) return false;
+    if(!q) return true;
+    return lc([t.id, t.name, t.email, t.company, t.type, t.subject, t.text, t.status].join(" ")).indexOf(q) >= 0;
+  });
+}
+function chip(t, k){ return '<span class="chip' + (k ? " " + k : "") + '">' + esc(t) + '</span>'; }
+
+/* ---------- the page ---------- */
+function render(){
+  var el = $("app-helpdesk"); if(!el) return;
+  var tools = loaded ? '<a class="btn ghost" href="help/" target="_blank" rel="noopener">Open the Help Form</a>' +
+    (canEdit ? '<button class="btn" type="button" data-hdnew>Log a Ticket</button>' : "") : "";
+  var head = '<div class="phead"><div><div class="eyebrow">MISMO Link AI Beta</div><h1>Help Desk</h1>' +
+    '<div class="sub">Every request for help, from the help form, from ' + SUPPORT + ', or logged by the team. Kellie handles them first; Chris takes what she escalates.</div></div>' +
+    '<div class="tools">' + tools + '</div></div>';
+  if(!loaded){
+    el.innerHTML = head + '<div class="card"><div class="empty">' + (failed
+      ? (failed === 401 ? "<b>Sign in to see the help desk.</b>" : "<b>The help desk could not be read just now.</b> Reload in a minute; nothing has been lost.")
+      : "Loading the help desk&hellip;") + '</div></div>';
+    return;
+  }
+  var all = tickets(), n = {open:0, all:all.length};
+  STATUSES.forEach(function(s){ n[s] = 0; });
+  all.forEach(function(t){ n[t.status] = (n[t.status] || 0) + 1; if(OPEN[t.status]) n.open++; });
+  var month = new Date().toISOString().slice(0, 7);
+  var doneMonth = all.filter(function(t){ return t.status === "Resolved" && String(t.resolvedAt || "").slice(0, 7) === month; }).length;
+  var tile = function(f, v, k, s, hot){ return '<button type="button" class="tile hd-tile" data-hdf="' + f + '"><div class="v' + (hot ? " hot" : "") + '">' + v + '</div><div class="k">' + esc(k) + '</div><div class="s">' + esc(s) + '</div></button>'; };
+  var segs = [["open","Open"]].concat(STATUSES.map(function(s){ return [s, s]; })).concat([["all","All"]]);
+  el.innerHTML = head +
+    '<div class="band"><div class="tiles hd-tiles">' +
+      tile("open", n.open, "Open", "not resolved yet") +
+      tile("New", n["New"], "New", "nobody has picked it up", n["New"] > 0) +
+      tile("Working", n["Working"], "Working", "Kellie has it") +
+      tile("Waiting on Them", n["Waiting on Them"], "Waiting on Them", "asked the person for more") +
+      tile("With Chris", n["With Chris"], "With Chris", "escalated") +
+      tile("Resolved", doneMonth, "Resolved", "this month") +
+    '</div></div>' +
+    (mailNote ? '<div class="hd-note">' + mailNote + '</div>' : "") +
+    '<div class="ta-tools"><input type="search" id="hd-q" placeholder="Filter by ticket number, person, company or what they asked" aria-label="Filter">' +
+    '<div class="pt-seg" role="group" aria-label="Show">' + segs.map(function(s){
+      return '<button type="button" data-hdf="' + esc(s[0]) + '" aria-pressed="' + (filter === s[0]) + '">' + esc(s[1]) + ' (' + (n[s[0]] || 0) + ')</button>';
+    }).join("") + '</div></div>' +
+    '<div class="card"><div class="rows" id="hd-rows"></div></div>' +
+    teamCard() +
+    '<p class="foot">Tickets: mismo-link-data, data/helpdesk. Emails to ' + SUPPORT + ' come in through data/mailin. Nothing is sent from this page; replies open in Outlook.</p>';
+  var qi = $("hd-q"); qi.value = q;
+  qi.oninput = function(){ q = lc(qi.value); paintRows(); };
+  paintRows();
+}
+function paintRows(){
+  var box = $("hd-rows"); if(!box) return;
+  var list = shown();
+  box.innerHTML = list.length ? list.map(function(t){
+    return '<button type="button" class="row" data-hdo="' + esc(t.id) + '"><span class="rw"><b>' + esc(t.id) + ' · ' + esc([t.company, t.name].filter(Boolean).join(" · ") || t.email || "Unknown") + '</b>' +
+      '<span>' + esc(summary(t)) + '</span></span><span class="rf">' +
+      chip(t.status, CHIP[t.status]) + chip(t.type || "Question", "wait") + (t.status === "With Chris" && t.severity ? chip(t.severity, t.severity === "Urgent" || t.severity === "High" ? "changes" : "wait") : "") +
+      '<span class="rd">' + esc(day(t.at)) + '</span></span></button>';
+  }).join("") : '<div class="empty">' + (tickets().length ? "Nothing here. Choose Open or All above." : "No tickets yet.") + '</div>';
+}
+function teamCard(){
+  var t = team(), ro = canEdit ? "" : " disabled";
+  return '<div class="card hd-team"><div class="ch"><h2>Who Handles Tickets</h2><span class="note">Kellie gets everything first; Escalate drafts an email to Chris</span></div><div class="cb"><div class="fgrid">' +
+    '<div><label for="hd-l1n">First Look</label><input id="hd-l1n" value="' + esc(t.level1.name) + '"' + ro + '></div>' +
+    '<div><label for="hd-l1e">Email</label><input id="hd-l1e" value="' + esc(t.level1.email) + '"' + ro + '></div>' +
+    '<div><label for="hd-l2n">Escalations</label><input id="hd-l2n" value="' + esc(t.level2.name) + '"' + ro + '></div>' +
+    '<div><label for="hd-l2e">Email</label><input id="hd-l2e" value="' + esc(t.level2.email) + '" placeholder="Chris\'s email address"' + ro + '></div>' +
+    '</div>' + (canEdit ? '<div class="acts" style="margin-top:12px"><button class="btn sm" type="button" data-hdteam>Save</button></div>' : "") + '</div></div>';
+}
+
+/* ---------- one ticket in the right-hand panel ---------- */
+function openPanel(id){ openId = id; drawPanel(); $("rpane").classList.add("open"); $("rpane").setAttribute("aria-hidden", "false"); }
+function closePanel(){ if(openId === undefined) return; openId = undefined; $("rpane").classList.remove("open"); $("rpane").setAttribute("aria-hidden", "true"); }
+function sect(title, html){ return '<section class="psec"><h3>' + esc(title) + '</h3>' + html + '</section>'; }
+function drawPanel(){
+  if(openId === undefined) return;
+  var foot = $("rp-foot");
+  if(openId === null){ drawNew(); return; }
+  var t = hd.docs["tickets/" + openId]; if(!t){ closePanel(); return; }
+  $("rp-eye").textContent = t.id + " · " + (t.type || "Question");
+  $("rp-title").textContent = [t.name, t.company].filter(Boolean).join(" · ") || t.email || t.id;
+  var tm = team(), edit = canEdit;
+  var acts = !edit ? "" : '<div class="hd-acts">' +
+    (t.email ? '<button class="btn sm" type="button" data-hdreply>Reply by Email</button>' : "") +
+    (t.status !== "Working" && t.status !== "Resolved" ? '<button class="btn sm ghost" type="button" data-hdset="Working">Mark Working</button>' : "") +
+    (t.status !== "Waiting on Them" && t.status !== "Resolved" ? '<button class="btn sm ghost" type="button" data-hdset="Waiting on Them">Waiting on Them</button>' : "") +
+    (t.status !== "With Chris" && t.status !== "Resolved" ? '<button class="btn sm ghost" type="button" data-hdesc>Escalate to ' + esc(tm.level2.name.split(" ")[0] || "Chris") + '</button>' : "") +
+    (t.status === "With Chris" ? '<button class="btn sm ghost" type="button" data-hdset="Working">Back to ' + esc(tm.level1.name.split(" ")[0] || "Kellie") + '</button>' : "") +
+    (t.status !== "Resolved" ? '<button class="btn sm ghost" type="button" data-hdresolve>Resolve</button>' : '<button class="btn sm ghost" type="button" data-hdset="Working">Reopen</button>') +
+    (t.type === "Feedback" ? (t.feedbackId ? '<span class="muted">In the Feedback tab</span>' : '<button class="btn sm ghost" type="button" data-hdfb>Copy to Feedback</button>') : "") +
+    '</div><div id="hd-esc" class="hd-esc" hidden><div class="fgrid">' +
+      '<div><label for="hd-sev">Severity</label><select id="hd-sev">' + SEVERITY.map(function(s){ return '<option' + (s === (t.severity || "Medium") ? " selected" : "") + '>' + s + '</option>'; }).join("") + '</select></div>' +
+      '<div class="wide"><label for="hd-escn">What ' + esc(tm.level2.name.split(" ")[0] || "Chris") + ' needs to know</label><textarea id="hd-escn" rows="3"></textarea></div>' +
+    '</div><div class="pt-inline"><button class="btn sm" type="button" data-hdescgo>Escalate and Draft the Email</button><button class="btn sm ghost" type="button" data-hdescx>Cancel</button></div></div>' +
+    '<div id="hd-res" class="hd-esc" hidden><label for="hd-resn">How it was resolved</label><textarea id="hd-resn" rows="3"></textarea>' +
+    '<div class="pt-inline"><button class="btn sm" type="button" data-hdresgo>Resolve</button><button class="btn sm ghost" type="button" data-hdresx>Cancel</button></div></div>';
+  var co = t.company ? '<button class="linkbtn" type="button" data-hdco="' + esc(t.company) + '">' + esc(t.company) + '</button>' : "Not known";
+  var others = t.email || t.company ? tickets().filter(function(x){ return x.id !== t.id && ((t.company && lc(x.company) === lc(t.company) && lc(t.company) !== "mismo") || (t.email && lc(x.email) === lc(t.email))); }) : [];
+  var boxes = '<div class="boxes">' +
+    '<div class="box"><h4>Status</h4><p>' + chip(t.status, CHIP[t.status]) + (t.status === "With Chris" && t.severity ? " " + chip(t.severity, "wait") : "") +
+      (t.resolvedAt && t.status === "Resolved" ? '<br><span class="muted">Resolved ' + esc(day(t.resolvedAt)) + '</span>' : "") + '</p></div>' +
+    '<div class="box"><h4>Who Asked</h4><p>' + esc(t.name || "") + (t.email ? '<br><span class="muted">' + esc(t.email) + '</span>' : "") + '<br>' + co + '</p></div>' +
+    '<div class="box"><h4>Came In</h4><p>' + esc(when(t.at)) + '<br><span class="muted">' + esc(t.source || "") + '</span></p></div>' +
+    '</div>';
+  var files = (t.files || []).map(function(f, i){ return '<li><button class="linkbtn" type="button" data-hdfile="' + i + '">' + esc(f.name) + '</button></li>'; }).join("");
+  var asked = sect("What They Need", '<div class="stmt hd-text">' + esc(t.text || t.subject || "") + '</div>' +
+    (files ? '<ul class="hd-files">' + files + '</ul>' : "") +
+    (t.source === "Smartsheet" && t.smartsheetFiles ? '<p class="muted">This ticket had attachments in Smartsheet; they are still there.</p>' : ""));
+  var log = (t.log || []).slice().sort(function(a, b){ return String(a.at).localeCompare(String(b.at)); });
+  var convo = sect("Conversation and Notes", (log.length ? '<ul class="hd-log">' + log.map(function(l){
+    var k = {note:"Note", "email-in":"Email in", "email-out":"Email out", status:"Status", escalate:"Escalated", resolve:"Resolved", draft:"Draft opened"}[l.kind] || "Note";
+    return '<li class="hd-' + esc(l.kind) + '"><div class="hd-lh"><b>' + esc(k) + '</b> · ' + esc(when(l.at)) + (l.by ? " · " + esc(l.by) : "") + (l.subject ? '<span class="muted"> · ' + esc(l.subject) + '</span>' : "") + '</div>' +
+      (l.text ? '<div class="hd-lt">' + esc(l.text) + '</div>' : "") + '</li>';
+  }).join("") + '</ul>' : '<p class="muted">Nothing yet.</p>') +
+    (edit ? '<div class="hd-addnote"><textarea id="hd-note" rows="3" placeholder="Add a note (only the team sees notes)"></textarea><div class="pt-inline"><button class="btn sm" type="button" data-hdnote>Save Note</button></div></div>' : ""));
+  var past = others.length ? sect("Other Tickets From Them", '<div class="plist">' + others.map(function(x){
+    return '<div class="prow"><button type="button" class="pwho" data-hdo="' + esc(x.id) + '"><b>' + esc(x.id) + ' · ' + esc(x.status) + '</b><span>' + esc(summary(x)) + '</span></button></div>';
+  }).join("") + '</div>') : "";
+  $("rp-body").innerHTML = acts + boxes + asked + convo + past;
+  foot.hidden = true; foot.innerHTML = "";
+}
+function drawNew(){
+  $("rp-eye").textContent = "Help Desk"; $("rp-title").textContent = "Log a Ticket";
+  var cos = {}; Object.keys(partners).forEach(function(k){ var c = partners[k] && (partners[k].company || partners[k].Company); if(c) cos[c] = 1; });
+  $("rp-body").innerHTML = '<p class="muted" style="margin:0 0 14px">For a request that came by phone, Teams or a meeting. Help form submissions and emails to ' + SUPPORT + ' come in on their own.</p>' +
+    '<div class="fgrid">' +
+    '<div><label for="hn-name">Name</label><input id="hn-name" autocomplete="off"></div>' +
+    '<div><label for="hn-email">Email</label><input id="hn-email" autocomplete="off"></div>' +
+    '<div><label for="hn-co">Company</label><input id="hn-co" list="hn-colist" autocomplete="off"><datalist id="hn-colist">' + Object.keys(cos).sort().map(function(c){ return '<option value="' + esc(c) + '">'; }).join("") + '</datalist></div>' +
+    '<div><label for="hn-type">What They Need</label><select id="hn-type">' + TYPES.map(function(x){ return '<option>' + esc(x) + '</option>'; }).join("") + '</select></div>' +
+    '<div class="wide"><label for="hn-text">Describe It</label><textarea id="hn-text" rows="6"></textarea></div></div>';
+  var foot = $("rp-foot"); foot.hidden = false;
+  foot.innerHTML = '<button class="btn" type="button" data-hdcreate>Save</button><button class="btn ghost" type="button" data-close>Cancel</button><span class="msg" id="hn-msg"></span>';
+  var em = $("hn-email"); em.onchange = function(){ var c = companyFor(em.value); if(c && !$("hn-co").value) $("hn-co").value = c; };
+}
+
+/* ---------- actions ---------- */
+function logTo(id, entry, extra){
+  entry.at = entry.at || nowIso(); entry.by = entry.by == null ? me() : entry.by;
+  return saveHd(function(d){
+    var t = d["tickets/" + id]; if(!t) return;
+    t.log = (t.log || []).concat([entry]);
+    if(extra) extra(t);
+    t.updatedAt = entry.at; t.updatedBy = me();
+  });
+}
+function setStatus(id, s){
+  return logTo(id, {kind:"status", text:"Status: " + s}, function(t){ t.status = s; if(s !== "Resolved") delete t.resolvedAt; })
+    .then(function(){ toast(id + " is " + s + "."); }, failedSave);
+}
+function mailto(to, cc, subject, body){
+  var u = "mailto:" + encodeURIComponent(to) + "?" + [cc ? "cc=" + encodeURIComponent(cc) : "", "subject=" + encodeURIComponent(subject), "body=" + encodeURIComponent(body)].filter(Boolean).join("&");
+  var a = document.createElement("a"); a.href = u; document.body.appendChild(a); a.click(); setTimeout(function(){ a.remove(); }, 500);
+}
+function subjectOf(t){ var s = String(t.subject || summary(t)).replace(/^\s*((re|fw|fwd)\s*:\s*)+/i, "").replace(/\[?MLHD-\d+\]?/g, "").trim(); return "[" + t.id + "] " + (s.length > 70 ? s.slice(0, 67) + "..." : s || "MISMO Link help"); }
+function reply(id){
+  var t = hd.docs["tickets/" + id]; if(!t || !t.email) return;
+  var first = String(t.name || "").split(" ")[0];
+  mailto(t.email, SUPPORT, "Re: " + subjectOf(t),
+    "Hi " + (first || "there") + ",\n\n\n\nReference " + t.id + ". Please keep this number in the subject if you reply.\n");
+  logTo(id, {kind:"draft", text:"Reply opened in Outlook. Cc " + SUPPORT + " keeps the sent email on this ticket."},
+    function(x){ if(x.status === "New") x.status = "Working"; }).catch(function(){});
+}
+function escalate(id){
+  var t = hd.docs["tickets/" + id]; if(!t) return;
+  var sev = $("hd-sev").value, note = $("hd-escn").value.trim(), tm = team();
+  logTo(id, {kind:"escalate", text:"Escalated to " + tm.level2.name + " (" + sev + ")" + (note ? ": " + note : "")}, function(x){ x.status = "With Chris"; x.severity = sev; x.escalatedAt = nowIso(); })
+    .then(function(){
+      if(!tm.level2.email){ toast("Escalated. Add " + tm.level2.name + "'s email under Who Handles Tickets to draft the email next time.", true); return; }
+      mailto(tm.level2.email, SUPPORT, "Escalated: " + subjectOf(t),
+        "Hi " + (tm.level2.name.split(" ")[0] || "") + ",\n\n" + t.id + " needs you (" + sev + ").\n\n" +
+        (note ? note + "\n\n" : "") + "From: " + [t.name, t.email, t.company].filter(Boolean).join(", ") + "\n\nWhat they asked:\n" + String(t.text || "").slice(0, 1200) +
+        "\n\nThe whole ticket: https://resources.mismo.org/mismo-link/#helpdesk\n");
+      toast("Escalated. The email to " + tm.level2.name + " is open in Outlook for you to send.");
+    }, failedSave);
+}
+function resolve(id){
+  var note = $("hd-resn").value.trim();
+  logTo(id, {kind:"resolve", text:note || "Resolved"}, function(t){ t.status = "Resolved"; t.resolvedAt = nowIso(); t.outcome = note || t.outcome || ""; })
+    .then(function(){ toast(id + " is resolved."); }, failedSave);
+}
+function copyToFeedback(id){
+  var t = hd.docs["tickets/" + id]; if(!t) return;
+  var fid = "fb" + Date.now().toString(36) + "hd";
+  readDocs("feedback").then(function(f){
+    var next = f.docs; next[fid] = {date:String(t.at || nowIso()).slice(0, 10), name:t.name || t.email || "", company:t.company || "", text:t.text || "",
+      status:"New", outcome:"", link:"", ticket:t.id, at:nowIso(), by:me()};
+    return call("PUT", "feedback", {content:{docs:next}, sha:f.sha});
+  }).then(function(){
+    return logTo(id, {kind:"note", text:"Copied to the Feedback tab."}, function(x){ x.feedbackId = fid; });
+  }).then(function(){ if(window.__mlFeedbackReload) window.__mlFeedbackReload(); toast("Copied to the Feedback tab."); }, failedSave);
+}
+function create(){
+  var name = $("hn-name").value.trim(), email = $("hn-email").value.trim(), co = $("hn-co").value.trim(), text = $("hn-text").value.trim();
+  var m = $("hn-msg");
+  if(!name && !email){ m.textContent = "Who is asking?"; return; }
+  if(!text){ m.textContent = "Describe what they need."; return; }
+  var id = null;
+  saveHd(function(d){
+    id = nextNumber(d);
+    d["tickets/" + id] = {id:id, at:nowIso(), source:"Logged by " + (me() || "the team"), name:name, email:lc(email), company:co,
+      type:$("hn-type").value, text:text, status:"New", log:[], by:me()};
+  }).then(function(){ toast(id + " logged."); openPanel(id); }, failedSave);
+}
+function saveTeam(){
+  var v = {level1:{name:$("hd-l1n").value.trim(), email:lc($("hd-l1e").value)}, level2:{name:$("hd-l2n").value.trim(), email:lc($("hd-l2e").value)}};
+  saveHd(function(d){ d.settings = Object.assign({}, d.settings, v, {savedAt:nowIso(), savedBy:me()}); })
+    .then(function(){ toast("Saved."); }, failedSave);
+}
+function openCompany(name){
+  closePanel();
+  if(window.__show) window.__show("access");
+  setTimeout(function(){ var box = $("ta-q"); if(box){ box.value = name; box.dispatchEvent(new Event("input", {bubbles:true})); } }, 80);
+}
+function download(i){
+  var t = hd.docs["tickets/" + openId], f = t && t.files && t.files[i]; if(!f) return;
+  call("GET", f.doc).then(function(j){
+    var x = j && j.data; if(!x || !x.data) throw new Error("EMPTY");
+    var a = document.createElement("a"); a.href = x.data; a.download = x.name || f.name; document.body.appendChild(a); a.click(); setTimeout(function(){ a.remove(); }, 800);
+  }).catch(function(){ toast("That attachment could not be opened just now.", true); });
+}
+
+/* ---------- email to linksupport@ (like 360@): new ticket or onto an existing one ---------- */
+function plain(html){
+  var d = document.createElement("div"); d.innerHTML = String(html || "").replace(/<(br|\/p|\/div|\/li|\/tr)[^>]*>/gi, "\n$&");
+  d.querySelectorAll("style,script,head,title").forEach(function(x){ x.remove(); });
+  var t = (d.textContent || "").replace(/ /g, " ").replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+  var cut = t.search(/\n\s*(From:\s.+\n\s*Sent:|On .+wrote:|-----\s*Original Message)/i); /* drop the quoted thread below */
+  return (cut > 0 ? t.slice(0, cut) : t).slice(0, 8000).trim();
+}
+function normSubject(s){ return lc(String(s || "").replace(/^\s*((re|fw|fwd)\s*:\s*)+/i, "").replace(/\[?mlhd-\d+\]?/gi, "")).replace(/\s+/g, " "); }
+function processMail(){
+  if(!canEdit) return Promise.resolve();
+  return readDocs(MAILIN).then(function(box){
+    var waiting = Object.keys(box.docs).filter(function(k){ var m = box.docs[k]; return m && !m.processed; });
+    if(!waiting.length) return;
+    var done = {}, made = 0, added = 0, held = 0, heldKeys = [];
+    return saveHd(function(d){
+      done = {}; made = 0; added = 0; held = 0; heldKeys = []; /* a retried save starts the count again */
+      var list = Object.keys(d).filter(function(k){ return k.indexOf("tickets/") === 0; }).map(function(k){ return d[k]; });
+      var seen = {}; list.forEach(function(t){ (t.log || []).forEach(function(l){ if(l.mid) seen[l.mid] = t.id; }); if(t.mid) seen[t.mid] = t.id; });
+      waiting.sort(function(a, b){ return String(box.docs[a].received || box.docs[a].at || "").localeCompare(String(box.docs[b].received || box.docs[b].at || "")); });
+      waiting.forEach(function(k){
+        var m = box.docs[k], mid = m.mid || k, from = emailOf(m.from), at = m.received || m.at || nowIso();
+        if(seen[mid]){ done[k] = seen[mid]; return; }
+        var text = plain(m.html || m.body || m.text || ""), num = String(m.subject || "").match(/MLHD-?\s?(\d{5})/i);
+        var t = num ? d["tickets/MLHD-" + num[1]] : null;
+        var people = [m.to, m.cc].join(",").split(/[,;]/).map(emailOf).filter(Boolean);
+        if(!t){
+          var ns = normSubject(m.subject);
+          t = list.filter(function(x){ return OPEN[x.status] && normSubject(x.subject) === ns && ns &&
+            (lc(x.email) === from || people.indexOf(lc(x.email)) >= 0); })[0] || null;
+        }
+        if(t){
+          var staff = isStaff(from);
+          t.log = (t.log || []).concat([{kind:staff ? "email-out" : "email-in", at:at, by:m.from || from, subject:m.subject || "", text:text, mid:mid}]);
+          if(!staff && (t.status === "Waiting on Them" || t.status === "Resolved")){ t.status = "Working"; delete t.resolvedAt; }
+          t.updatedAt = nowIso(); done[k] = t.id; seen[mid] = t.id; added++;
+          return;
+        }
+        if(isStaff(from)){ held++; heldKeys.push(k); return; } /* a team email with no ticket number: left for a person to look at */
+        var id = nextNumber(d);
+        d["tickets/" + id] = {id:id, at:at, source:"Email to " + SUPPORT, name:nameOf(m.from), email:from, company:companyFor(from),
+          type:"Question", subject:String(m.subject || "").trim(), text:text, status:"New", log:[], mid:mid};
+        list.push(d["tickets/" + id]); done[k] = id; seen[mid] = id; made++;
+      });
+    }).then(function(){
+      if(held){ mailNote = held + " email" + (held === 1 ? "" : "s") + " from the team to " + SUPPORT + " had no ticket number, so " + (held === 1 ? "it was" : "they were") + " not logged. Put the ticket number (for example MLHD-00054) in the subject to log a reply."; render(); }
+      if(!Object.keys(done).length && !heldKeys.length) return;
+      var next = JSON.parse(JSON.stringify(box.docs));
+      Object.keys(done).forEach(function(k){ next[k].processed = {at:nowIso(), ticket:done[k]}; next[k].html = ""; next[k].body = ""; });
+      heldKeys.forEach(function(k){ next[k].processed = {at:nowIso(), ticket:null, skipped:"team email with no ticket number"}; });
+      return call("PUT", MAILIN, {content:{docs:next}, sha:box.sha}).catch(function(){}).then(function(){
+        if(made || added) toast((made ? made + " new ticket" + (made === 1 ? "" : "s") : "") + (made && added ? " and " : "") + (added ? added + " email" + (added === 1 ? "" : "s") + " added to tickets" : "") + " from " + SUPPORT + ".");
+      });
+    });
+  }).catch(function(e){ console.warn("help desk mail:", e && e.message); });
+}
+
+/* ---------- wiring ---------- */
+document.addEventListener("click", function(e){
+  var b = e.target.closest("[data-hdnew],[data-hdf],[data-hdo],[data-hdreply],[data-hdset],[data-hdesc],[data-hdescgo],[data-hdescx],[data-hdresolve],[data-hdresgo],[data-hdresx],[data-hdfb],[data-hdnote],[data-hdcreate],[data-hdteam],[data-hdco],[data-hdfile],[data-close]");
+  if(!b) return;
+  if(b.hasAttribute("data-close")){ closePanel(); return; }
+  if(!b.closest("#app-helpdesk,#rpane")) return;
+  var id = openId;
+  if(b.hasAttribute("data-hdnew")){ openPanel(null); return; }
+  if(b.hasAttribute("data-hdf")){ filter = b.getAttribute("data-hdf"); render(); return; }
+  if(b.hasAttribute("data-hdo")){ openPanel(b.getAttribute("data-hdo")); return; }
+  if(b.hasAttribute("data-hdteam")){ saveTeam(); return; }
+  if(b.hasAttribute("data-hdcreate")){ create(); return; }
+  if(b.hasAttribute("data-hdco")){ openCompany(b.getAttribute("data-hdco")); return; }
+  if(b.hasAttribute("data-hdfile")){ download(+b.getAttribute("data-hdfile")); return; }
+  if(!id) return;
+  if(b.hasAttribute("data-hdreply")){ reply(id); return; }
+  if(b.hasAttribute("data-hdset")){ setStatus(id, b.getAttribute("data-hdset")); return; }
+  if(b.hasAttribute("data-hdesc")){ $("hd-esc").hidden = false; $("hd-res").hidden = true; $("hd-escn").focus(); return; }
+  if(b.hasAttribute("data-hdescx")){ $("hd-esc").hidden = true; return; }
+  if(b.hasAttribute("data-hdescgo")){ escalate(id); return; }
+  if(b.hasAttribute("data-hdresolve")){ $("hd-res").hidden = false; $("hd-esc").hidden = true; $("hd-resn").focus(); return; }
+  if(b.hasAttribute("data-hdresx")){ $("hd-res").hidden = true; return; }
+  if(b.hasAttribute("data-hdresgo")){ resolve(id); return; }
+  if(b.hasAttribute("data-hdfb")){ copyToFeedback(id); return; }
+  if(b.hasAttribute("data-hdnote")){
+    var n = $("hd-note").value.trim(); if(!n) return;
+    logTo(id, {kind:"note", text:n}, function(t){ if(t.status === "New") t.status = "Working"; }).then(function(){ toast("Note saved."); }, failedSave);
+  }
+});
+document.addEventListener("click", function(e){
+  /* another section opening its own record in the shared panel ends this one */
+  if(openId !== undefined && e.target.closest("[data-co],[data-person],[data-sig],[data-addto],[data-rm],[data-fbo],[data-fbnew]")) openId = undefined;
+}, true);
+var rx = $("rp-x"); if(rx) rx.addEventListener("click", closePanel);
+document.addEventListener("keydown", function(e){
+  var t = e.target, typing = t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT");
+  if(e.key === "Escape" && openId !== undefined && !typing) closePanel();
+});
+
+function load(){
+  try{ canEdit = !!(window.ResourcesSession && ResourcesSession.canEdit && ResourcesSession.canEdit("mismo-link")); }catch(e){ canEdit = false; }
+  if(/trujillo/.test(lc(me())) || /trujillo/.test(myEmail())) filter = "With Chris";
+  return Promise.all([readDocs(DOC), call("GET", "partners").catch(function(){ return null; })]).then(function(x){
+    hd = x[0]; loaded = true; failed = null;
+    partners = (x[1] && x[1].data && x[1].data.docs) || {};
+    render();
+    return processMail();
+  }, function(e){ failed = (e && (e.status === 401 || e.status === 403)) ? 401 : 1; render(); });
+}
+window.__mlHelpdeskReload = load;
+function fromHash(){ if(location.hash === "#helpdesk" && window.__show) window.__show("helpdesk"); }
+fromHash(); window.addEventListener("hashchange", fromHash);
+render();
+var g = window.__mismoLinkGate;
+(g && typeof g.then === "function" ? g : Promise.resolve(true)).then(function(ok){
+  if(ok === false || started) return; started = true; load();
+}, function(){ failed = 1; render(); });
 })();
 </script>
 </body>
