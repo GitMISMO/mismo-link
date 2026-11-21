@@ -2900,12 +2900,12 @@ function download(i){
 }
 
 /* ---------- email to linksupport@ (like 360@): new ticket or onto an existing one ---------- */
-function plain(html){
+function plain(html, keepThread){
   var d = document.createElement("div"); d.innerHTML = String(html || "").replace(/<(br|\/p|\/div|\/li|\/tr)[^>]*>/gi, "\n$&");
   d.querySelectorAll("style,script,head,title").forEach(function(x){ x.remove(); });
   var t = (d.textContent || "").replace(/ /g, " ").replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
   var cut = t.search(/\n\s*(From:\s.+\n\s*Sent:|On .+wrote:|-----\s*Original Message)/i); /* drop the quoted thread below */
-  return (cut > 0 ? t.slice(0, cut) : t).slice(0, 8000).trim();
+  return (cut > 0 && !keepThread ? t.slice(0, cut) : t).slice(0, 8000).trim();
 }
 function normSubject(s){ return lc(String(s || "").replace(/^\s*((re|fw|fwd)\s*:\s*)+/i, "").replace(/\[?mlhd-\d+\]?/gi, "")).replace(/\s+/g, " "); }
 function processMail(){
@@ -2937,9 +2937,22 @@ function processMail(){
           t.updatedAt = nowIso(); done[k] = t.id; seen[mid] = t.id; added++;
           return;
         }
-        if(isStaff(from)){ held++; heldKeys.push(k); return; } /* a team email with no ticket number: left for a person to look at */
+        /* A new ticket. From the team: a forward is about whoever wrote the forwarded email; anything else is about
+           the first outside address it went to, or failing that, the team member who sent it. */
+        var who = {name:nameOf(m.from), email:from}, staffSent = isStaff(from);
+        if(staffSent){
+          if(/^\s*(fw|fwd)\s*:/i.test(String(m.subject || ""))){
+            var full = plain(m.html || m.body || m.text || "", true);
+            var fm = full.match(/From:\s*"?([^"<\n]*?)"?\s*<?([^\s<>"]+@[^\s<>"]+\.[A-Za-z]{2,})>?/i);
+            if(fm && !isStaff(fm[2])){ who = {name:fm[1].trim(), email:lc(fm[2])}; text = full; }
+          } else {
+            var ext = people.filter(function(e){ return !isStaff(e); })[0];
+            if(ext) who = {name:"", email:ext};
+          }
+        }
         var id = nextNumber(d);
-        d["tickets/" + id] = {id:id, at:at, source:"Email to " + SUPPORT, name:nameOf(m.from), email:from, company:companyFor(from),
+        d["tickets/" + id] = {id:id, at:at, source:staffSent ? "Sent to " + SUPPORT + " by " + (nameOf(m.from) || from) : "Email to " + SUPPORT,
+          name:who.name, email:who.email, company:companyFor(who.email),
           type:"Question", subject:String(m.subject || "").trim(), text:text, status:"New", log:[], mid:mid};
         list.push(d["tickets/" + id]); done[k] = id; seen[mid] = id; made++;
       });
