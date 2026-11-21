@@ -1,73 +1,192 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MISMO Link Help</title>
+<title>MISMO Link Help | MISMO</title>
+<meta name="description" content="Ask the MISMO Link team for help: questions, problems and feedback on the MISMO Link AI pilot.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
 <style>
+/* ===================================================================
+MISMO Link help form, in the MISMO website skin used by the Member 360
+membership application (resources.mismo.org/member-360/apply/). Values
+copied from that page so the forms read as one family. Light only, as
+the website is.
+=================================================================== */
 :root{
---navy:#0d314c; --navy-deep:#06202f; --navy-mid:#14486e; --sky:#74bfeb; --sky-wash:#dcedf8;
---ground:#f1f6fa; --surface:#ffffff; --surface-2:#f6fafd; --surface-3:#e9f1f8;
---border:#d5e2ed; --border-strong:#adc4d6; --ink:#0f314c; --ink-2:#456179; --ink-3:#7794aa;
---good:#0f7b5c; --bad:#b3372c; --warn:#a2701a;
---ui:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; --hq-h:55px;
+--mm-font:"IBM Plex Sans","Segoe UI",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+--mm-hero:#071d2e; --mm-pill:#0f314c; --mm-blue:#1a8fe3; --mm-blue-top:#2e9dee;
+--mm-sky:#74bfeb; --mm-sky-2:#56b4f2; --mm-sub:#a9d8f3;
+--mm-text:#44607a; --mm-line:#cfdeeb; --mm-tag-bg:#e3f1fc; --mm-tag-ink:#1a74b8;
+--rule:#e5eef5; --good:#0f7b5c; --bad:#b3372c; --warn:#a2701a;
+color-scheme:light;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
---ground:#061722; --surface:#0d2837; --surface-2:#123143; --surface-3:#173c52; --border:#1f4a63; --border-strong:#2f6688;
---ink:#e9f4fb; --navy-mid:#7fc0ea; --ink-2:#a6c5d9; --ink-3:#7a9db4; --good:#4fc79b; --bad:#f08579; --warn:#e0a83c; --sky-wash:#123143; color-scheme:dark; } }
-:root[data-theme="dark"]{ --ground:#061722; --surface:#0d2837; --surface-2:#123143; --surface-3:#173c52; --border:#1f4a63; --border-strong:#2f6688;
---ink:#e9f4fb; --navy-mid:#7fc0ea; --ink-2:#a6c5d9; --ink-3:#7a9db4; --good:#4fc79b; --bad:#f08579; --warn:#e0a83c; --sky-wash:#123143; color-scheme:dark; }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{background:var(--ground);color:var(--ink);font-family:var(--ui);font-size:14.5px;line-height:1.55;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
-a{color:var(--navy-mid)}
-.hqtop{position:sticky;top:0;z-index:10;height:var(--hq-h);background:var(--navy);color:#fff;display:flex;align-items:center;padding:0 22px;box-shadow:0 1px 0 rgba(80,164,219,.28)}
-.hqtop .mastrule{display:block;width:2px;height:34px;margin-inline:20px;border-radius:1px;background:var(--sky)}
-.hqtop .hqname{font-size:15.5px;font-weight:700;color:var(--sky);white-space:nowrap}
-.hqtop-r{margin-left:auto}
-.logoplate{background:#fff;border-radius:7px;padding:8px 14px;display:flex;align-items:center;line-height:0}
-.logoplate .wordmark{height:24px;width:auto;display:block}
-.theme{background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:5px;padding:5px 11px;font:inherit;font-size:12px;cursor:pointer;white-space:nowrap}
-.wrap{max-width:860px;margin:0 auto;padding:30px 22px 80px}
-@media (max-width:420px){.wrap{padding-left:16px;padding-right:16px}}
-h1{font-size:26px;margin:0 0 6px;font-weight:700;letter-spacing:-.01em}
-.lede{color:var(--ink-2);margin:0 0 22px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 22px;margin-bottom:16px}
-.login{border-left:3px solid var(--sky);background:var(--surface-2)}
-.login b{color:var(--ink)}
-.login .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px}
-@media (max-width:600px){.grid{grid-template-columns:1fr}}
-.wide{grid-column:1/-1}
-label,.lbl{display:block;font-size:12.5px;font-weight:600;color:var(--ink-2);margin-bottom:5px}
-.req{color:var(--bad)}
-input[type=text],input[type=email],textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:9px 11px;font:inherit;font-size:14px;background:var(--surface);color:var(--ink)}
-textarea{min-height:140px;resize:vertical;line-height:1.5}
-input:focus,textarea:focus{outline:2px solid var(--sky);outline-offset:-1px;border-color:var(--sky)}
-.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-@media (max-width:600px){.choices{grid-template-columns:1fr}}
-.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:6px;padding:11px 12px;cursor:pointer;background:var(--surface)}
-.choice input{margin:3px 0 0;accent-color:var(--navy)}
-.choice b{display:block;font-size:13.5px}
-.choice span{display:block;font-size:12.5px;color:var(--ink-2);line-height:1.4}
-.choice:has(input:checked){border-color:var(--navy-mid);background:var(--sky-wash)}
-.hint{font-size:12px;color:var(--ink-3);margin-top:4px}
-.btn{background:var(--navy);color:#fff;border:none;border-radius:6px;padding:10px 18px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap;min-width:max-content;display:inline-flex;align-items:center;text-decoration:none}
-.btn:hover{background:var(--navy-deep)}
-.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--border-strong)}
-.btn[disabled]{opacity:.5;cursor:not-allowed}
-:root[data-theme="dark"] .btn:not(.ghost){background:var(--sky);color:#06202f}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .btn:not(.ghost){background:var(--sky);color:#06202f} }
-.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:18px}
-.msg{color:var(--bad);font-size:13px}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{margin:0}
+body{font-family:var(--mm-font);font-size:16px;line-height:1.6;background:#ffffff;color:#0d314c;font-variant-numeric:tabular-nums}
+a{color:var(--mm-blue)}
+
+/* ---------- header bar (the website's) ---------- */
+.mm-header{position:relative;z-index:5;height:70px;background:var(--mm-hero);box-shadow:0 2px 4px 0 rgba(0,0,0,.1),0 0 2px 0 rgba(153,153,153,.25);display:flex;align-items:center;padding:0 50px;gap:56px}
+.mm-logo img{display:block;width:194px;height:36px;max-width:100%;object-fit:contain;object-position:left center}
+.mm-logo{flex:0 1 194px;min-width:0}
+.mm-nav{display:flex;align-items:stretch;height:70px;margin:0;padding:0;list-style:none;flex:1 1 auto}
+.mm-nav>li{position:relative;display:flex;align-items:center;list-style:none}
+.mm-nav-link{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;font-family:var(--mm-font);font-size:15px;font-weight:500;line-height:21px;color:#ffffff;text-decoration:none;white-space:nowrap}
+.mm-nav>li:hover>.mm-nav-link,.mm-nav-link:focus-visible{color:var(--mm-sky)}
+.mm-chev{display:none}
+.mm-dd{display:none;position:absolute;left:0;top:100%;z-index:20;min-width:250px;margin:0;padding:8px 0;list-style:none;background:#0b2740;border-top:2px solid var(--mm-blue);border-radius:0 0 8px 8px;box-shadow:0 18px 40px -14px rgba(0,0,0,.6)}
+.mm-nav>li:hover>.mm-dd,.mm-nav>li:focus-within>.mm-dd{display:block}
+.mm-dd a{display:block;padding:10px 18px 10px 16px;border-left:2px solid transparent;font-family:var(--mm-font);font-size:15px;font-weight:500;line-height:19.5px;color:#e6eef5;text-decoration:none;white-space:nowrap;transition:background .15s,color .15s,border-color .15s}
+.mm-dd a:hover,.mm-dd a:focus-visible{outline:none;background:rgba(116,191,235,.1);border-left-color:var(--mm-sky);color:var(--mm-sky)}
+.mm-actions{margin-left:auto;display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.mm-login{display:inline-block;padding:10px 20px;border-radius:8px;background:var(--mm-pill);color:#ffffff;font-family:var(--mm-font);font-size:16px;font-weight:600;line-height:16px;text-decoration:none;white-space:nowrap;min-width:max-content}
+.mm-login:hover{background:#17476d;color:#ffffff}
+.mm-login:focus-visible,.mm-search-btn:focus-visible,.mm-search-in:focus-visible{outline:2px solid var(--mm-sky);outline-offset:2px}
+.mm-search{display:flex;align-items:center;margin:0}
+.mm-search-in{box-sizing:border-box;width:0;height:34px;padding:0;border:0;border-radius:6px;opacity:0;background:#ffffff;color:#0d314c;font-family:var(--mm-font);font-size:15px;transition:width .2s ease,opacity .2s ease,padding .2s ease}
+.mm-search.is-open .mm-search-in{width:200px;padding:0 10px;opacity:1}
+.mm-search-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:0;background:transparent;color:#ffffff;cursor:pointer}
+.mm-burger{display:none;width:40px;height:40px;margin-left:0;padding:9px 8px;border:0;border-radius:6px;background:transparent;cursor:pointer}
+.mm-burger span{display:block;height:2px;margin:4px 0;border-radius:2px;background:#ffffff;transition:transform .2s,opacity .2s}
+@media (max-width:1100px){
+.mm-header{padding:0 20px;gap:12px}
+.mm-burger{display:block}
+.mm-nav{display:none}
+.mm-search{display:none}
+.mm-header.is-open .mm-nav{display:block;position:absolute;top:70px;left:0;right:0;height:auto;max-height:calc(100vh - 70px);overflow-y:auto;padding:8px 0 16px;background:#0b2740;border-top:2px solid var(--mm-blue);box-shadow:0 18px 40px -14px rgba(0,0,0,.6)}
+.mm-header.is-open .mm-nav>li{display:block}
+.mm-header.is-open .mm-nav-link{display:flex;padding:12px 20px 6px;font-weight:600}
+.mm-header.is-open .mm-dd{display:block;position:static;min-width:0;padding:0 0 6px;background:transparent;border:0;border-radius:0;box-shadow:none}
+.mm-header.is-open .mm-dd a{padding:9px 20px 9px 34px;white-space:normal}
+.mm-header.is-open .mm-burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.mm-header.is-open .mm-burger span:nth-child(2){opacity:0}
+.mm-header.is-open .mm-burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+}
+@media (max-width:720px){.mm-login{padding:9px 16px;font-size:15px}}
+
+/* ---------- hero: the live site's rules for every hero ---------- */
+div[style*="min-height: clamp(380px"]{min-height:502px !important;padding-top:40px !important;padding-bottom:40px !important}
+div[style*="max-width: 560px"] > a{flex:0 0 auto !important}
+@media (max-width:600px){
+div[style*="min-height: clamp(380px"]{min-height:0 !important;padding:30px 20px !important}
+div[style*="flex: 0 1 200px"]{display:flex !important;flex-wrap:wrap;gap:4px 16px;border-left:0 !important;padding-left:0 !important;min-width:0 !important}
+div[style*="flex: 0 1 200px"] > div:nth-child(n+5){display:none !important}
+div[style*="max-width: 560px"] > a{flex:0 0 100% !important}
+}
+
+/* ---------- the page column ---------- */
+.wrap{max-width:960px;margin:0 auto;padding:46px clamp(20px,5vw,48px) 110px}
+.sect-head{margin:0 0 22px}
+.sect-head .mm-eyebrow{margin:0 0 10px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--mm-blue)}
+.sect-head h2{margin:0 0 12px;font-size:38px;font-weight:700;line-height:1.2;color:#0d314c}
+.sect-head p{margin:0;font-size:16px;line-height:1.6;color:var(--mm-text)}
+@media (max-width:600px){.sect-head h2{font-size:30px}}
+
+/* ---------- quick fixes for sign-in ---------- */
+.quick{display:grid;grid-template-columns:minmax(0,1.1fr) repeat(2,minmax(0,1fr));gap:12px;margin:0 0 22px}
+.quick .qi{border-left:3px solid var(--mm-blue);background:#f4f8fc;padding:14px 16px;border-radius:0 8px 8px 0;line-height:1.5;font-size:15px;color:var(--mm-text)}
+.quick .qi b{display:block;color:#0d314c;font-size:16px;margin-bottom:2px}
+.qa{display:flex;gap:12px;align-items:center;border:1px solid var(--mm-line);border-radius:12px;background:#ffffff;padding:14px 16px;text-decoration:none;color:#0d314c;box-shadow:0 14px 34px -26px rgba(7,29,46,.35);transition:border-color .15s,box-shadow .15s,transform .15s}
+.qa:hover{border-color:var(--mm-blue);box-shadow:0 0 0 1px var(--mm-blue) inset,0 14px 34px -22px rgba(7,29,46,.4);transform:translateY(-1px)}
+.qa:focus-visible{outline:3px solid rgba(26,143,227,.35);outline-offset:2px}
+.qa .ic{flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:var(--mm-tag-bg);color:var(--mm-blue);display:flex;align-items:center;justify-content:center}
+.qa .ic svg{width:20px;height:20px}
+.qa b{display:block;font-size:15px;font-weight:600;white-space:nowrap}
+.qa small{display:block;font-size:13.5px;color:var(--mm-text);line-height:1.35}
+@media (max-width:760px){.quick{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- the form card ---------- */
+.panel{border:1px solid var(--mm-line);border-radius:12px;background:#ffffff;box-shadow:0 14px 34px -26px rgba(7,29,46,.35);padding:26px 28px}
+@media (max-width:600px){.panel{padding:20px 18px}}
+.panel h2.ph{font-size:24px;font-weight:700;line-height:1.25;color:#0d314c}
+.panel .lead{color:var(--mm-text);margin:6px 0 20px;font-size:16px}
+.panel h3{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--mm-blue);margin:28px 0 12px;padding-top:20px;border-top:1px solid var(--rule)}
+.grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}
+.c6{grid-column:span 6}.c3{grid-column:span 3}.c2{grid-column:span 2}
+@media (max-width:640px){.c3,.c2{grid-column:span 6}}
+
+/* ---------- fields: 44px tall, 8px corners ---------- */
+.f label,.f .lab{display:block;font-size:14px;font-weight:600;color:#0d314c;margin-bottom:6px}
+.f .optl{font-weight:400;color:var(--mm-text)}
+.f input[type=text],.f input[type=email],.f textarea{width:100%;border:1px solid var(--mm-line);border-radius:8px;background:#ffffff;color:#0d314c;font-size:15px}
+.f input[type=text],.f input[type=email]{height:44px;padding:0 14px}
+.f textarea{min-height:150px;padding:12px 14px;line-height:1.5;resize:vertical}
+.f input:focus,.f textarea:focus{outline:none;border-color:var(--mm-blue);box-shadow:0 0 0 3px rgba(26,143,227,.18)}
+.f .help{font-size:13px;color:var(--mm-text);margin-top:6px;line-height:1.45}
+.f .err{display:none;font-size:13px;color:var(--bad);margin-top:6px}
+.f.bad input,.f.bad textarea{border-color:var(--bad)}
+.f.bad .err{display:block}
+.f.bad .choices{outline:1px solid var(--bad);outline-offset:4px;border-radius:8px}
+
+/* ---------- choices ---------- */
+.choices{display:grid;gap:10px;grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:640px){.choices{grid-template-columns:minmax(0,1fr)}}
+.f label.choice{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--mm-line);border-radius:8px;padding:12px 14px;cursor:pointer;background:#ffffff;font-weight:400;font-size:15px;margin:0}
+.f label.choice:hover{background:#f8fbfe}
+.choice input{margin:3px 0 0;accent-color:var(--mm-blue);width:17px;height:17px;flex:0 0 auto}
+.choice b{display:block;font-weight:600;color:#0d314c}
+.choice small{display:block;color:var(--mm-text);font-size:13.5px;margin-top:2px;line-height:1.4}
+.f label.choice:has(input:checked){border-color:var(--mm-blue);box-shadow:0 0 0 1px var(--mm-blue) inset;background:#f2f9fe}
+.choice:has(input:focus-visible){outline:3px solid rgba(26,143,227,.35);outline-offset:2px}
+
+/* ---------- the screenshot drop (the forms' .att) ---------- */
+.f label.drop{display:flex;align-items:center;justify-content:center;text-align:center;min-height:130px;border:1.5px dashed var(--mm-line);border-radius:12px;background:#f8fbfe;cursor:pointer;padding:16px;position:relative;margin:0;font-weight:400}
+.f label.drop:hover,.drop.over{border-color:var(--mm-blue);background:#f2f9fe}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.drop:has(input:focus-visible){outline:3px solid rgba(26,143,227,.35);outline-offset:2px}
+.drop-in{display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none}
+.drop-in svg{width:28px;height:28px;color:var(--mm-blue);margin-bottom:2px}
+.drop-in b{font-weight:600;color:var(--mm-blue);font-size:15px}
+.drop-in small{color:var(--mm-text);font-size:13.5px}
+.shot-prev{max-height:90px;max-width:260px;background:#fff;border:1px solid var(--mm-line);border-radius:8px;padding:4px;margin-bottom:6px}
+.f.bad label.drop{border-color:var(--bad)}
+.clear-shot{pointer-events:auto;position:relative;z-index:2;background:none;border:0;color:var(--mm-blue);font-weight:600;font-size:13.5px;cursor:pointer;text-decoration:underline;padding:2px 4px}
+
+/* ---------- sending ---------- */
+.navrow{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:28px;padding-top:20px;border-top:1px solid var(--rule)}
+.navrow .aside{font-size:13.5px;color:var(--mm-text)}
+.btn{display:inline-block;cursor:pointer;border-radius:8px;font-family:var(--mm-font);font-size:15px;font-weight:600;line-height:1.2;white-space:nowrap;min-width:max-content;padding:14px 22px;border:1.5px solid var(--mm-blue);color:#ffffff;text-decoration:none;
+background:linear-gradient(180deg,var(--mm-blue-top) 0%,var(--mm-blue) 100%);box-shadow:0 5px 16px -4px rgba(26,143,227,.55)}
+.btn:hover{background:linear-gradient(180deg,var(--mm-blue) 0%,#1580cc 100%)}
+.btn.ghost{background:#ffffff;color:var(--mm-blue);border:1.5px solid var(--mm-blue);box-shadow:none}
+.btn.ghost:hover{background:#f2f9fe}
+.btn:focus-visible{outline:3px solid rgba(26,143,227,.35);outline-offset:2px}
+.btn[disabled]{opacity:.6;cursor:progress}
+.problem{background:#fdf2f1;border:1px solid var(--bad);border-radius:8px;padding:12px 14px;color:#0d314c;margin-top:16px;font-size:15px}
+.problem[hidden]{display:none}
+.done-ref{font-size:24px;font-weight:700;letter-spacing:.02em;background:#e3f1fc;color:#0d314c;border-radius:8px;padding:10px 16px;display:inline-block;margin:6px 0 4px}
+.next{margin:6px 0 0;padding-left:22px;color:var(--mm-text)}
+.next li{margin:6px 0}
+.done-card{border-left:3px solid var(--good)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.done{border-left:3px solid var(--good)}
-.done h2{margin:0 0 8px;font-size:19px}
-.ref{font-size:22px;font-weight:700;letter-spacing:.02em;color:var(--navy-mid)}
-.foot{color:var(--ink-3);font-size:12px;margin-top:24px}
+
+/* ---------- footer (the website's) ---------- */
+.mm-footer{background:#f4f7f9}
+.mm-footer-bar{background:#f4f7f9;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 28px;padding:18px 50px;font-family:var(--mm-font)}
+.mm-f-logo{flex:0 0 auto;line-height:0;--logo-body:#0d314c;--logo-s:#50a4db}
+.mm-f-mark{display:block;width:197px;height:30px}
+.mm-f-addr{flex:1 1 300px;text-align:center;font-size:12.5px;line-height:20px;color:#5b7183}
+.mm-f-addr a{color:#0d314c;text-decoration:none}
+.mm-f-addr a:hover{text-decoration:underline}
+.mm-f-env{width:15px;height:12px;margin:0 7px 0 14px;color:#5b7183;vertical-align:-1px}
+.mm-f-links{flex:0 0 auto;display:flex;gap:16px}
+.mm-f-links a{font-size:13px;font-weight:600;color:#0d314c;text-decoration:none;white-space:nowrap}
+.mm-f-links a:hover{text-decoration:underline}
+.mm-f-social{flex:0 0 auto;display:flex;gap:13px}
+.mm-f-soc{width:32px;height:32px;border-radius:50%;background:#50a4db;color:#0d314c;display:flex;align-items:center;justify-content:center}
+.mm-f-soc svg{width:17px;height:17px;display:block}
+.mm-f-soc:hover{background:#74bfeb}
+@media (max-width:600px){
+.mm-footer-bar{padding:18px 20px;justify-content:center;gap:14px 20px}
+.mm-f-addr{flex:1 1 100%}
+.mm-f-mark{width:170px;height:26px}
+.navrow .btn{flex:1 1 100%;text-align:center}
+}
 </style>
 </head>
 <body>
@@ -107,88 +226,211 @@ c57 -33 76 -84 76 -200 0 -116 -19 -167 -76 -200 -32 -19 -52 -20 -294 -20
   <rect x="10" y="75" width="56" height="10" rx="5" fill="#0f314c" opacity=".07"/>
   <circle cx="86" cy="45" r="11.5" fill="#ffffff"/>
 </symbol></defs></svg>
-<header class="hqtop">
-<span class="logoplate"><svg class="wordmark" role="img" aria-label="MISMO" viewBox="0 0 708 108"><use href="#mismo-logo"/></svg></span>
-<span class="mastrule"></span>
-<span class="hqname">MISMO Link Help</span>
-<span class="hqtop-r"><button class="theme" id="theme" type="button">Dark</button></span>
+
+<header class="mm-header">
+<a class="mm-logo" href="https://www.mismo.org/home"><img src="https://higherlogicdownload.s3.amazonaws.com/MISMO/LogoImages/6e07790a-6fc9-43dc-b9d6-9178e00c3342_mismo-reverse-nav-logo.png" alt="MISMO logo. This will take you to the homepage"></a>
+<nav aria-label="Main">
+<ul class="mm-nav" id="mm-nav">
+<li><a class="mm-nav-link" href="https://www.mismo.org/membership" aria-haspopup="true">Membership</a>
+<ul class="mm-dd">
+<li><a href="https://www.mismo.org/membership">Membership Overview</a></li>
+<li><a href="https://www.mismo.org/membership/member-directory">MISMO Members</a></li>
+<li><a href="https://www.mismo.org/membership/lender-champions">Our MISMO Lender Members</a></li>
+<li><a href="https://www.mismo.org/membership/industry-champions">Our MISMO Industry Members</a></li>
+<li><a href="https://www.mismo.org/membership/iif">Innovation Investment Fund</a></li>
+</ul>
+</li>
+<li><a class="mm-nav-link" href="https://www.mismo.org/standards-resources" aria-haspopup="true">Standards &amp; Resources</a>
+<ul class="mm-dd">
+<li><a href="https://www.mismo.org/standards-resources">Standards &amp; Resources Overview</a></li>
+<li><a href="https://www.mismo.org/standards-resources/business-glossary">Business Glossary</a></li>
+<li><a href="https://www.mismo.org/standards-resources/certification">Certifications</a></li>
+<li><a href="https://www.mismo.org/standards-resources/mismo-link">MISMO Link</a></li>
+<li><a href="https://www.mismo.org/standards-resources/digital-mortgage-resource-center">Digital Mortgage Resource Center</a></li>
+</ul>
+</li>
+<li><a class="mm-nav-link" href="https://www.mismo.org/get-involved" aria-haspopup="true">Get Involved</a>
+<ul class="mm-dd">
+<li><a href="https://www.mismo.org/get-involved">Get Involved Overview</a></li>
+<li><a href="https://www.mismo.org/get-involved/workgroups">Communities &amp; Workgroups</a></li>
+<li><a href="https://www.mismo.org/home/memberhome">MISMO Connect (Members Only)</a></li>
+</ul>
+</li>
+<li><a class="mm-nav-link" href="https://www.mismo.org/events" aria-haspopup="true">Events</a>
+<ul class="mm-dd">
+<li><a href="https://www.mismo.org/events">Events Overview</a></li>
+<li><a href="https://www.mismo.org/events/summit">MISMO Summit</a></li>
+<li><a href="https://www.mismo.org/events/education">Education</a></li>
+</ul>
+</li>
+<li><a class="mm-nav-link" href="https://www.mismo.org/about-mismo" aria-haspopup="true">About MISMO</a>
+<ul class="mm-dd">
+<li><a href="https://www.mismo.org/about-mismo">About MISMO Overview</a></li>
+<li><a href="https://www.mismo.org/about-mismo/news">News</a></li>
+<li><a href="https://www.mismo.org/about-mismo/contributor-awards">Contributor Awards</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+<div class="mm-actions">
+<form class="mm-search" action="https://www.mismo.org/search" method="get" role="search">
+<input type="hidden" name="executeSearch" value="true"><input type="hidden" name="l" value="1">
+<input class="mm-search-in" type="search" name="SearchTerm" placeholder="Search..." aria-label="Search the MISMO website" tabindex="-1">
+<button class="mm-search-btn" type="submit" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button>
+</form>
+<a class="mm-login" href="https://www.mismo.org/HigherLogic/Security/OAUTH/SignIn.aspx?ReturnUrl=https%3A%2F%2Fwww.mismo.org%2Fsigned-in%3Fto%3Dhttps%253A%252F%252Fresources.mismo.org%252Fmismo-link%252Fhelp%252F">Log In</a>
+</div>
+<button type="button" class="mm-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mm-nav"><span></span><span></span><span></span></button>
 </header>
 
-<main class="wrap">
-<h1>Get Help With MISMO Link</h1>
-<p class="lede">Tell us what you need and we'll get back to you. You can also email <a href="mailto:linksupport@mismo.org">linksupport@mismo.org</a>.</p>
-
-<div class="card login">
-<b>Can't sign in?</b> Most sign-in problems are fixed by resetting your MBA/MISMO password. If you have never made an MBA/MISMO profile, create one first.
-<div class="acts">
-<a class="btn ghost" href="https://ebiz.mba.org/ebusiness/ForgotUID.aspx" target="_blank" rel="noopener">Reset My Password</a>
-<a class="btn ghost" href="https://ebiz.mba.org/ebusiness/NewUser.aspx" target="_blank" rel="noopener">Create a Profile</a>
+<div class="hero" style="position: relative; overflow: hidden; background: #071d2e; min-height: clamp(380px,37vw,520px); display: flex; align-items: center; padding: clamp(34px,3.8vw,50px) clamp(20px,5vw,48px);"><svg viewBox="0 0 1200 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;"> <defs> <linearGradient id="gndhm" x1="0" y1="0" x2="0" y2="1"> <stop offset="0%" stop-color="#0e3a5c"></stop><stop offset="100%" stop-color="#071d2e"></stop> </linearGradient> <radialGradient id="glowhm" cx="50%" cy="50%" r="50%"> <stop offset="0%" stop-color="#74bfeb" stop-opacity=".42"></stop> <stop offset="100%" stop-color="#74bfeb" stop-opacity="0"></stop> </radialGradient> <linearGradient id="trailhm" x1="0" y1="0" x2="1" y2="0"> <stop offset="0%" stop-color="#74bfeb" stop-opacity="0"></stop> <stop offset="45%" stop-color="#9ad4f4" stop-opacity=".95"></stop> <stop offset="100%" stop-color="#ffffff" stop-opacity=".55"></stop> </linearGradient> </defs> <rect x="0" y="0" width="1200" height="560" fill="url(#gndhm)"></rect> <ellipse cx="930" cy="360" rx="420" ry="250" fill="url(#glowhm)"></ellipse> <g fill="#0a2740"> <rect x="640" y="300" width="52" height="260"></rect><rect x="698" y="236" width="40" height="324"></rect> <rect x="744" y="318" width="60" height="242"></rect><rect x="810" y="186" width="48" height="374"></rect> <rect x="864" y="268" width="68" height="292"></rect><rect x="938" y="214" width="42" height="346"></rect> <rect x="986" y="296" width="56" height="264"></rect><rect x="1048" y="238" width="50" height="322"></rect> <rect x="1104" y="310" width="64" height="250"></rect><rect x="1174" y="258" width="44" height="302"></rect> </g> <rect x="560" y="548" width="660" height="12" fill="#0a2740"></rect> <g fill="#74bfeb" opacity=".30"> <rect x="684" y="222" width="5" height="7"></rect><rect x="696" y="246" width="5" height="7"></rect> <rect x="800" y="184" width="5" height="7"></rect><rect x="814" y="216" width="5" height="7"></rect> <rect x="860" y="258" width="5" height="7"></rect><rect x="884" y="290" width="5" height="7"></rect> <rect x="932" y="214" width="5" height="7"></rect><rect x="988" y="292" width="5" height="7"></rect> <rect x="1050" y="240" width="5" height="7"></rect><rect x="1108" y="312" width="5" height="7"></rect> </g> <g fill="none" stroke="url(#trailhm)" stroke-linecap="round"> <path d="M470,620 C690,540 880,470 1250,398" stroke-width="13" opacity=".15"></path> <path d="M470,620 C690,540 880,470 1250,398" stroke-width="3"></path> <path d="M450,654 C680,572 890,500 1258,428" stroke-width="1.4" opacity=".7"></path> <path d="M520,684 C740,604 940,534 1264,464" stroke-width="7" opacity=".2"></path> <path d="M520,684 C740,604 940,534 1264,464" stroke-width="2" opacity=".85"></path> <path d="M580,712 C800,636 990,570 1272,500" stroke-width="1.2" opacity=".55"></path> </g> </svg>
+<div style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: linear-gradient(90deg,#071d2e 0%,rgba(7,29,46,.96) 30%,rgba(7,29,46,.80) 50%,rgba(7,29,46,.42) 72%,rgba(7,29,46,.22) 100%);"></div>
+<div style="position: relative; z-index: 2; width: 100%; max-width: 1120px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 30px; align-items: center;">
+<div style="flex: 1 1 440px; min-width: 0; max-width: 620px; margin-right: auto;">
+<p style="margin: 0 0 14px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; color: #74bfeb; font-family: inherit; line-height: 1.5;">MISMO Link Support</p>
+<h1 style="margin: 0 0 18px; font-family: inherit; font-size: clamp(33px,5.3vw,53px); font-weight: bold; line-height: 1.04; letter-spacing: -.027em; color: #ffffff; text-shadow: 0 2px 18px rgba(7,29,46,.6);">Get Help with<span style="display: block; color: #74bfeb;">MISMO Link</span></h1>
+<p style="margin: 0 0 12px; font-family: inherit; font-size: clamp(16.5px,1.8vw,19px); font-weight: 500; line-height: 1.5; color: #ffffff; max-width: 40ch;">Questions, problems and ideas for the MISMO Link AI pilot all come to one place.</p>
+<p style="margin: 0; font-family: inherit; font-size: 15px; line-height: 1.6; color: #a9d8f3;">Getting help is as easy as:</p>
+<ol style="margin: 8px 0 0; padding-left: 22px; font-family: inherit; font-size: 15px; line-height: 1.6; color: #a9d8f3; max-width: 52ch;">
+<li style="margin: 0 0 4px; padding-left: 4px;">Tell us what you need.</li>
+<li style="margin: 0 0 4px; padding-left: 4px;">Get your ticket number on the screen.</li>
+<li style="margin: 0; padding-left: 4px;">Hear back from the MISMO Link team by email.</li>
+</ol>
+<div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px; max-width: 560px;"><a href="#form" style="flex: 1 1 190px; min-width: max-content; box-sizing: border-box; display: block; text-align: center; white-space: nowrap; padding: 14px 22px; border-radius: 8px; background: linear-gradient(180deg,#2e9dee 0%,#1a8fe3 100%); box-shadow: 0 5px 16px -4px rgba(26,143,227,.55); color: #ffffff; font-family: inherit; font-size: 15px; font-weight: 600; line-height: 1.2; text-decoration: none; border: 1.5px solid #1a8fe3;">Ask for Help&nbsp;&rarr;</a></div>
+</div>
+<div style="flex: 0 1 200px; box-sizing: border-box; min-width: 170px; border-left: 1px solid rgba(116,191,235,.35); padding-left: 26px;">
+<div style="font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: .17em; text-transform: uppercase; color: #56b4f2; line-height: 2.15; text-shadow: 0 1px 10px rgba(7,29,46,.9);">People</div>
+<div style="font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: .17em; text-transform: uppercase; color: #56b4f2; line-height: 2.15; text-shadow: 0 1px 10px rgba(7,29,46,.9);">Systems</div>
+<div style="font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: .17em; text-transform: uppercase; color: #56b4f2; line-height: 2.15; text-shadow: 0 1px 10px rgba(7,29,46,.9);">Standards</div>
+<div style="font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: .17em; text-transform: uppercase; color: #56b4f2; line-height: 2.15; text-shadow: 0 1px 10px rgba(7,29,46,.9);">Progress</div>
+<div style="width: 44px; height: 1px; background: rgba(255,255,255,.4); margin: 18px 0;"></div>
+<div style="font-family: inherit; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.85); line-height: 1.75; text-shadow: 0 1px 10px rgba(7,29,46,.9);">A More Efficient</div>
+<div style="font-family: inherit; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.85); line-height: 1.75; text-shadow: 0 1px 10px rgba(7,29,46,.9);">Mortgage Industry</div>
 </div>
 </div>
+</div>
 
-<form class="card" id="f" novalidate>
+<main class="wrap" id="form">
+<div class="sect-head">
+<p class="mm-eyebrow">Support Request</p>
+<h2>Ask the MISMO Link Team</h2>
+<p>Tell us what you need and we&rsquo;ll get back to you by email. You can also write to <a href="mailto:linksupport@mismo.org">linksupport@mismo.org</a>.</p>
+</div>
+
+<div class="quick" id="quick">
+<div class="qi"><b>Can&rsquo;t sign in?</b>Most sign-in problems are fixed by resetting your MBA/MISMO password. Never made a profile? Create one first.</div>
+<a class="qa" href="https://ebiz.mba.org/ebusiness/ForgotUID.aspx" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg></span><span><b>Reset My Password&nbsp;&rarr;</b><small>Opens the MBA sign-in help</small></span></a>
+<a class="qa" href="https://ebiz.mba.org/ebusiness/NewUser.aspx" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M3 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/><path d="M19 8v6M16 11h6"/></svg></span><span><b>Create a Profile&nbsp;&rarr;</b><small>For first-time sign-in</small></span></a>
+</div>
+
+<form class="panel" id="f" novalidate>
+<h2 class="ph">Your Request</h2>
+<p class="lead">Every field is needed except the screenshot.</p>
 <div class="grid">
-<div><label for="f-name">Your Name <span class="req">*</span></label><input type="text" id="f-name" autocomplete="name"></div>
-<div><label for="f-email">Work Email <span class="req">*</span></label><input type="email" id="f-email" autocomplete="email"></div>
-<div class="wide"><label for="f-co">Company <span class="req">*</span></label><input type="text" id="f-co" autocomplete="organization"></div>
-<div class="wide"><span class="lbl">What do you need? <span class="req">*</span></span>
-<div class="choices" role="radiogroup">
-<label class="choice"><input type="radio" name="type" value="Question"><span><b>A Question</b><span>How do I, where is, can it</span></span></label>
-<label class="choice"><input type="radio" name="type" value="Something's not working"><span><b>Something's Not Working</b><span>An error, or it isn't doing what it should</span></span></label>
-<label class="choice"><input type="radio" name="type" value="Feedback"><span><b>Feedback</b><span>What works, what could be better</span></span></label>
-</div></div>
-<div class="wide"><label for="f-text">Tell Us About It <span class="req">*</span></label><textarea id="f-text" placeholder="What were you doing, what happened, and what did you expect?"></textarea></div>
-<div class="wide"><label for="f-file">Screenshot (optional)</label><input type="file" id="f-file" accept="image/png,image/jpeg,image/gif,image/webp,application/pdf"><div class="hint">An image or PDF up to 3 MB.</div></div>
+<div class="f c3" id="w-name"><label for="f-name">Your Name</label><input type="text" id="f-name" autocomplete="name"><div class="err">Please add your name.</div></div>
+<div class="f c3" id="w-email"><label for="f-email">Work Email</label><input type="email" id="f-email" autocomplete="email"><div class="err">Please add your work email.</div></div>
+<div class="f c6" id="w-co"><label for="f-co">Company</label><input type="text" id="f-co" autocomplete="organization"><div class="err">Please add your company.</div></div>
+<div class="f c6" id="w-type"><span class="lab" id="l-type">What Do You Need?</span>
+<div class="choices" role="radiogroup" aria-labelledby="l-type">
+<label class="choice"><input type="radio" name="type" value="Question"><span><b>A Question</b><small>How do I, where is, can it</small></span></label>
+<label class="choice"><input type="radio" name="type" value="Something's not working"><span><b>Something&rsquo;s Not Working</b><small>An error, or it isn&rsquo;t doing what it should</small></span></label>
+<label class="choice"><input type="radio" name="type" value="Feedback"><span><b>Feedback</b><small>What works, what could be better</small></span></label>
+</div><div class="err">Please choose what you need.</div></div>
+<div class="f c6" id="w-text"><label for="f-text">Tell Us About It</label><textarea id="f-text" placeholder="What were you doing, what happened, and what did you expect?"></textarea><div class="err">Please tell us a little about it.</div></div>
+<div class="f c6" id="w-file"><span class="lab">Screenshot <span class="optl">(optional)</span></span>
+<label class="drop" id="drop"><input type="file" id="f-file" accept="image/png,image/jpeg,image/gif,image/webp,application/pdf" aria-label="Add a screenshot">
+<span class="drop-in" id="drop-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg><b>Drop a screenshot here, or choose a file</b><small>You can also paste one (Ctrl+V). An image or PDF up to 3 MB.</small></span></label>
+<div class="err" id="file-err">That file is over 3 MB.</div></div>
 <div class="hp" aria-hidden="true"><label for="f-website">Leave this empty</label><input type="text" id="f-website" tabindex="-1" autocomplete="off"></div>
 </div>
-<div class="bar"><button class="btn" type="submit" id="go">Send My Request</button><span class="msg" id="msg" role="alert"></span></div>
+<div class="problem" id="msg" role="alert" hidden></div>
+<div class="navrow"><span class="aside">We&rsquo;ll reply to the work email above.</span><button class="btn" type="submit" id="go">Send My Request&nbsp;&rarr;</button></div>
 </form>
 
-<div class="card done" id="done" hidden></div>
-<p class="foot">MISMO Link AI Pilot Program · MISMO, 1919 M Street NW, 5th Floor, Washington, DC 20036</p>
+<div class="panel done-card" id="done" hidden></div>
 </main>
+
+<footer class="mm-footer">
+<div class="mm-footer-bar">
+<a class="mm-f-logo" href="https://www.mismo.org/home"><svg class="mm-f-mark" role="img" aria-label="MISMO" viewBox="0 0 708 108"><use href="#mismo-logo"/></svg></a>
+<div class="mm-f-addr">1919 M Street NW, 5th Floor, Washington, DC 20036<svg class="mm-f-env" viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="1.5" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M1.8 3l8.2 6 8.2-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><a href="mailto:linksupport@mismo.org">linksupport@mismo.org</a></div>
+<div class="mm-f-links"><a href="https://www.mismo.org/privacy-policy">Privacy Policy</a><a href="https://www.mismo.org/terms-of-use">Terms of Use</a></div>
+<div class="mm-f-social"><a class="mm-f-soc" href="https://www.linkedin.com/company/mismo-mortgage-industry-standards-maintenance-organization" aria-label="MISMO on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="9.5" width="3" height="11" rx="1" fill="currentColor"/><circle cx="5" cy="5.6" r="1.9" fill="currentColor"/><path d="M10 20.5v-11h3v1.5a3.7 3.7 0 0 1 3.2-1.7c2.4 0 3.8 1.6 3.8 4.4v6.8h-3v-6.3c0-1.6-.6-2.5-2-2.5s-2 .9-2 2.5v6.3z" fill="currentColor"/></svg></a><a class="mm-f-soc" href="https://www.youtube.com/channel/UCuKIkeqACTIU7j0eL_igPHA" aria-label="MISMO on YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="3.6" fill="currentColor"/><path d="M10.2 9.4l5.4 2.6-5.4 2.6z" fill="#f4f7f9"/></svg></a></div>
+</div>
+</footer>
 
 <script>
 (function(){
 "use strict";
 var SUBMIT = "https://rgvdi67cg27o5kcmiytcqbqnrm0hmztx.lambda-url.us-east-1.on.aws/mismo-link/helpdesk/submit";
 var SUPPORT = "linksupport@mismo.org", MAXFILE = 3 * 1024 * 1024, OPENED = Date.now();
+var TYPES = ["image/png", "image/jpeg", "image/gif", "image/webp", "application/pdf"];
+var shot = null; /* the screenshot, from the picker, a drop or a paste */
 function $(id){ return document.getElementById(id); }
 function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
 
-(function theme(){
-  var b = $("theme");
-  function cur(){ var t = document.documentElement.getAttribute("data-theme"); if(t) return t; return window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; }
-  function paint(){ b.textContent = cur() === "dark" ? "Light" : "Dark"; }
-  try{ var s = localStorage.getItem("mismo.portal.theme"); if(s) document.documentElement.setAttribute("data-theme", s); }catch(e){}
-  b.addEventListener("click", function(){ document.documentElement.setAttribute("data-theme", cur() === "dark" ? "light" : "dark"); paint(); try{ localStorage.setItem("mismo.portal.theme", cur()); }catch(e){} });
-  paint();
-})();
+/* the website menu on phones */
+var hdr = document.querySelector(".mm-header"), burger = document.querySelector(".mm-burger");
+burger.addEventListener("click", function(){ var o = hdr.classList.toggle("is-open"); burger.setAttribute("aria-expanded", o ? "true" : "false"); });
+var sf = document.querySelector(".mm-search");
+sf.addEventListener("submit", function(e){ if(!sf.classList.contains("is-open") || !sf.SearchTerm.value.trim()){ e.preventDefault(); sf.classList.add("is-open"); sf.SearchTerm.tabIndex = 0; sf.SearchTerm.focus(); } });
+sf.SearchTerm.addEventListener("blur", function(){ if(!this.value.trim()) sf.classList.remove("is-open"); });
 
 function picked(){ var r = document.querySelector('input[name="type"]:checked'); return r ? r.value : ""; }
 function val(id){ return $(id).value.trim(); }
 function readFile(f){ return new Promise(function(res, rej){ var r = new FileReader(); r.onload = function(){ res(String(r.result)); }; r.onerror = rej; r.readAsDataURL(f); }); }
 
-function check(){
-  if(!val("f-name")) return ["f-name", "Please add your name."];
-  if(!/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(val("f-email"))) return ["f-email", "Please add your work email."];
-  if(!val("f-co")) return ["f-co", "Please add your company."];
-  if(!picked()) return [null, "Please choose what you need."];
-  if(val("f-text").length < 5) return ["f-text", "Please tell us a little about it."];
-  var f = $("f-file").files[0]; if(f && f.size > MAXFILE) return ["f-file", "That file is over 3 MB. Please send a smaller one, or email it to " + SUPPORT + "."];
-  return null;
+/* ---------- the screenshot ---------- */
+var drop = $("drop"), dropIn = $("drop-in"), blank = dropIn.innerHTML;
+function setShot(f){
+  var w = $("w-file");
+  if(!f){ shot = null; dropIn.innerHTML = blank; $("f-file").value = ""; w.classList.remove("bad"); return; }
+  if(TYPES.indexOf(f.type) < 0){ $("file-err").textContent = "Please choose an image or a PDF."; w.classList.add("bad"); return; }
+  if(f.size > MAXFILE){ $("file-err").textContent = "That file is over 3 MB. Please send a smaller one, or email it to " + SUPPORT + "."; w.classList.add("bad"); return; }
+  w.classList.remove("bad"); shot = f;
+  var name = f.name || "screenshot.png", kb = Math.max(1, Math.round(f.size / 1024));
+  var after = '<b>' + esc(name) + '</b><small>' + (kb > 1000 ? (kb / 1024).toFixed(1) + " MB" : kb + " KB") + ' &middot; <button type="button" class="clear-shot" id="clear-shot">Remove</button></small>';
+  dropIn.innerHTML = after;
+  if(/^image\//.test(f.type)) readFile(f).then(function(d){ if(shot === f) dropIn.innerHTML = '<img class="shot-prev" alt="" src="' + d + '">' + after; });
 }
+$("f-file").addEventListener("change", function(){ setShot(this.files[0] || null); });
+drop.addEventListener("click", function(e){ if(e.target.closest("#clear-shot")){ e.preventDefault(); setShot(null); } });
+["dragenter", "dragover"].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.add("over"); }); });
+["dragleave", "drop"].forEach(function(t){ drop.addEventListener(t, function(){ drop.classList.remove("over"); }); });
+drop.addEventListener("drop", function(e){ e.preventDefault(); var f = e.dataTransfer && e.dataTransfer.files[0]; if(f) setShot(f); });
+document.addEventListener("paste", function(e){
+  var items = (e.clipboardData && e.clipboardData.items) || [];
+  for(var i = 0; i < items.length; i++){ if(items[i].kind === "file" && /^image\//.test(items[i].type)){
+    var f = items[i].getAsFile(); if(f){ e.preventDefault(); if(!f.name || f.name === "image.png") f = new File([f], "pasted-screenshot.png", {type:f.type}); setShot(f); $("w-file").scrollIntoView({block:"nearest", behavior:"smooth"}); }
+    return; } }
+});
+
+/* ---------- checking ---------- */
+var CHECKS = [
+  ["w-name", function(){ return val("f-name").length >= 2; }],
+  ["w-email", function(){ return /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(val("f-email")); }],
+  ["w-co", function(){ return val("f-co").length >= 2; }],
+  ["w-type", function(){ return !!picked(); }],
+  ["w-text", function(){ return val("f-text").length >= 5; }]
+];
+function check(){
+  var first = null;
+  CHECKS.forEach(function(c){ var ok = c[1](); $(c[0]).classList.toggle("bad", !ok); if(!ok && !first) first = c[0]; });
+  if($("w-file").classList.contains("bad") && !first) first = "w-file";
+  return first;
+}
+CHECKS.forEach(function(c){ $(c[0]).addEventListener("input", function(){ if($(c[0]).classList.contains("bad") && c[1]()) $(c[0]).classList.remove("bad"); }); $(c[0]).addEventListener("change", function(){ if(c[1]()) $(c[0]).classList.remove("bad"); }); });
 
 function showDone(ref){
-  $("f").hidden = true;
+  $("f").hidden = true; $("quick").hidden = true;
   var d = $("done"); d.hidden = false;
   d.innerHTML = ref
-    ? '<h2>Thank You, We Have Your Request</h2><p>Your ticket number is</p><p class="ref">' + esc(ref) + '</p>' +
-      '<p>Kellie Stoll on the MISMO Link team will be in touch. To add anything, email <a href="mailto:' + SUPPORT + '?subject=' + encodeURIComponent("[" + ref + "] More information") + '">' + SUPPORT + '</a> with ' + esc(ref) + ' in the subject.</p>'
-    : '<h2>One More Step: Press Send</h2><p>Your email program has opened a message to <b>' + SUPPORT + '</b> with your request in it. Press <b>Send</b> and it reaches the MISMO Link team.' +
-      ($("f-file").files[0] ? ' Please attach your screenshot to that email before you send it.' : '') + '</p>' +
-      '<p>If nothing opened, email <a href="mailto:' + SUPPORT + '">' + SUPPORT + '</a> directly.</p>';
-  window.scrollTo(0, 0);
+    ? '<h2 class="ph">Thank You, We Have Your Request</h2><p class="lead" style="margin-bottom:8px">Your ticket number is</p><div class="done-ref">' + esc(ref) + '</div>' +
+      '<ul class="next"><li>The MISMO Link team will reply to <b>' + esc(val("f-email")) + '</b>.</li><li>To add anything, email <a href="mailto:' + SUPPORT + '?subject=' + encodeURIComponent("[" + ref + "] More information") + '">' + SUPPORT + '</a> with ' + esc(ref) + ' in the subject.</li></ul>'
+    : '<h2 class="ph">One More Step: Press Send</h2><p class="lead">Your email program has opened a message to <b>' + SUPPORT + '</b> with your request in it. Press <b>Send</b> and it reaches the MISMO Link team.' +
+      (shot ? ' Please attach your screenshot to that email before you send it.' : '') + '</p>' +
+      '<p style="margin:0;color:var(--mm-text)">If nothing opened, email <a href="mailto:' + SUPPORT + '">' + SUPPORT + '</a> directly.</p>';
+  $("form").scrollIntoView({behavior:"smooth", block:"start"});
 }
 function byEmail(){
   var body = "Name: " + val("f-name") + "\nEmail: " + val("f-email") + "\nCompany: " + val("f-co") + "\nWhat I need: " + picked() + "\n\n" + val("f-text") + "\n";
@@ -197,23 +439,25 @@ function byEmail(){
   document.body.appendChild(a); a.click(); a.remove();
   showDone(null);
 }
+function problem(t){ var m = $("msg"); m.textContent = t || ""; m.hidden = !t; }
+function ready(go){ go.disabled = false; go.innerHTML = "Send My Request&nbsp;&rarr;"; }
 
 $("f").addEventListener("submit", function(e){
   e.preventDefault();
-  var bad = check(), msg = $("msg");
-  if(bad){ msg.textContent = bad[1]; if(bad[0]) $(bad[0]).focus(); return; }
-  msg.textContent = ""; var go = $("go"); go.disabled = true; go.textContent = "Sending...";
-  var f = $("f-file").files[0];
+  var bad = check();
+  if(bad){ problem(""); var w = $(bad), x = w.querySelector("input,textarea"); w.scrollIntoView({behavior:"smooth", block:"center"}); if(x) setTimeout(function(){ x.focus({preventScroll:true}); }, 250); return; }
+  problem(""); var go = $("go"); go.disabled = true; go.textContent = "Sending...";
+  var f = shot;
   (f ? readFile(f) : Promise.resolve(null)).then(function(data){
     var body = {startedAt:OPENED, website:val("f-website"), name:val("f-name"), email:val("f-email"), company:val("f-co"),
       type:picked(), text:val("f-text"), pageUrl:location.origin + location.pathname, userAgent:navigator.userAgent};
-    if(data) body.file = {name:f.name, type:f.type || "", size:f.size, data:data};
+    if(data) body.file = {name:f.name || "screenshot", type:f.type || "", size:f.size, data:data};
     return fetch(SUBMIT, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
   }).then(function(r){
     return r.json().catch(function(){ return {}; }).then(function(j){
       if(r.ok && j && j.reference) return showDone(j.reference);
-      if(r.status === 400 && j && j.problems){ go.disabled = false; go.textContent = "Send My Request"; msg.textContent = j.problems.join(" "); return; }
-      if(r.status === 429){ go.disabled = false; go.textContent = "Send My Request"; msg.textContent = (j && j.message) || "Please try again in an hour, or email " + SUPPORT + "."; return; }
+      if(r.status === 400 && j && j.problems){ ready(go); problem(j.problems.join(" ")); return; }
+      if(r.status === 413 || r.status === 429){ ready(go); problem((j && j.message) || "Please try again in an hour, or email " + SUPPORT + "."); return; }
       byEmail(); /* not switched on yet, or resting: the person's own email carries it instead */
     });
   }).catch(function(){ byEmail(); });
