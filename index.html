@@ -1853,12 +1853,12 @@ if(a("data-kickundo") != null){ var ku = a("data-kickundo");
       '<li><b>Schedule the kick-off call</b> within 3 business days, mark it scheduled on the company, then press <b>Mark Kick-off Complete</b> once the call has been held.</li>' +
       '<li><b>Send the User Agreement link</b> to the company with <b>Email the User Agreement Link</b>. The company passes it to everyone taking part.</li>' +
       '<li><b>Each tester signs</b> the User Agreement for themselves. The beta team gets an email for each one.</li>' +
-      '<li><b>Set each tester up</b> with instructions and credentials within 3 business days, and press <b>Mark Set Up</b>.</li></ol>'],
+      '<li><b>Set each tester up</b> with instructions and credentials within 3 business days, and press <b>Mark Access Given</b>.</li></ol>'],
     ["Companies and People","Reading the company list",
       '<p>Companies are listed A to Z. Each row shows its membership, how many people from it are on the beta list, and where it stands:</p>' +
       '<ul><li><b>To Send</b>: nobody from the company has been sent the Subscriber Agreement.</li><li><b>Waiting to Sign</b>: sent, not signed yet.</li>' +
       '<li><b>Signed · Schedule Kick-off</b>: the company has signed and the kick-off call is not marked scheduled.</li><li><b>Kick-off Scheduled</b>: the call is booked but has not been held yet.</li><li><b>Kick-off Complete</b>: the call has been held and marked complete.</li><li><b>Removed</b>: everyone from the company has been taken off the beta list. The company moves to its own Removed box on the Overview; <b>Put Back</b> on a person returns it to where it was.</li>' +
-      '<li><b>To Set Up</b>: testers who have signed the User Agreement and are not marked set up.</li></ul>' +
+      '<li><b>To Set Up</b>: testers who have signed the User Agreement and do not have access yet.</li><li><b>Access Given</b>: at least one tester from the company has been set up and marked Access Given (with a count when there is more than one).</li></ul>' +
       '<p>The buttons above the list show only the companies at one step. The filter box searches company names, people, emails and project names.</p>'],
     ["Companies and People","Membership and Member 360 contacts",
       '<p>Each company was checked against Member 360 when the list was loaded: whether it is a member, at what level, through when, and its 2027 renewal. The company panel shows the Member 360 contacts too (Primary, Alternate, Billing and so on), so you know who else to reach.</p>' +
@@ -1879,7 +1879,7 @@ if(a("data-kickundo") != null){ var ku = a("data-kickundo");
     ["Agreements","The User Agreement and testers",
       '<p>After the company signs, open it and press <b>Email the User Agreement Link</b>. A draft opens to the person who signed, asking them to share the link with everyone at the company taking part. <b>Copy the Link</b> copies it for anywhere else.</p>' +
       '<p>Each tester signs for themselves. They get a copy saying they will hear from the team within 3 business days with instructions and credentials, and Who Is Told gets an email to set them up.</p>' +
-      '<p>Testers are matched to their company by email domain, so they appear on the right company even if they type its name differently. When a tester is set up, press <b>Mark Set Up</b>.</p>'],
+      '<p>Testers are matched to their company by email domain, so they appear on the right company even if they type its name differently. When a tester is set up, press <b>Mark Access Given</b> beside them; the company then shows an <b>Access Given</b> tag.</p>'],
     ["Agreements","Who Has Signed and what is recorded",
       '<p><b>Who Has Signed</b>, on Testers and Access, lists every signed agreement, newest first, marked Subscriber or User. Open one for the full record:</p>' +
       '<ul><li>the signer\'s name, job title, company, email and phone, and the name they typed;</li><li>the agreement and its version;</li><li>the date and time, and where they signed from;</li>' +
@@ -1890,13 +1890,26 @@ if(a("data-kickundo") != null){ var ku = a("data-kickundo");
       '<p>On <b>Beta Agreement</b>, Who Is Told lists the people emailed when someone signs. Add someone with their name and email; <b>Remove</b> takes them off. If the list is ever empty, MISMO Link administrators are told instead, so a signature is never missed.</p>'],
     ["Emails","The emails, and where they come from",
       '<ul><li><b>Subscriber Agreement and User Agreement link</b>: drafts in your own mail program, sent by you.</li>' +
+'<li><b>Help Desk replies and escalations</b>: drafts in Outlook, sent by you. The Help Desk and the help form never send email themselves.</li>' +
       '<li><b>The signer\'s copy</b> and <b>the beta team\'s alert</b>: sent automatically by the resources.mismo.org relay when someone signs, through the same mail flow as the platform\'s other emails.</li></ul>' +
       '<p>The signer\'s copy repeats nothing they typed, so the page cannot be used to send strangers words of someone else\'s choosing.</p>'],
     ["Help Desk","Working the help desk",
 '<p><b>Help Desk</b> holds every request for help: from the public help form (resources.mismo.org/mismo-link/help/), from email to linksupport@mismo.org, and anything logged by hand with <b>Log a Ticket</b>.</p>' +
 '<p>Every ticket has one status: <b>New</b>, <b>Working</b>, <b>Waiting on Them</b>, <b>With Chris</b> or <b>Resolved</b>. Kellie gets everything first. <b>Escalate to Chris</b> asks for a severity and a note, moves the ticket to With Chris and opens an email to Chris in Outlook for you to send.</p>' +
 '<p><b>Reply by Email</b> opens a reply in Outlook with linksupport@mismo.org copied and the ticket number in the subject, so the sent email and their answer land back on the ticket. Nothing is ever sent from the page itself.</p>' +
+'<p><b>Log a Ticket</b> is for a request that came by phone, Teams or a meeting. The figure boxes at the top filter the list; Open shows everything not yet resolved. Opening a ticket shows who asked (their company links to Testers and Access), the whole conversation and notes, and their other tickets. <b>Save Note</b> adds a note only the team sees.</p>' +
+'<p><b>Who Handles Tickets</b>, at the bottom of the page, holds Kellie and Chris and their email addresses. Escalate needs Chris\'s address there to draft his email.</p>' +
 '<p>Feedback tickets have <b>Copy to Feedback</b>, which puts them in the Feedback tab for Export to Excel. Tickets brought over from Smartsheet keep their numbers, notes and dates; their attachments are still in Smartsheet.</p>'],
+["Help Desk","The help form",
+'<p>The public help form is at <b>resources.mismo.org/mismo-link/help/</b>, open to anyone with the link. It starts with <b>Reset My Password</b> and <b>Create a Profile</b>, since most sign-in problems are fixed there, then asks for name, work email, company, what they need (a question, something not working, or feedback), a description and an optional screenshot (an image or PDF up to 3 MB).</p>' +
+'<p>Once relay request 12 is live, pressing Send makes a ticket straight away and shows the person their ticket number. Until then the form opens the person\'s own email program with their request addressed to linksupport@mismo.org, and when they send it, it becomes a ticket like any other email.</p>'],
+["Help Desk","Email to linksupport@mismo.org",
+'<p>Every email to linksupport@mismo.org is saved within a minute or so, and added to the Help Desk the next time Kellie or Jonna opens it (a note pops up saying how many came in).</p>' +
+'<ul><li><b>A ticket number in the subject</b> (for example MLHD-00054): added to that ticket.</li>' +
+'<li><b>A reply in the same thread</b> to an open ticket, from the person or to them: added to that ticket.</li>' +
+'<li><b>Anything else from outside MISMO</b>: a new ticket in that person\'s name.</li>' +
+'<li><b>From the team</b>: a forward (FW:) becomes a ticket for whoever wrote the forwarded email; anything else becomes a ticket for the first outside address it went to, or for the sender if there is none.</li></ul>' +
+'<p>When the person writes back on a ticket that is Waiting on Them or Resolved, it moves back to Working. Copy linksupport@mismo.org on your replies and keep the ticket number in the subject, and the whole conversation stays on the ticket.</p>'],
 ["Feedback","Logging and exporting feedback",
 '<p><b>Feedback</b> keeps what pilot participants report: the date, who reported it, the company, what they said, a status and the outcome. Press <b>Add Feedback</b>, fill it in and press <b>Save</b>. Open any row to change it.</p>' +
 '<p>Attach a file up to 3 MB, or paste a link to anything bigger (Teams, SharePoint, OneDrive). The status is one of New, In Review, Shared, Resolved or Closed.</p>' +
@@ -1904,7 +1917,11 @@ if(a("data-kickundo") != null){ var ku = a("data-kickundo");
 ["How It\'s Connected","Where MISMO Link HQ lives",
       '<ul><li>MISMO Link HQ is at <b>resources.mismo.org/mismo-link/</b>, behind the shared resources.mismo.org sign-in. Access is set per person in People &amp; Access against <b>mismo-link</b>.</li>' +
       '<li>The pages are in the public GitHub repository <b>GitMISMO/mismo-link</b>, which holds no records.</li>' +
-      '<li>Every record is in the private repository <b>GitMISMO/mismo-link-data</b>, read and saved through the save relay (project <b>mismo-link</b>): data/partners, data/progress, data/signatures, data/settings, data/emails (the Pilot Email) and data/feedback (with its attachments). Every save is a commit, so there is a history.</li></ul>'],
+      '<li>Every record is in the private repository <b>GitMISMO/mismo-link-data</b>, read and saved through the save relay (project <b>mismo-link</b>): data/partners, data/progress, data/signatures, data/settings, data/emails (the Pilot Email), data/feedback (with its attachments), data/helpdesk (the tickets and Who Handles Tickets), data/hdfile... (help form screenshots) and data/mailin (emails to linksupport@ waiting to be logged). Every save is a commit, so there is a history.</li></ul>'],
+["How It\'s Connected","How the help desk is connected",
+'<ul><li><b>Email:</b> linksupport@mismo.org is a shared mailbox (linksupport@mba.org). The Power Automate flow <b>MISMO Link - linksupport Mailbox</b>, on Jonna\'s account, saves each new email to data/mailin in GitMISMO/mismo-link-data. It uses its own GitHub key, <b>MISMO Link - linksupport mail-in</b>, which can reach only that repository and expires November 21, 2027; renew it before then and paste the new one into the flow\'s Initialize variable step.</li>' +
+'<li><b>Help form:</b> resources.mismo.org/mismo-link/help/ posts to the relay\'s public help desk route, relay request 12 (in GitMISMO/mismo-link under _dev/relay-request-12, with its tests). It only adds tickets and sends no email.</li>' +
+'<li><b>Smartsheet:</b> the old MISMO Link Help Desk sheet\'s 10 tickets were brought in on November 20, 2026 with their own numbers.</li></ul>'],
     ["How It\'s Connected","The signing pages",
       '<ul><li><b>resources.mismo.org/mismo-link/sign/</b>: the SaaS Subscriber Agreement, signed once per company.</li>' +
       '<li><b>resources.mismo.org/mismo-link/user/</b>: the User SaaS Agreement, signed by each tester.</li></ul>' +
@@ -2900,12 +2917,12 @@ function download(i){
 }
 
 /* ---------- email to linksupport@ (like 360@): new ticket or onto an existing one ---------- */
-function plain(html, keepThread){
+function plain(html){
   var d = document.createElement("div"); d.innerHTML = String(html || "").replace(/<(br|\/p|\/div|\/li|\/tr)[^>]*>/gi, "\n$&");
   d.querySelectorAll("style,script,head,title").forEach(function(x){ x.remove(); });
   var t = (d.textContent || "").replace(/ /g, " ").replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
   var cut = t.search(/\n\s*(From:\s.+\n\s*Sent:|On .+wrote:|-----\s*Original Message)/i); /* drop the quoted thread below */
-  return (cut > 0 && !keepThread ? t.slice(0, cut) : t).slice(0, 8000).trim();
+  return (cut > 0 ? t.slice(0, cut) : t).slice(0, 8000).trim();
 }
 function normSubject(s){ return lc(String(s || "").replace(/^\s*((re|fw|fwd)\s*:\s*)+/i, "").replace(/\[?mlhd-\d+\]?/gi, "")).replace(/\s+/g, " "); }
 function processMail(){
@@ -2937,22 +2954,9 @@ function processMail(){
           t.updatedAt = nowIso(); done[k] = t.id; seen[mid] = t.id; added++;
           return;
         }
-        /* A new ticket. From the team: a forward is about whoever wrote the forwarded email; anything else is about
-           the first outside address it went to, or failing that, the team member who sent it. */
-        var who = {name:nameOf(m.from), email:from}, staffSent = isStaff(from);
-        if(staffSent){
-          if(/^\s*(fw|fwd)\s*:/i.test(String(m.subject || ""))){
-            var full = plain(m.html || m.body || m.text || "", true);
-            var fm = full.match(/From:\s*"?([^"<\n]*?)"?\s*<?([^\s<>"]+@[^\s<>"]+\.[A-Za-z]{2,})>?/i);
-            if(fm && !isStaff(fm[2])){ who = {name:fm[1].trim(), email:lc(fm[2])}; text = full; }
-          } else {
-            var ext = people.filter(function(e){ return !isStaff(e); })[0];
-            if(ext) who = {name:"", email:ext};
-          }
-        }
+        if(isStaff(from)){ held++; heldKeys.push(k); return; } /* a team email with no ticket number: left for a person to look at */
         var id = nextNumber(d);
-        d["tickets/" + id] = {id:id, at:at, source:staffSent ? "Sent to " + SUPPORT + " by " + (nameOf(m.from) || from) : "Email to " + SUPPORT,
-          name:who.name, email:who.email, company:companyFor(who.email),
+        d["tickets/" + id] = {id:id, at:at, source:"Email to " + SUPPORT, name:nameOf(m.from), email:from, company:companyFor(from),
           type:"Question", subject:String(m.subject || "").trim(), text:text, status:"New", log:[], mid:mid};
         list.push(d["tickets/" + id]); done[k] = id; seen[mid] = id; made++;
       });
