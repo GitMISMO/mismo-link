@@ -683,6 +683,11 @@ body.railmini .hq nav .navsep{display:none}
 #rpane .hd-log .hd-resolve{border-left:3px solid var(--good)}
 #rpane .hd-addnote textarea{margin-bottom:6px}
 </style>
+<style>
+/* Overview figure boxes: eight, so four across in two even rows */
+#app-overview .tiles{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:600px){#app-overview .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="mismo-logo" viewBox="0 0 708 108"><g transform="translate(0.000000,108.000000) scale(0.100000,-0.100000)" fill="var(--logo-body, #0f314c)"><path d="M5917 1065 c-169 -46 -279 -153 -335 -323 -21 -65 -25 -96 -25 -197
@@ -1400,6 +1405,12 @@ var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
         tile(wait, "Waiting to Sign", "sent, not signed yet") +
         tile(kick, "Kick-offs to Book", "after the company signs", {hot:kick > 0}) +
         tile(setup, "Testers to Set Up", "of " + testers + " who have signed", {hot:setup > 0}) +
+(function(){ /* help desk and feedback counts, filled in by those tabs once they load */
+var c = window.__mlCounts || {};
+var tk = c.tickets == null ? "–" : c.tickets, fb = c.feedback == null ? "–" : c.feedback;
+var sub = c.tickets == null ? "help desk" : [c.newTickets ? c.newTickets + " new" : "", c.withChris ? c.withChris + " with Chris" : ""].filter(Boolean).join(" · ") || "none new";
+return tile(tk, "Open Tickets", sub, {hot:c.newTickets > 0}) + tile(fb, "Open Feedback", c.feedback == null ? "pilot feedback" : "not resolved or closed");
+})() +
       '</div></div>' +
       '<h2 class="sechead">Where Each Company Stands</h2>' + board +
       '<div class="grid2">' + dueCard + feed + '</div>' +
@@ -1407,7 +1418,9 @@ var people = all.reduce(function(n, c){ return n + c.people.length; }, 0);
       '. A company counts as signed when someone from it signs the Subscriber Agreement; testers are matched to their company by email domain.</p>';
   }
 
-  /* ================= TESTERS AND ACCESS ================= */
+  window.__mlOverview = function(){ try{ if(loaded) renderOverview(); }catch(e){} }; /* the Help Desk and Feedback tabs call this when their counts change */
+
+/* ================= TESTERS AND ACCESS ================= */
   function renderAccess(){
     var el = $("app-access");
     var tools = canEdit && loaded ? '<button class="btn" type="button" id="ta-add">Add a Person</button>' : "";
@@ -2292,6 +2305,8 @@ function render(){
   STATUSES.forEach(function(s){ n[s] = live.filter(function(x){ return x.status === s; }).length; });
   var segs = [["all","All"]].concat(STATUSES.map(function(s){ return [s, s]; }));
   if(n.archived) segs.push(["archived","Archived"]);
+  window.__mlCounts = Object.assign(window.__mlCounts || {}, {feedback:live.filter(function(x){ return x.status !== "Resolved" && x.status !== "Closed"; }).length});
+  if(window.__mlOverview) window.__mlOverview();
   el.innerHTML = head +
     '<div class="ta-tools"><input type="search" id="fb-q" placeholder="Filter by company, name or what was said" aria-label="Filter">' +
     '<div class="pt-seg" role="group" aria-label="Show">' + segs.map(function(s){
@@ -2723,6 +2738,8 @@ function render(){
   all.forEach(function(t){ n[t.status] = (n[t.status] || 0) + 1; if(OPEN[t.status]) n.open++; });
   var month = new Date().toISOString().slice(0, 7);
   var doneMonth = all.filter(function(t){ return t.status === "Resolved" && String(t.resolvedAt || "").slice(0, 7) === month; }).length;
+  window.__mlCounts = Object.assign(window.__mlCounts || {}, {tickets:n.open, newTickets:n["New"], withChris:n["With Chris"]});
+  if(window.__mlOverview) window.__mlOverview();
   var tile = function(f, v, k, s, hot){ return '<button type="button" class="tile hd-tile" data-hdf="' + f + '"><div class="v' + (hot ? " hot" : "") + '">' + v + '</div><div class="k">' + esc(k) + '</div><div class="s">' + esc(s) + '</div></button>'; };
   var segs = [["open","Open"]].concat(STATUSES.map(function(s){ return [s, s]; })).concat([["all","All"]]);
   el.innerHTML = head +
