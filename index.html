@@ -834,6 +834,7 @@ box-shadow:0 1px 2px rgba(6,32,47,.05);transition:box-shadow .15s,transform .15s
 #rpane .hd-composer textarea{flex:1 1 auto;min-height:44px}
 #rpane .hd-composer .btn{flex:0 0 auto;height:38px}
 #pt-toast.on{pointer-events:auto}
+#rpane .hd-gone{border-left-color:var(--bad)}
 #pt-toast .hd-undo{appearance:none;border:0;background:none;color:var(--navy-mid);font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;margin-left:8px;padding:0}
 </style>
 </head>
@@ -2063,6 +2064,7 @@ if(a("data-kickundo") != null){ var ku = a("data-kickundo");
 '<p><b>Board</b> shows a column for each status. Drag a card to another column to move it (on a phone, press and hold the card first); <b>Undo</b> in the message that pops up puts it back. Dropping a card on With Chris or Resolved opens the ticket and asks for the note first. The oldest ticket is at the top of each column, With Chris puts Urgent and High first, and Resolved shows the last 30 days.</p>' +
 '<p>Each card shows the type, the ticket number, how long ago it came in, who asked and their company, and how many emails, notes and attachments it has. <b>Quiet</b> means nothing has happened on it for 5 days or more. <b>List</b> shows the same tickets as rows, with a status filter. The search box and the type buttons work in both, and the page remembers which one you last used.</p>' +
 '<p><b>Log a Ticket</b> is for a request that came by phone, Teams or a meeting. The figure boxes at the top take you to that column. Opening a ticket shows its status across the top (press another status to move it), who asked (their company links to Testers and Access), the whole conversation and notes, and their other tickets. <b>Save Note</b> adds a note only the team sees.</p>' +
+'<p><b>Mark Resolved</b> asks how it was resolved and moves the ticket to Resolved. <b>Cancel Ticket</b> is for a duplicate, spam or a test: it asks why, then takes the ticket off the board and out of the counts. Nothing is deleted. <b>List</b>, then <b>Canceled</b>, shows canceled tickets, and <b>Put Back</b> returns one to where it was.</p>' +
 '<p><b>Who Handles Tickets</b>, at the bottom of the page, holds Kellie and Chris and their email addresses. Escalate needs Chris\'s address there to draft his email.</p>' +
 '<p>Feedback tickets have <b>Copy to Feedback</b>, which puts them in the Feedback tab for Export to Excel. Tickets brought over from Smartsheet keep their numbers, notes and dates; their attachments are still in Smartsheet.</p>'],
 ["Help Desk","The help form",
@@ -2911,7 +2913,11 @@ function failedSave(e){
 /* ---------- tickets ---------- */
 function tickets(){
   return Object.keys(hd.docs).filter(function(k){ return k.indexOf("tickets/") === 0; }).map(function(k){ return hd.docs[k]; })
-    .filter(Boolean).sort(function(a, b){ return String(b.at || "").localeCompare(String(a.at || "")) || String(b.id).localeCompare(String(a.id)); });
+    .filter(function(t){ return t && !t.canceled; }).sort(function(a, b){ return String(b.at || "").localeCompare(String(a.at || "")) || String(b.id).localeCompare(String(a.id)); });
+}
+function canceledTickets(){
+  return Object.keys(hd.docs).filter(function(k){ return k.indexOf("tickets/") === 0 && hd.docs[k] && hd.docs[k].canceled; }).map(function(k){ return hd.docs[k]; })
+    .sort(function(a, b){ return String(b.canceled.at || "").localeCompare(String(a.canceled.at || "")); });
 }
 function nextNumber(d){
   var n = Object.keys(d).map(function(k){ var m = k.match(/^tickets\/MLHD-(\d+)$/); return m ? +m[1] : 0; }).reduce(function(a, x){ return Math.max(a, x); }, 0);
@@ -3073,8 +3079,10 @@ function card(t){
 }
 function list(){
   var n = counts();
-  var segs = [["open", "Open"]].concat(STATUSES.map(function(s){ return [s, s]; })).concat([["all", "All"]]);
-  var rows = tickets().filter(function(t){
+  var gone = canceledTickets(); n.canceled = gone.length;
+  var segs = [["open", "Open"]].concat(STATUSES.map(function(s){ return [s, s]; })).concat([["all", "All"]]).concat(gone.length ? [["canceled", "Canceled"]] : []);
+  var rows = (filter === "canceled" ? gone : tickets()).filter(function(t){
+    if(filter === "canceled") return matches(t);
     if(filter === "open" && !OPEN[t.status]) return false;
     if(filter !== "open" && filter !== "all" && t.status !== filter) return false;
     return matches(t);
@@ -3084,11 +3092,11 @@ function list(){
     }).join("") + '</div>' +
     '<div class="card hd-list"><div class="rows">' + (rows.length ? rows.map(function(t){
       var ty = typeOf(t);
-      return '<button type="button" class="row" data-hdo="' + esc(t.id) + '" style="--sc:' + SC[t.status] + '">' + avatar(t) +
+      return '<button type="button" class="row" data-hdo="' + esc(t.id) + '" style="--sc:' + (t.canceled ? "var(--ink-3)" : SC[t.status]) + '">' + avatar(t) +
         '<span class="rw"><b>' + esc(shortHead(t)) + '</b><span>' + esc(t.id) + ' · ' + esc([t.name || t.email, t.company].filter(Boolean).join(" · ") || "Unknown") + '</span></span><span class="rf">' +
         '<span class="hd-type" style="--tc:' + ty.c + '">' + icon(ty.k) + esc(ty.label) + '</span>' +
         (t.status === "With Chris" && t.severity ? '<span class="hd-flag ' + (t.severity === "Urgent" || t.severity === "High" ? "hot" : "warm") + '" style="margin:0">' + esc(t.severity) + '</span>' : "") +
-        '<span class="hd-statchip">' + esc(t.status) + '</span><span class="rd">' + esc(day(t.at)) + '</span></span></button>';
+        '<span class="hd-statchip">' + esc(t.canceled ? "Canceled" : t.status) + '</span><span class="rd">' + esc(day(t.at)) + '</span></span></button>';
     }).join("") : '<div class="empty">' + (tickets().length ? "Nothing here. Choose Open or All above." : "No tickets yet.") + '</div>') + '</div></div>';
 }
 function teamCard(){
@@ -3109,16 +3117,16 @@ function openPanel(id, mode){
 function closePanel(){ if(openId === undefined) return; openId = undefined; $("rpane").classList.remove("open"); $("rpane").setAttribute("aria-hidden", "true"); }
 function showForm(mode){
   var e = $("hd-esc"), r = $("hd-res"); if(!e || !r) return;
-  e.hidden = mode !== "escalate"; r.hidden = mode !== "resolve";
-  var box = mode === "escalate" ? e : r; box.scrollIntoView({block:"nearest"});
-  var f = $(mode === "escalate" ? "hd-escn" : "hd-resn"); if(f) setTimeout(function(){ f.focus(); }, 60);
+  var cx = $("hd-cx"); e.hidden = mode !== "escalate"; r.hidden = mode !== "resolve"; if(cx) cx.hidden = mode !== "cancel";
+  var box = mode === "escalate" ? e : mode === "cancel" ? cx : r; if(box) box.scrollIntoView({block:"nearest"});
+  var f = $(mode === "escalate" ? "hd-escn" : mode === "cancel" ? "hd-cxr" : "hd-resn"); if(f) setTimeout(function(){ f.focus(); }, 60);
 }
 function sect(title, html){ return '<section class="psec"><h3>' + esc(title) + '</h3>' + html + '</section>'; }
 var KIND = {
   "email-in":{label:"Email In", ic:"inb", c:"var(--hd-work)"}, "email-out":{label:"Email Out", ic:"out", c:"var(--navy-mid)"},
   note:{label:"Note", ic:"chat", c:"var(--ink-3)"}, status:{label:"Moved", ic:"dot", c:"var(--ink-3)"},
   escalate:{label:"Escalated", ic:"flag", c:"var(--hd-chris)"}, resolve:{label:"Resolved", ic:"check", c:"var(--hd-done)"},
-  draft:{label:"Draft Opened", ic:"mail", c:"var(--ink-3)"}
+  draft:{label:"Draft Opened", ic:"mail", c:"var(--ink-3)"}, cancel:{label:"Canceled", ic:"dot", c:"var(--bad)"}
 };
 function drawPanel(){
   if(openId === undefined) return;
@@ -3132,17 +3140,22 @@ function drawPanel(){
     var cur = t.status === s;
     return '<button type="button" style="--sc:' + SC[s] + '"' + (cur ? ' aria-current="step"' : "") + (cur || !edit ? " disabled" : "") + ' data-hdstep="' + esc(s) + '"><i></i>' + esc(s === "With Chris" ? "With " + c2 : s) + '</button>';
   }).join("") + '</div>';
-  var acts = !edit ? "" : '<div class="hd-acts">' +
+  var acts = !edit ? "" : t.canceled ? '<div class="hd-esc hd-gone"><b>Canceled ' + esc(day(t.canceled.at)) + (t.canceled.by ? " by " + esc(t.canceled.by) : "") + '</b>: ' + esc(t.canceled.reason || "") + (t.canceled.note ? ". " + esc(t.canceled.note) : "") +
+    '<div class="pt-inline"><button class="btn" type="button" data-hdback>Put Back</button></div></div>' : '<div class="hd-acts">' +
     (t.email ? '<button class="btn" type="button" data-hdreply>Reply by Email</button>' : "") +
     (t.status !== "With Chris" && t.status !== "Resolved" ? '<button class="btn ghost" type="button" data-hdstep="With Chris">Escalate to ' + esc(c2) + '</button>' : "") +
-    (t.status !== "Resolved" ? '<button class="btn ghost" type="button" data-hdstep="Resolved">Resolve</button>' : "") +
+    (t.status !== "Resolved" ? '<button class="btn ghost" type="button" data-hdstep="Resolved">Mark Resolved</button>' : "") +
     (t.type === "Feedback" ? (t.feedbackId ? '<span class="muted">In the Feedback tab</span>' : '<button class="btn ghost" type="button" data-hdfb>Copy to Feedback</button>') : "") +
+    '<button class="btn ghost danger" type="button" data-hdcxl>Cancel Ticket</button>' +
     '</div><div id="hd-esc" class="hd-esc" hidden><div class="fgrid">' +
       '<div><label for="hd-sev">How Urgent</label><select id="hd-sev">' + SEVERITY.map(function(s){ return '<option' + (s === (t.severity || "Medium") ? " selected" : "") + '>' + s + '</option>'; }).join("") + '</select></div>' +
       '<div class="wide"><label for="hd-escn">What ' + esc(c2) + ' Needs to Know</label><textarea id="hd-escn" rows="3"></textarea></div>' +
     '</div><div class="pt-inline"><button class="btn" type="button" data-hdescgo>Escalate and Draft the Email</button><button class="btn ghost" type="button" data-hdescx>Cancel</button></div></div>' +
     '<div id="hd-res" class="hd-esc" hidden><label for="hd-resn">How It Was Resolved</label><textarea id="hd-resn" rows="3"></textarea>' +
-    '<div class="pt-inline"><button class="btn" type="button" data-hdresgo>Resolve</button><button class="btn ghost" type="button" data-hdresx>Cancel</button></div></div>';
+    '<div class="pt-inline"><button class="btn" type="button" data-hdresgo>Mark Resolved</button><button class="btn ghost" type="button" data-hdresx>Cancel</button></div></div>' +
+    '<div id="hd-cx" class="hd-esc hd-gone" hidden><div class="fgrid"><div><label for="hd-cxr">Why</label><select id="hd-cxr"><option>Duplicate</option><option>Spam</option><option>Test</option><option>No longer needed</option><option>Other</option></select></div>' +
+    '<div><label for="hd-cxn">Note (optional)</label><input id="hd-cxn" autocomplete="off"></div></div>' +
+    '<div class="pt-inline"><button class="btn danger" type="button" data-hdcxgo>Cancel This Ticket</button><button class="btn ghost" type="button" data-hdcxx>Keep It</button></div></div>';
   var co = t.company ? '<button class="linkbtn" type="button" data-hdco="' + esc(t.company) + '">' + esc(t.company) + '</button>' : '<span class="muted">Company not known</span>';
   var others = t.email || t.company ? tickets().filter(function(x){ return x.id !== t.id && ((t.company && lc(x.company) === lc(t.company) && lc(t.company) !== "mismo") || (t.email && lc(x.email) === lc(t.email))); }) : [];
   var open = !!OPEN[t.status], lastQuiet = daysSince(lastAt(t));
@@ -3169,7 +3182,7 @@ function drawPanel(){
   var past = others.length ? sect("Other Tickets From Them", '<div class="plist">' + others.map(function(x){
     return '<div class="prow"><button type="button" class="pwho" data-hdo="' + esc(x.id) + '"><b>' + esc(x.id) + ' · ' + esc(x.status) + '</b><span>' + esc(shortHead(x)) + '</span></button></div>';
   }).join("") + '</div>') : "";
-  $("rp-body").innerHTML = (edit ? track : "") + acts + boxes + asked + convo + past;
+  $("rp-body").innerHTML = (edit && !t.canceled ? track : "") + acts + boxes + asked + convo + past;
   foot.hidden = true; foot.innerHTML = "";
 }
 function drawNew(){
@@ -3241,6 +3254,15 @@ function resolve(id){
   var note = $("hd-resn").value.trim();
   landed = id; logTo(id, {kind:"resolve", text:note || "Resolved"}, function(t){ t.status = "Resolved"; t.resolvedAt = nowIso(); t.outcome = note || t.outcome || ""; })
     .then(function(){ toast(id + " is resolved."); }, failedSave);
+}
+function cancelTicket(id){
+  var reason = $("hd-cxr").value, note = $("hd-cxn").value.trim();
+  logTo(id, {kind:"cancel", text:"Canceled: " + reason + (note ? ". " + note : "")}, function(t){ t.canceled = {at:nowIso(), by:me(), reason:reason, note:note}; })
+    .then(function(){ closePanel(); toast(id + " is canceled. List, then Canceled, still has it.", false, function(){ putBack(id); }); }, failedSave);
+}
+function putBack(id){
+  logTo(id, {kind:"status", text:"Put back"}, function(t){ delete t.canceled; })
+    .then(function(){ landed = id; render(); toast(id + " is back in " + ((hd.docs["tickets/" + id] || {}).status || "the list") + "."); }, failedSave);
 }
 function copyToFeedback(id){
   var t = hd.docs["tickets/" + id]; if(!t) return;
@@ -3415,7 +3437,7 @@ document.addEventListener("keydown", function(e){ if(e.key === "Escape" && drag)
 
 /* ---------- wiring ---------- */
 document.addEventListener("click", function(e){
-  var b = e.target.closest("[data-hdnew],[data-hdf],[data-hdk],[data-hdv],[data-hdmore],[data-hdo],[data-hdreply],[data-hdstep],[data-hdescgo],[data-hdescx],[data-hdresgo],[data-hdresx],[data-hdfb],[data-hdnote],[data-hdcreate],[data-hdteam],[data-hdco],[data-hdfile],[data-close]");
+  var b = e.target.closest("[data-hdnew],[data-hdf],[data-hdk],[data-hdv],[data-hdmore],[data-hdo],[data-hdreply],[data-hdstep],[data-hdescgo],[data-hdescx],[data-hdresgo],[data-hdresx],[data-hdfb],[data-hdnote],[data-hdcreate],[data-hdteam],[data-hdco],[data-hdfile],[data-hdcxl],[data-hdcxgo],[data-hdcxx],[data-hdback],[data-close]");
   if(!b) return;
   if(b.hasAttribute("data-close")){ closePanel(); return; }
   if(!b.closest("#app-helpdesk,#rpane")) return;
@@ -3453,6 +3475,10 @@ document.addEventListener("click", function(e){
   if(b.hasAttribute("data-hdresx")){ $("hd-res").hidden = true; return; }
   if(b.hasAttribute("data-hdresgo")){ resolve(id); return; }
   if(b.hasAttribute("data-hdfb")){ copyToFeedback(id); return; }
+  if(b.hasAttribute("data-hdcxl")){ showForm("cancel"); return; }
+  if(b.hasAttribute("data-hdcxx")){ $("hd-cx").hidden = true; return; }
+  if(b.hasAttribute("data-hdcxgo")){ cancelTicket(id); return; }
+  if(b.hasAttribute("data-hdback")){ putBack(id); return; }
   if(b.hasAttribute("data-hdnote")){
     var n = $("hd-note").value.trim(); if(!n) return;
     logTo(id, {kind:"note", text:n}, function(t){ if(t.status === "New") t.status = "Working"; }).then(function(){ toast("Note saved."); }, failedSave);
