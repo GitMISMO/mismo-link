@@ -730,12 +730,13 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
 #app-helpdesk .hd-hint svg{width:14px;height:14px;flex:0 0 auto}
 
 /* ---------- the board ---------- */
-#app-helpdesk .hd-board{display:grid;grid-template-columns:repeat(5,minmax(230px,1fr));gap:12px;align-items:start;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x proximity;overscroll-behavior-x:contain}
+#app-helpdesk .hd-board{display:grid;grid-template-columns:repeat(5,minmax(190px,1fr));gap:12px;align-items:start;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x proximity;overscroll-behavior-x:contain}
 #app-helpdesk .hd-col{background:var(--surface-2);border:1px solid var(--border);border-top:3px solid var(--sc);border-radius:8px;min-width:0;scroll-snap-align:start;transition:background .15s,border-color .15s,box-shadow .15s}
 #app-helpdesk .hd-colh{display:flex;align-items:center;gap:8px;padding:11px 12px 2px}
 #app-helpdesk .hd-colh h3{margin:0;font-size:13.5px;font-weight:700;color:var(--ink);white-space:nowrap}
 #app-helpdesk .hd-colh .n{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--sc);background:color-mix(in srgb,var(--sc) 14%,transparent);border-radius:4px;padding:1px 8px;font-variant-numeric:tabular-nums}
 #app-helpdesk .hd-cold{font-size:11.5px;color:var(--ink-3);padding:0 12px 9px}
+#app-helpdesk .hd-col[data-hdcol="Resolved"] .hd-card p{display:none}
 #app-helpdesk .hd-cards{display:flex;flex-direction:column;gap:8px;padding:0 8px 8px;min-height:44px}
 #app-helpdesk .hd-drophere{border:1.5px dashed var(--border-strong);border-radius:6px;color:var(--ink-3);font-size:12px;text-align:center;padding:12px 8px}
 #app-helpdesk .hd-more{appearance:none;border:0;background:none;color:var(--navy-mid);font:inherit;font-size:12px;font-weight:600;cursor:pointer;padding:4px 6px 0;text-align:left}
