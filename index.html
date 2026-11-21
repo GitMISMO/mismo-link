@@ -760,8 +760,8 @@ box-shadow:0 1px 2px rgba(6,32,47,.05);transition:box-shadow .15s,transform .15s
 @keyframes hdLand{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--sc) 70%,transparent)}40%{box-shadow:0 0 0 5px color-mix(in srgb,var(--sc) 30%,transparent)}100%{box-shadow:0 1px 2px rgba(6,32,47,.05)}}
 .hd-card.dim{display:none}
 .hd-ghost{position:fixed;left:0;top:0;z-index:300;pointer-events:none;margin:0;transform-origin:30% 20%;box-shadow:0 22px 44px -12px rgba(6,32,47,.5) !important;cursor:grabbing;opacity:.97}
-.hd-ct{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink-3);font-weight:600;letter-spacing:.02em}
-.hd-ct .id{font-variant-numeric:tabular-nums}
+.hd-ct{display:flex;align-items:center;gap:7px;min-width:0;overflow:hidden;font-size:11px;color:var(--ink-3);font-weight:600;letter-spacing:.02em}
+.hd-ct .id{font-variant-numeric:tabular-nums;white-space:nowrap}
 .hd-ct .age{margin-left:auto;white-space:nowrap;font-weight:600}
 .hd-ct .age.old{color:var(--warn)}
 .hd-type{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--tc);white-space:nowrap}
