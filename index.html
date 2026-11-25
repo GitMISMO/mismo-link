@@ -13,6 +13,9 @@
 <!-- The shared sign-in every resources.mismo.org tool loads. It finds #rs-account
      in the masthead and fills it with the account chip. -->
 <script src="/assets/session.js"></script>
+<!-- The shared Back button (CN-033): each change of page in the left menu is a step in the
+     browser's history, and Back closes the right-hand panel first. Never copy it here. -->
+<script src="/assets/back.js"></script>
 <style>
 
   :root{
@@ -2011,7 +2014,7 @@ if(a("data-kickundo") != null){ var ku = a("data-kickundo");
       '<li><b>Beta Agreement</b>: the two signing pages, who is told when someone signs, and what is recorded.</li>' +
       '<li><b>Testers and Access</b>: the beta list company by company (<b>Companies</b>) and every signed agreement (<b>Who Has Signed</b>).</li>' +
       '<li><b>Help Desk</b>: requests for help from the help form and linksupport@mismo.org, Kellie first, Chris when escalated.</li><li><b>Feedback</b>: what pilot participants report, with a status and outcome, and Export to Excel.</li><li><b>Help</b>: this page.</li></ul>' +
-      '<p>Clicking a company, a person or a signature opens it in the panel on the right. Press <b>Close</b> or Escape to put it away. The search box at the top of the menu finds companies, people, signatures and help topics.</p>'],
+      '<p>Clicking a company, a person or a signature opens it in the panel on the right. Press <b>Close</b> or Escape to put it away. The browser&rsquo;s <b>Back</b> button goes to the last page you were on, and closes an open panel first; it never undoes a change. The search box at the top of the menu finds companies, people, signatures and help topics.</p>'],
     ["Getting Started","The beta, step by step",
       '<ol><li><b>Send the Subscriber Agreement.</b> On Testers and Access, open the company and press <b>Email the Subscriber Agreement</b> beside the person. A ready-to-send email opens in your mail program with the signing link.</li>' +
       '<li><b>The company signs.</b> Someone with authority signs once, for the company. They get a copy, and the beta team gets an email to schedule the kick-off.</li>' +
@@ -3534,6 +3537,23 @@ var g = window.__mismoLinkGate;
 (g && typeof g.then === "function" ? g : Promise.resolve(true)).then(function(ok){
   if(ok === false || started) return; started = true; load();
 }, function(){ failed = 1; render(); });
+})();
+</script>
+<script>
+/* The browser's Back button (CN-033). back.js follows the left menu by itself; these are the
+   layers it closes first, bottom layer first: the menu drawer on a phone, then the
+   right-hand panel. Each closes exactly as its own Close button or a tap outside does. */
+(function(){
+  if(!window.MismoBack) return;
+  var narrow = function(){ return window.matchMedia("(max-width:900px)").matches; };
+  MismoBack.layer({
+    isOpen: function(){ return narrow() && !document.body.classList.contains("railmini"); },
+    close: function(){ var sc = document.getElementById("rail-scrim"); if(sc) sc.click(); }
+  });
+  MismoBack.layer({
+    isOpen: function(){ var p = document.getElementById("rpane"); return !!p && p.classList.contains("open"); },
+    close: function(){ var x = document.getElementById("rp-x"); if(x) x.click(); }
+  });
 })();
 </script>
 </body>

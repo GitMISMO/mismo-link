@@ -1,0 +1,11 @@
+{
+  "name": "mismo-link",
+  "private": true,
+  "description": "MISMO Link HQ: the checks run before a change goes live",
+  "scripts": {
+    "test": "node tests/run.js"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

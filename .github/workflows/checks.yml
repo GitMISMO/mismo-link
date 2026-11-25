@@ -1,0 +1,22 @@
+# MISMO Link HQ checks (tests/run.js) on every upload and pull request. The site itself is
+# published by GitHub Pages from main, so run `npm test` before pushing to main.
+name: MISMO Link Checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
