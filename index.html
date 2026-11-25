@@ -2072,11 +2072,12 @@ if(a("data-kickundo") != null){ var ku = a("data-kickundo");
 '<p>The public help form is at <b>resources.mismo.org/mismo-link/help/</b>, open to anyone with the link, and looks like the MISMO website and the membership application. It starts with <b>Reset My Password</b> and <b>Create a Profile</b>, since most sign-in problems are fixed there, then asks for name, work email, company, what they need (a question, something not working, or feedback), a description and an optional screenshot (an image or PDF up to 3 MB, chosen, dropped onto the form or pasted).</p>' +
 '<p>Once relay request 12 is live, pressing Send makes a ticket straight away and shows the person their ticket number. Until then the form opens the person\'s own email program with their request addressed to linksupport@mismo.org, and when they send it, it becomes a ticket like any other email.</p>'],
 ["Help Desk","Email to linksupport@mismo.org",
-'<p>Every email to linksupport@mismo.org is saved within a minute or so, and added to the Help Desk the next time Kellie or Jonna opens it (a note pops up saying how many came in).</p>' +
+'<p>Every email to linksupport@mismo.org is saved within a minute or so. While the Help Desk is open it is added within a minute; otherwise it is added the next time Kellie or Jonna opens it (a note pops up saying how many came in).</p>' +
 '<ul><li><b>A ticket number in the subject</b> (for example MLHD-00054): added to that ticket.</li>' +
 '<li><b>A reply in the same thread</b> to an open ticket, from the person or to them: added to that ticket.</li>' +
 '<li><b>Anything else from outside MISMO</b>: a new ticket in that person\'s name.</li>' +
-'<li><b>From the team</b>: a forward (FW:) becomes a ticket for whoever wrote the forwarded email; anything else becomes a ticket for the first outside address it went to, or for the sender if there is none.</li></ul>' +
+'<li><b>From the team</b>: a forward (FW:) becomes a ticket for whoever wrote the forwarded email; anything else becomes a ticket for the first outside address it went to, or for the sender if there is none.</li>' +
+'<li><b>Newsletters and automatic emails</b> (MBA news, no-reply senders, out-of-office replies, bounces): skipped, no ticket.</li></ul>' +
 '<p>When the person writes back on a ticket that is Waiting on Them or Resolved, it moves back to Working. Copy linksupport@mismo.org on your replies and keep the ticket number in the subject, and the whole conversation stays on the ticket.</p>'],
 ["Feedback","Logging and exporting feedback",
 '<p><b>Feedback</b> keeps what pilot participants report: the date, who reported it, the company, what they said, a status and the outcome. Press <b>Add Feedback</b>, fill it in and press <b>Save</b>. Open any row to change it.</p>' +
@@ -2775,6 +2776,7 @@ var PROJECT = "mismo-link", DOC = "helpdesk", MAILIN = "mailin", SUPPORT = "link
 var STATUSES = ["New", "Working", "Waiting on Them", "With Chris", "Resolved"];
 var OPEN = {"New":1, "Working":1, "Waiting on Them":1, "With Chris":1};
 var TYPES = ["Question", "Something's not working", "Feedback"];
+var TYPELABEL = {"Question":"General Question", "Something's not working":"Technical Assistance", "Feedback":"Feedback & Ideas"};
 var SEVERITY = ["Low", "Medium", "High", "Urgent"];
 var SC = {"New":"var(--hd-new)", "Working":"var(--hd-work)", "Waiting on Them":"var(--hd-wait)", "With Chris":"var(--hd-chris)", "Resolved":"var(--hd-done)"};
 var DEFAULT_TEAM = {level1:{name:"Kellie Stoll", email:"kstoll@mismo.org"}, level2:{name:"Chris Trujillo", email:""}};
@@ -2851,7 +2853,7 @@ var IC = {
 function icon(k){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (IC[k] || "") + '</svg>'; }
 function typeOf(t){
   var ty = t.type || "Question";
-  if(ty === "Something's not working") return {k:"bug", label:"Not Working", c:"var(--bad)"};
+  if(ty === "Something's not working") return {k:"bug", label:"Technical", c:"var(--bad)"};
   if(ty === "Feedback") return {k:"fb", label:"Feedback", c:"var(--good)"};
   return {k:"q", label:"Question", c:"var(--navy-mid)"};
 }
@@ -3023,7 +3025,7 @@ function render(){
     tile("", "Resolved", SC["Resolved"], String(doneMonth.length), "Resolved This Month", avg == null ? "none in the last 90 days" : "about " + plural(avg, "day") + " to resolve") +
   '</div></div>';
 
-  var kinds = [["all", "All Types"], ["Question", "Questions"], ["Something's not working", "Not Working"], ["Feedback", "Feedback"]];
+  var kinds = [["all", "All Types"], ["Question", "General Questions"], ["Something's not working", "Technical Assistance"], ["Feedback", "Feedback & Ideas"]];
   var bar = '<div class="hd-tools"><input type="search" id="hd-q" placeholder="Find a ticket by number, person, company or what they asked" aria-label="Find a ticket">' +
     '<div class="pt-seg" role="group" aria-label="Type">' + kinds.map(function(k){ return '<button type="button" data-hdk="' + esc(k[0]) + '" aria-pressed="' + (kind === k[0]) + '">' + esc(k[1]) + '</button>'; }).join("") + '</div>' +
     '<div class="pt-seg" role="group" aria-label="View"><button type="button" data-hdv="board" aria-pressed="' + (view === "board") + '">' + icon("board") + 'Board</button><button type="button" data-hdv="list" aria-pressed="' + (view === "list") + '">' + icon("list") + 'List</button></div></div>';
@@ -3194,7 +3196,7 @@ function drawNew(){
     '<div><label for="hn-name">Name</label><input id="hn-name" autocomplete="off"></div>' +
     '<div><label for="hn-email">Email</label><input id="hn-email" autocomplete="off"></div>' +
     '<div><label for="hn-co">Company</label><input id="hn-co" list="hn-colist" autocomplete="off"><datalist id="hn-colist">' + Object.keys(cos).sort().map(function(c){ return '<option value="' + esc(c) + '">'; }).join("") + '</datalist></div>' +
-    '<div><label for="hn-type">What They Need</label><select id="hn-type">' + TYPES.map(function(x){ return '<option>' + esc(x) + '</option>'; }).join("") + '</select></div>' +
+    '<div><label for="hn-type">What They Need</label><select id="hn-type">' + TYPES.map(function(x){ return '<option value="' + esc(x) + '">' + esc(TYPELABEL[x] || x) + '</option>'; }).join("") + '</select></div>' +
     '<div class="wide"><label for="hn-text">Describe It</label><textarea id="hn-text" rows="6"></textarea></div></div>';
   var foot = $("rp-foot"); foot.hidden = false;
   foot.innerHTML = '<button class="btn" type="button" data-hdcreate>Save</button><button class="btn ghost" type="button" data-close>Cancel</button><span class="msg" id="hn-msg"></span>';
@@ -3315,10 +3317,18 @@ function plain(html, keepThread){
   return (cut > 0 && !keepThread ? t.slice(0, cut) : t).slice(0, 8000).trim();
 }
 function normSubject(s){ return lc(String(s || "").replace(/^\s*((re|fw|fwd)\s*:\s*)+/i, "").replace(/\[?mlhd-\d+\]?/gi, "")).replace(/\s+/g, " "); }
+/* Newsletters and automatic emails (MBA news, no-reply senders, bounces, out-of-office) are not help requests. */
+function bulk(m, from){
+  var d = domainOf(from);
+  if(/^(no-?reply|do-?not-?reply|donotreply|news|newsletters?|mailer-daemon|postmaster|notifications?|bounces?)[@+.]/i.test(from)) return true;
+  if(d !== "mba.org" && d !== "mismo.org" && /\.(mba|mismo)\.org$/.test(d)) return true;
+  return /^\s*(automatic reply|auto-?reply|out of (the )?office|undeliverable|delivery status notification)/i.test(String(m.subject || ""));
+}
 function processMail(){
   if(!canEdit) return Promise.resolve();
   return readDocs(MAILIN).then(function(box){
-    var waiting = Object.keys(box.docs).filter(function(k){ var m = box.docs[k]; return m && !m.processed; });
+    var handled = hd.docs["mailin/handled"] || {};
+    var waiting = Object.keys(box.docs).filter(function(k){ var m = box.docs[k]; return m && !m.processed && !handled[k]; });
     if(!waiting.length) return;
     var done = {}, made = 0, added = 0, held = 0, heldKeys = [];
     return saveHd(function(d){
@@ -3329,6 +3339,7 @@ function processMail(){
       waiting.forEach(function(k){
         var m = box.docs[k], mid = m.mid || k, from = emailOf(m.from), at = m.received || m.at || nowIso();
         if(seen[mid]){ done[k] = seen[mid]; return; }
+        if(bulk(m, from)){ done[k] = null; return; }
         var text = plain(m.html || m.body || m.text || ""), num = String(m.subject || "").match(/MLHD-?\s?(\d{5})/i);
         var t = num ? d["tickets/MLHD-" + num[1]] : null;
         var people = [m.to, m.cc].join(",").split(/[,;]/).map(emailOf).filter(Boolean);
@@ -3367,7 +3378,7 @@ function processMail(){
       if(held){ mailNote = held + " email" + (held === 1 ? "" : "s") + " from the team to " + SUPPORT + " had no ticket number, so " + (held === 1 ? "it was" : "they were") + " not logged. Put the ticket number (for example MLHD-00054) in the subject to log a reply."; render(); }
       if(!Object.keys(done).length && !heldKeys.length) return;
       var next = JSON.parse(JSON.stringify(box.docs));
-      Object.keys(done).forEach(function(k){ next[k].processed = {at:nowIso(), ticket:done[k]}; next[k].html = ""; next[k].body = ""; });
+      Object.keys(done).forEach(function(k){ next[k].processed = done[k] ? {at:nowIso(), ticket:done[k]} : {at:nowIso(), ticket:null, skipped:"newsletter or automatic email"}; next[k].html = ""; next[k].body = ""; });
       heldKeys.forEach(function(k){ next[k].processed = {at:nowIso(), ticket:null, skipped:"team email with no ticket number"}; });
       return call("PUT", MAILIN, {content:{docs:next}, sha:box.sha}).catch(function(){}).then(function(){
         if(made || added) toast((made ? made + " new ticket" + (made === 1 ? "" : "s") : "") + (made && added ? " and " : "") + (added ? added + " email" + (added === 1 ? "" : "s") + " added to tickets" : "") + " from " + SUPPORT + ".");
@@ -3505,6 +3516,15 @@ function load(){
     return processMail();
   }, function(e){ failed = (e && (e.status === 401 || e.status === 403)) ? 401 : 1; render(); });
 }
+/* Keep the board current while it is open: new emails become tickets, and new tickets and other people's
+   changes show up, within a minute. Skipped while someone is typing on the page, dragging, or has a ticket open. */
+function refresh(){
+  if(!loaded || drag || document.hidden || openId !== undefined) return;
+  var a = document.activeElement; if(a && a.closest && a.closest("#app-helpdesk") && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+  readDocs(DOC).then(function(f){ if(f.sha && f.sha !== hd.sha){ hd = f; render(); } return processMail(); }).catch(function(){});
+}
+setInterval(refresh, 60000);
+document.addEventListener("visibilitychange", function(){ if(!document.hidden) refresh(); });
 window.__mlHelpdeskReload = load;
 function fromHash(){ if(location.hash === "#helpdesk" && window.__show) window.__show("helpdesk"); }
 fromHash(); window.addEventListener("hashchange", fromHash);
