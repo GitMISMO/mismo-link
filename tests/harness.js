@@ -33,6 +33,7 @@ async function open(opts = {}) {
     if (u.startsWith('http://hq.test/mismo-link/')) return r.fulfill({ body: fs.readFileSync(path.join(ROOT, 'index.html')), contentType: 'text/html' });
     if (u.includes('/assets/session.js')) return r.fulfill({ contentType: 'application/javascript', body: SESSION });
     if (u.includes('/assets/back.js')) return r.fulfill({ contentType: 'application/javascript', body: await backJs() });
+    if (u.includes('/assets/holiday.js')) return r.fulfill({ contentType: 'application/javascript', body: await holidayJs() });
     if (u.includes('lambda-url')) {
       const name = decodeURIComponent((u.split('/data/')[1] || '').split('?')[0]);
       if (r.request().method() === 'GET')
@@ -43,7 +44,7 @@ async function open(opts = {}) {
     if (u.startsWith('http://hq.test')) return r.fulfill({ status: 404, body: '' });
     return r.abort();
   });
-  await page.goto('http://hq.test/mismo-link/');
+  await page.goto('http://hq.test/mismo-link/' + (opts.query || ''));
   await page.waitForTimeout(opts.settle || 2500);
   return { browser, page, errs, puts, store, close: () => opts.browser ? page.close() : browser.close() };
 }
@@ -58,6 +59,18 @@ async function backJs() {
     else { const r = await fetch('https://resources.mismo.org/assets/back.js'); BACK = r.ok ? await r.text() : ''; }
   } catch (e) { BACK = ''; }
   return BACK;
+}
+
+/* The shared December hat (resources.mismo.org/assets/holiday.js, CN-052), also as it is live:
+   MISMO_HOLIDAY can point at a local copy instead. The real session.js loads it; the pretend one doesn't. */
+let HOLIDAY = null;
+async function holidayJs() {
+  if (HOLIDAY !== null) return HOLIDAY;
+  try {
+    if (process.env.MISMO_HOLIDAY) HOLIDAY = fs.readFileSync(process.env.MISMO_HOLIDAY, 'utf8');
+    else { const r = await fetch('https://resources.mismo.org/assets/holiday.js'); HOLIDAY = r.ok ? await r.text() : ''; }
+  } catch (e) { HOLIDAY = ''; }
+  return HOLIDAY;
 }
 
 module.exports = { open, ROOT };

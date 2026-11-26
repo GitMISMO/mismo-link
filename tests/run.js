@@ -96,6 +96,38 @@ const htmlFiles = () => ['index.html'].concat(fs.readdirSync(ROOT, { withFileTyp
     noErrors(s.errs); expect(!s.puts.length, 'the Back check saved: ' + s.puts.join(', ')); await s.close();
   });
 
+  /* 5. December (CN-052, Nov 26): the shared hat sits on the O of the masthead logo and nothing else moves.
+        The public pages (help, sign, user, email) never load session.js or holiday.js, so never get it. */
+  await check('December hat: on the masthead logo, nothing moves, never on public pages', async () => {
+    const bad = [];
+    for (const f of htmlFiles().filter(f => f !== 'index.html')) {
+      const html = fs.readFileSync(path.join(ROOT, f), 'utf8');
+      if (/\/assets\/(session|holiday)\.js/.test(html)) bad.push(f + ' is a public page but loads session.js or holiday.js');
+    }
+    const hq = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    if (/data-season|class="santa"/.test(hq)) bad.push('index.html still carries the retired December hat (.santa / data-season)');
+    expect(!bad.length, bad.join('\n'));
+    const s = await open(opts({ query: '?holiday=preview' }));
+    const box = () => s.page.evaluate(() => ['.hqtop', '.logoplate .wordmark', '.hqname', '#rail', '#rs-account'].map(q => {
+      const r = document.querySelector(q).getBoundingClientRect(); return q + ' ' + [r.x, r.y, r.width, r.height].map(Math.round).join(','); }));
+    const before = await box();
+    /* the real session.js adds this for a signed-in MISMO or MBA address */
+    await s.page.addScriptTag({ url: 'http://hq.test/assets/holiday.js' }); await s.page.waitForTimeout(1500);
+    const st = await s.page.evaluate(() => {
+      const h = document.querySelector('.mismo-hat'), logo = document.querySelector('header.hqtop .logoplate .wordmark');
+      if (!h) return { on: !!(window.MismoHoliday || {}).on };
+      const a = h.getBoundingClientRect(), b = logo.getBoundingClientRect();
+      return { on: true, inHeader: !!h.closest('header.hqtop'), shown: getComputedStyle(h).display !== 'none' && a.width > 0,
+        overLogo: a.left >= b.left && a.right <= b.right + a.width && a.bottom > b.top && a.top < b.bottom };
+    });
+    expect(st.on, 'holiday.js did not switch on with ?holiday=preview (could it be fetched?)');
+    expect(st.inHeader && st.shown, 'no hat in the masthead: ' + JSON.stringify(st));
+    expect(st.overLogo, 'the hat is not over the logo: ' + JSON.stringify(st));
+    const after = await box();
+    expect(JSON.stringify(after) === JSON.stringify(before), 'the page moved when the hat went on:\n' + before.join('\n') + '\n->\n' + after.join('\n'));
+    noErrors(s.errs); expect(!s.puts.length, 'the hat check saved: ' + s.puts.join(', ')); await s.close();
+  });
+
   await browser.close();
   const failed = results.filter(r => !r.ok);
   console.log('\n' + (results.length - failed.length) + ' of ' + results.length + ' checks passed.');
