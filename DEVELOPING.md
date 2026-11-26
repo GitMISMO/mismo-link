@@ -17,3 +17,8 @@
   masthead changes and it stops finding it, add `data-mismo-logo` to the logo's `<svg>`. The public pages
   (`help/`, `sign/`, `user/`, `email/`) never load session.js or holiday.js. Preview with `?holiday=preview`;
   check 5 in `tests/run.js` covers it.
+- **Masthead (CN-053):** `header.hqtop` is Certification Management's masthead to the pixel (68px bar,
+  padding 13px 22px; white logo box 9px 13px, 5px corners, sky line under it; logo 24px; 1px divider 42px tall;
+  name 16px/500/#94c8e9). At 560px and under it takes CMS's phone step (62px bar, logo 19px). Everything
+  under it (left menu, `#rpane`, toasts, the Help side menu) offsets from `--hq-h`, never a fixed pixel value.
+  Check 6 in `tests/run.js` measures it.

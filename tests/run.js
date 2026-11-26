@@ -128,6 +128,40 @@ const htmlFiles = () => ['index.html'].concat(fs.readdirSync(ROOT, { withFileTyp
     noErrors(s.errs); expect(!s.puts.length, 'the hat check saved: ' + s.puts.join(', ')); await s.close();
   });
 
+  /* 6. Masthead matches Certification Management's to the pixel (CN-053), and what sits under it lines up */
+  await check('Masthead: Certification Management measurements, nothing overlaps or gaps', async () => {
+    const want = {
+      wide:  { w: 1440, h: 900, bar: 68, plate: [22, 13, 183, 42], logoH: 24, rule: [1, 42], name: '16px' },
+      phone: { w: 390,  h: 844, bar: 62, plate: [16, 14.5, 144.5, 33], logoH: 19, rule: [1, 40], name: '13px' },
+    };
+    for (const [k, t] of Object.entries(want)) {
+      const s = await open(opts({ w: t.w, h: t.h }));
+      const m = await s.page.evaluate(() => {
+        const r = q => { const e = document.querySelector(q); if (!e) return null; const b = e.getBoundingClientRect(); return [b.x, b.y, b.width, b.height].map(v => Math.round(v * 10) / 10); };
+        const cs = q => getComputedStyle(document.querySelector(q));
+        return { bar: r('header.hqtop'), plate: r('.logoplate'), logo: r('.logoplate .wordmark'), rule: r('.hqtop .mastrule'),
+          rail: r('#rail'), pane: getComputedStyle(document.querySelector('#rpane') || document.body).top,
+          plateRadius: cs('.logoplate').borderTopLeftRadius, plateShadow: cs('.logoplate').boxShadow,
+          barBg: cs('header.hqtop').backgroundColor, barShadow: cs('header.hqtop').boxShadow,
+          name: [cs('.hqname').fontSize, cs('.hqname').fontWeight, cs('.hqname').color],
+          ruleBg: cs('.hqtop .mastrule').backgroundColor, hat: !!document.querySelector('.santa,#mismo-hat') || document.documentElement.hasAttribute('data-season') };
+      });
+      const tag = k + ': ' + JSON.stringify(m);
+      expect(m.bar[1] === 0 && m.bar[3] === t.bar, 'bar should be ' + t.bar + 'px tall at the top. ' + tag);
+      expect(m.barBg === 'rgb(13, 49, 76)' && /rgba\(80, 164, 219, 0\.28\) 0px 1px 0px/.test(m.barShadow), 'bar colour or foot line wrong. ' + tag);
+      expect(m.plate[0] === t.plate[0] && m.plate[1] === t.plate[1] && Math.abs(m.plate[2] - t.plate[2]) <= 1 && m.plate[3] === t.plate[3], 'logo box not at ' + t.plate.join(',') + '. ' + tag);
+      expect(m.plateRadius === '5px' && /rgba\(80, 164, 219, 0\.35\) 0px 1px 0px/.test(m.plateShadow), 'logo box corners or sky line wrong. ' + tag);
+      expect(m.logo[3] === t.logoH, 'logo should be ' + t.logoH + 'px tall. ' + tag);
+      expect(m.rule[2] === t.rule[0] && m.rule[3] === t.rule[1] && m.ruleBg === 'rgba(80, 164, 219, 0.4)', 'divider wrong. ' + tag);
+      expect(m.rule[0] - (m.plate[0] + m.plate[2]) === (k === 'wide' ? 14 : 11), 'gap from logo box to divider wrong. ' + tag);
+      expect(m.name[0] === t.name && m.name[1] === '500' && m.name[2] === 'rgb(148, 200, 233)', 'tool name style wrong. ' + tag);
+      expect(m.rail && m.rail[1] === t.bar, 'left menu should start right under the bar (' + t.bar + 'px). ' + tag);
+      expect(m.pane === t.bar + 'px', 'right-hand panel should start at ' + t.bar + 'px. ' + tag);
+      expect(!m.hat, 'the retired December hat code is still on the page. ' + tag);
+      noErrors(s.errs); await s.close();
+    }
+  });
+
   await browser.close();
   const failed = results.filter(r => !r.ok);
   console.log('\n' + (results.length - failed.length) + ' of ' + results.length + ' checks passed.');

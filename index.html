@@ -32,7 +32,7 @@
     --ui:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
     /* the three measurements every MISMO page shares (Summit HQ's live values) */
-    --hq-h:55px; --rail-w:240px; --rail-mini:62px;
+    --hq-h:68px; --rail-w:240px; --rail-mini:62px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -78,25 +78,35 @@
   /* December: the santa hat on the O of the logo comes from the shared /assets/holiday.js,
      which session.js loads (CN-052). Nothing for it here. */
 
-/* the masthead, across the top, as every MISMO page wears it */
+/* the masthead, across the top: Certification Management's, to the pixel (CN-053).
+   68px bar: 13px above and below the logo box, 22px in from the left. */
 .hqtop{position:sticky;top:env(safe-area-inset-top,0px);z-index:97;height:var(--hq-h);
   background:var(--navy);color:#fff;display:flex;align-items:center;gap:0;
-  padding:0 22px;box-shadow:0 1px 0 rgba(80,164,219,.28);
+  padding:13px 22px;box-shadow:0 1px 0 rgba(80,164,219,.28);
   margin-left:calc(0px - var(--rail-w));width:calc(100% + var(--rail-w));
   transition:margin-left .2s cubic-bezier(.4,0,.2,1), width .2s cubic-bezier(.4,0,.2,1)}
 body.railmini .hqtop{margin-left:calc(0px - var(--rail-mini));width:calc(100% + var(--rail-mini))}
 @media (prefers-reduced-motion:reduce){ .hqtop{transition:none} }
-.hqtop .mastrule{display:block;width:2px;height:34px;flex:0 0 auto;
-  margin-inline:20px;border-radius:1px;background:var(--sky)}
-.hqtop .hqname{font-family:var(--display);font-size:15.5px;font-weight:700;
-  letter-spacing:-.005em;color:var(--sky);white-space:nowrap}
+.hqtop .mastrule{display:block;width:1px;height:42px;flex:0 0 auto;
+  margin-inline:14px;background:rgba(80,164,219,.4)}
+.hqtop .hqname{font-size:16px;font-weight:500;color:#94c8e9;white-space:nowrap}
 .hqtop-r{margin-left:auto;display:flex;align-items:center;gap:13px}
 .hqtop .eyebrow-m{font-family:var(--display);font-size:10.5px;letter-spacing:.11em;
   text-transform:uppercase;color:rgba(255,255,255,.62);font-weight:600;white-space:nowrap}
 @media(max-width:700px){.hqtop .eyebrow-m{display:none}}
-.logoplate{background:#fff;border-radius:7px;padding:8px 14px;display:flex;
-  align-items:center;line-height:0;flex:0 0 auto;position:relative}
+.logoplate{background:#fff;border-radius:5px;padding:9px 13px;display:flex;
+  align-items:center;line-height:0;flex:0 0 auto;position:relative;
+  box-shadow:0 1px 0 rgba(80,164,219,.35)}
 .logoplate .wordmark{height:24px;width:auto;display:block}
+/* phone: Certification Management's own phone step, so the logo box still lines up there */
+@media(max-width:560px){
+  :root{--hq-h:62px}
+  .hqtop{padding:11px 16px}
+  .logoplate{padding:7px 10px}
+  .logoplate .wordmark{height:19px}
+  .hqtop .mastrule{height:40px;margin-inline:11px}
+  .hqtop .hqname{font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis}
+}
 
 /* the sections, down the left, beneath it */
 .hq.rail{position:fixed;left:0;top:calc(var(--hq-h) + env(safe-area-inset-top,0px));bottom:0;width:var(--rail-w);z-index:95;
